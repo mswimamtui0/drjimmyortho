@@ -9,8 +9,14 @@ npm install
 echo "🏗️ Building the app..."
 CI=false npm run build
 
-# Install serve for serving the build
-echo "📡 Installing serve..."
-npm install -g serve
+# Check if build was successful
+if [ -d "build" ]; then
+  echo "✅ Build completed successfully! Build folder exists."
+  echo "📁 Contents of build folder:"
+  ls -la build/
+else
+  echo "❌ Build failed - build folder not found!"
+  exit 1
+fi
 
 echo "✅ Build completed successfully!"

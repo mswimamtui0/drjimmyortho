@@ -1,3 +1,17 @@
+- type: web
+  name: drjimmy-frontend
+  runtime: node
+  rootDir: frontend
+  buildCommand: bash render-build.sh
+  startCommand: npx serve -s build -l 3000
+  publishDirectory: build
+  envVars:
+    - key: NODE_ENV
+      value: production
+    - key: REACT_APP_API_URL
+      value: https://drjimmy-backend.onrender.com/api
+  healthCheckPath: /
+
 services:
   - type: web
     name: drjimmy-backend
