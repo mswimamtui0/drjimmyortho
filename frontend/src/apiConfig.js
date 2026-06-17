@@ -1,3 +1,4 @@
-// apiConfig.js - Single source of truth for API URL
-const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:8000/api';
+// apiConfig.js
+const API_URL = process.env.REACT_APP_API_URL || 'https://drjimmy-backend.onrender.com/api';
+
 export default API_URL;

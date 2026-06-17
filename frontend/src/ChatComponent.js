@@ -83,3 +83,4 @@ function ChatComponent({ patientId, doctorId, patientName }) {
 }
 
 export default ChatComponent;
+

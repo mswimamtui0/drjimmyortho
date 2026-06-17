@@ -198,3 +198,4 @@ function MedicalHistory() {
 }
 
 export default MedicalHistory;
+
