@@ -1,5 +1,4 @@
 services:
-  # Backend Service
   - type: web
     name: drjimmy-backend
     runtime: python
@@ -22,7 +21,6 @@ services:
         value: .onrender.com
     healthCheckPath: /api/
 
-  # Frontend Service
   - type: web
     name: drjimmy-frontend
     runtime: node
