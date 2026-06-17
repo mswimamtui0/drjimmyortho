@@ -1,3 +1,4 @@
+
 import multiprocessing
 import os
 
@@ -9,6 +10,10 @@ preload_app = True
 accesslog = "logs/access.log"
 errorlog = "logs/error.log"
 loglevel = "info"
+bind = "0.0.0.0:10000"
+workers = 2
+threads = 4
+timeout = 120
 
 # SSL Configuration (for production)
 # certfile = "/etc/ssl/certs/yourdomain.crt"
