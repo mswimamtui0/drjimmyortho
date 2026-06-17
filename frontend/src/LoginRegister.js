@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import API_URL from './apiConfig';
 
 function LoginRegister() {
   const [isLogin, setIsLogin] = useState(true);
@@ -30,8 +31,7 @@ function LoginRegister() {
     try {
       let response;
       if (isLogin) {
-        // Login
-        response = await fetch('https://drjimmy-backend.onrender.com/api/login/', {
+        response = await fetch(`${API_URL}/login/`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -40,8 +40,7 @@ function LoginRegister() {
           })
         });
       } else {
-        // Register - using formData that is defined
-        response = await fetch('https://drjimmy-backend.onrender.com/api/register/', {
+        response = await fetch(`${API_URL}/register/`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -63,8 +62,11 @@ function LoginRegister() {
           localStorage.setItem('user', JSON.stringify(data.user));
           localStorage.setItem('access_token', data.access || 'demo_token');
           
-          alert(`Welcome back ${data.user.first_name || data.user.username}!`);
-          navigate('/upload');
+          console.log('✅ User saved:', data.user);
+          console.log('Redirecting to dashboard...');
+          
+          // Redirect to dashboard
+          navigate('/dashboard');
         } else {
           alert('Account created successfully! Please login.');
           setIsLogin(true);
@@ -82,7 +84,7 @@ function LoginRegister() {
       }
     } catch (err) {
       console.error('Auth error:', err);
-      setError('Cannot connect to server. Make sure backend is running on port 8000');
+      setError('Cannot connect to server. Make sure backend is running.');
     } finally {
       setLoading(false);
     }
@@ -172,10 +174,6 @@ function LoginRegister() {
       borderRadius: '8px',
       fontSize: '1em',
       transition: 'border-color 0.3s'
-    },
-    inputFocus: {
-      outline: 'none',
-      borderColor: '#1976d2'
     },
     formRow: {
       display: 'grid',
@@ -410,4 +408,3 @@ function LoginRegister() {
 }
 
 export default LoginRegister;
-
