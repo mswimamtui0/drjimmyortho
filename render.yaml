@@ -13,27 +13,27 @@
   healthCheckPath: /
 
 services:
-  - type: web
-    name: drjimmy-backend
-    runtime: python
-    rootDir: backend
-    buildCommand: |
-      pip install -r requirements.txt
-      python manage.py migrate
-      python manage.py collectstatic --noinput
-    startCommand: gunicorn drjimmyortho.wsgi:application
-    envVars:
-      - key: DATABASE_URL
-        fromDatabase:
-          name: drjimmy-db
-          property: connectionString
-      - key: SECRET_KEY
-        generateValue: true
-      - key: DEBUG
-        value: false
-      - key: ALLOWED_HOSTS
-        value: .onrender.com
-    healthCheckPath: /api/
+ - type: web
+  name: drjimmy-backend
+  runtime: python
+  rootDir: backend
+  buildCommand: |
+    pip install -r requirements.txt
+    python manage.py migrate
+    python manage.py create_admin
+    python manage.py collectstatic --noinput
+  startCommand: gunicorn drjimmyortho.wsgi:application
+  envVars:
+    - key: DATABASE_URL
+      fromDatabase:
+        name: drjimmy-db
+        property: connectionString
+    - key: SECRET_KEY
+      generateValue: true
+    - key: DEBUG
+      value: false
+    - key: ALLOWED_HOSTS
+      value: .onrender.com
 
   - type: web
     name: drjimmy-frontend
