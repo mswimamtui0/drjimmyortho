@@ -27,7 +27,7 @@ function BlogPage() {
 
   const fetchPostDetail = async (slug) => {
     try {
-      const response = await fetch(`http://localhost:8000/api/blog/post/${slug}/`);
+      const response = await fetch(`http://drjimmy-backend.onrender.com/api/blog/post/${slug}/`);
       const data = await response.json();
       setSelectedPost(data.post);
       setComments(data.post.comments || []);

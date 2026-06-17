@@ -28,7 +28,7 @@ function VideoConsultPage() {
 
   const fetchConsultations = async (userData) => {
     try {
-      const response = await fetch(`http://localhost:8000/api/doctor/appointments/`);
+      const response = await fetch(`http://drjimmy-backend.onrender.com/api/doctor/appointments/`);
       const data = await response.json();
       if (data.success) {
         const userConsults = data.appointments?.filter(

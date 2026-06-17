@@ -11,7 +11,7 @@ function ChatComponent({ patientId, doctorId, patientName }) {
 
   useEffect(() => {
     // Connect to WebSocket
-    socketRef.current = io('http://localhost:8000/ws/chat/');
+    socketRef.current = io('http://drjimmy-backend.onrender.com/ws/chat/');
     
     socketRef.current.on('connect', () => {
       setIsConnected(true);

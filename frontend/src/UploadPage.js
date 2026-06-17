@@ -33,7 +33,7 @@ function UploadPage() {
   const fetchMyScans = async (userData) => {
     setLoadingScans(true);
     try {
-      const response = await fetch(`http://localhost:8000/api/my-scans/?username=${userData.username}`);
+      const response = await fetch(`http://drjimmy-backend.onrender.com/api/my-scans/?username=${userData.username}`);
       const data = await response.json();
       console.log('Fetched scans:', data);
       if (data.scans) {

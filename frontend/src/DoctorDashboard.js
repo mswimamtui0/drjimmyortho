@@ -96,7 +96,7 @@ function DoctorDashboard() {
     }
     
     try {
-      const response = await fetch(`http://localhost:8000/api/doctor/search-patients/?q=${query}`);
+      const response = await fetch(`http://drjimmy-backend.onrender.com/api/doctor/search-patients/?q=${query}`);
       const data = await response.json();
       
       if (data.patients) {
@@ -266,18 +266,18 @@ function DoctorDashboard() {
         imageUrl = scan.image_url;
       } else {
         // Otherwise, prepend the backend URL (port 8000)
-        imageUrl = `http://localhost:8000${scan.image_url}`;
+        imageUrl = `http://drjimmy-backend.onrender.com${scan.image_url}`;
       }
     } else if (scan.image) {
       // If image is just the path, prepend backend URL
       if (scan.image.startsWith('/media/')) {
-        imageUrl = `http://localhost:8000${scan.image}`;
+        imageUrl = `http://drjimmy-backend.onrender.com${scan.image}`;
       } else {
-        imageUrl = `http://localhost:8000/media/${scan.image}`;
+        imageUrl = `http://drjimmy-backend.onrender.com/media/${scan.image}`;
       }
     } else {
       // Try to construct from scan ID (fallback)
-      imageUrl = `http://localhost:8000/media/patient_scans/${scan.id}/`;
+      imageUrl = `http://drjimmy-backend.onrender.com/media/patient_scans/${scan.id}/`;
     }
     
     console.log("📸 Full Image URL (backend):", imageUrl);

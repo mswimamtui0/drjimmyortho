@@ -21,7 +21,7 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (username, password) => {
     try {
-      const response = await axios.post('http://localhost:8000/api/login/', {
+      const response = await axios.post('http://drjimmy-backend.onrender.com/api/login/', {
         username,
         password
       });
@@ -41,7 +41,7 @@ export const AuthProvider = ({ children }) => {
 
   const register = async (userData) => {
     try {
-      const response = await axios.post('http://localhost:8000/api/register/', userData);
+      const response = await axios.post('http://drjimmy-backend.onrender.com/api/register/', userData);
       const { access, refresh, user } = response.data;
       localStorage.setItem('access_token', access);
       localStorage.setItem('refresh_token', refresh);

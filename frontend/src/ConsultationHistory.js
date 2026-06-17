@@ -19,7 +19,7 @@ function ConsultationHistory() {
 
   const fetchConsultations = async (userData) => {
     try {
-      const response = await fetch(`http://localhost:8000/api/patient-consultations/?user_id=${userData.id}`);
+      const response = await fetch(`http://drjimmy-backend.onrender.com/api/patient-consultations/?user_id=${userData.id}`);
       const data = await response.json();
       if (data.success) {
         setConsultations(data.consultations);

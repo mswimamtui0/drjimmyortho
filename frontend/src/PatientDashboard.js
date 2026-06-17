@@ -33,7 +33,7 @@ function PatientDashboard() {
       console.log("📊 Fetching patient data for:", userData.username);
       
       // Fetch scans
-      const scansResponse = await fetch(`http://localhost:8000/api/my-scans/?username=${userData.username}`);
+      const scansResponse = await fetch(`http://drjimmy-backend.onrender.com/api/my-scans/?username=${userData.username}`);
       const scansData = await scansResponse.json();
       console.log("📥 Scans data:", scansData);
       
@@ -52,7 +52,7 @@ function PatientDashboard() {
 
       // Fetch consultations
       try {
-        const consResponse = await fetch(`http://localhost:8000/api/doctor/appointments/`);
+        const consResponse = await fetch(`http://drjimmy-backend.onrender.com/api/doctor/appointments/`);
         const consData = await consResponse.json();
         if (consData.success) {
           const userConsults = consData.appointments?.filter(
