@@ -1,7 +1,9 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { AuthProvider, useAuth } from './AuthContext';
 import HomePage from './HomePage';
 import LoginRegister from './LoginRegister';
+import DoctorLogin from './DoctorLogin';
 import UploadPage from './UploadPage';
 import VideoConsultPage from './VideoConsultPage';
 import DoctorDashboard from './DoctorDashboard';
@@ -16,19 +18,22 @@ import PatientForms from './PatientForms';
 
 // Protected Route Component
 function ProtectedRoute({ children }) {
-  const user = localStorage.getItem('user');
+  const { user } = useAuth();
   if (!user) {
     return <Navigate to="/login" replace />;
   }
   return children;
 }
 
-function App() {
+function AppContent() {
+  const { user } = useAuth();
+
   return (
     <Router>
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<LoginRegister />} />
+        <Route path="/doctor-login" element={<DoctorLogin />} />
         <Route path="/upload" element={
           <ProtectedRoute>
             <UploadPage />
@@ -62,6 +67,14 @@ function App() {
         } />
       </Routes>
     </Router>
+  );
+}
+
+function App() {
+  return (
+    <AuthProvider>
+      <AppContent />
+    </AuthProvider>
   );
 }
 
