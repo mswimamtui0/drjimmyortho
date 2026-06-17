@@ -25,9 +25,7 @@ INSTALLED_APPS = [
     # Third party apps
     'rest_framework',
     'corsheaders',
-    'rest_framework_simplejwt',
     'django_filters',
-    'storages',
     
     # Local apps
     'medical',
