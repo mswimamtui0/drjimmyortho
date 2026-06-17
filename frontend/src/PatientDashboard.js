@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import API_URL from './apiConfig';
 
 function PatientDashboard() {
   const [user, setUser] = useState(null);
@@ -32,8 +33,8 @@ function PatientDashboard() {
       setLoading(true);
       console.log("📊 Fetching patient data for:", userData.username);
       
-      // Fetch scans
-      const scansResponse = await fetch(`http://drjimmy-backend.onrender.com/api/my-scans/?username=${userData.username}`);
+      // Fetch scans from production backend
+      const scansResponse = await fetch(`${API_URL}/my-scans/?username=${userData.username}`);
       const scansData = await scansResponse.json();
       console.log("📥 Scans data:", scansData);
       
@@ -52,7 +53,7 @@ function PatientDashboard() {
 
       // Fetch consultations
       try {
-        const consResponse = await fetch(`http://drjimmy-backend.onrender.com/api/doctor/appointments/`);
+        const consResponse = await fetch(`${API_URL}/doctor/appointments/`);
         const consData = await consResponse.json();
         if (consData.success) {
           const userConsults = consData.appointments?.filter(
@@ -76,11 +77,10 @@ function PatientDashboard() {
     }
   };
 
-  // ============ DOWNLOAD REPORT FUNCTION ============
+  // Download Report Function
   const downloadReport = (scan) => {
     setGeneratingReport(true);
     
-    // Generate report content
     const reportContent = `
 ╔══════════════════════════════════════════════════════════════════╗
 ║                   DR. JIMMY ORTHOPEDIC CENTER                   ║
@@ -124,7 +124,6 @@ ${scan.description ? `Patient Description: ${scan.description}` : ''}
 
 This report is for informational purposes only. 
 Please consult with Dr. Jimmy for professional medical advice.
-This report is not a substitute for a physical examination.
 
 Dr. Jimmy Orthopedic Center
 Dar es Salaam, Tanzania
@@ -134,7 +133,6 @@ Email: info@drjimmy.com
 Generated on: ${new Date().toLocaleString()}
     `;
 
-    // Create and download the report
     const blob = new Blob([reportContent], { type: 'text/plain' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
@@ -150,112 +148,6 @@ Generated on: ${new Date().toLocaleString()}
     setTimeout(() => setMessage(''), 3000);
   };
 
-  // ============ DOWNLOAD FULL HISTORY REPORT ============
-  const downloadFullHistory = () => {
-    if (scans.length === 0) {
-      setMessage('❌ No scans to generate a report.');
-      setTimeout(() => setMessage(''), 3000);
-      return;
-    }
-
-    setGeneratingReport(true);
-    
-    let reportContent = `
-╔══════════════════════════════════════════════════════════════════╗
-║                   DR. JIMMY ORTHOPEDIC CENTER                   ║
-║                   COMPLETE MEDICAL HISTORY                      ║
-╚══════════════════════════════════════════════════════════════════╝
-
-Patient Name: ${user.first_name || ''} ${user.last_name || ''}
-Patient ID: ${user.id}
-Email: ${user.email}
-Phone: ${user.phone || 'N/A'}
-Date of Report: ${new Date().toLocaleString()}
-
-╔══════════════════════════════════════════════════════════════════╗
-║                      SCAN SUMMARY                               ║
-╚══════════════════════════════════════════════════════════════════╝
-
-Total Scans: ${scans.length}
-Pending Reviews: ${scans.filter(s => s.status === 'pending').length}
-Reviewed Scans: ${scans.filter(s => s.status === 'reviewed').length}
-
-╔══════════════════════════════════════════════════════════════════╗
-║                      SCAN HISTORY                               ║
-╚══════════════════════════════════════════════════════════════════╝
-
-`;
-
-    scans.forEach((scan, index) => {
-      reportContent += `
-╔══════════════════════════════════════════════════════════════════╗
-║  SCAN #${index + 1}                                                         
-╚══════════════════════════════════════════════════════════════════╝
-
-Type: ${scan.scan_type}
-Body Part: ${scan.body_part}
-Uploaded: ${scan.uploaded_at}
-Status: ${scan.status === 'pending' ? 'Pending Review' : 'Reviewed'}
-
-${scan.diagnosis ? `Diagnosis: ${scan.diagnosis}` : 'Diagnosis: Awaiting...'}
-${scan.recommendations ? `Recommendations: ${scan.recommendations}` : 'Recommendations: Awaiting...'}
-${scan.description ? `Description: ${scan.description}` : ''}
-
-──────────────────────────────────────────────────────────────────
-`;
-    });
-
-    reportContent += `
-╔══════════════════════════════════════════════════════════════════╗
-║                      CONSULTATIONS HISTORY                       ║
-╚══════════════════════════════════════════════════════════════════╝
-
-Total Consultations: ${consultations.length}
-
-`;
-
-    consultations.forEach((consult, index) => {
-      reportContent += `
-Consultation #${index + 1}
-Date: ${consult.scheduled_date}
-Status: ${consult.status}
-${consult.doctor_notes ? `Doctor's Notes: ${consult.doctor_notes}` : ''}
-──────────────────────────────────────────────────────────────────
-`;
-    });
-
-    reportContent += `
-╔══════════════════════════════════════════════════════════════════╗
-║                      DISCLAIMER                                 ║
-╚══════════════════════════════════════════════════════════════════╝
-
-This report is for informational purposes only. 
-Please consult with Dr. Jimmy for professional medical advice.
-This report is not a substitute for a physical examination.
-
-Dr. Jimmy Orthopedic Center
-Dar es Salaam, Tanzania
-Phone: +255 787 688 659
-Email: info@drjimmy.com
-
-Generated on: ${new Date().toLocaleString()}
-    `;
-
-    const blob = new Blob([reportContent], { type: 'text/plain' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `Complete_Medical_History_${user.username}_${new Date().toISOString().split('T')[0]}.txt`;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-    
-    setGeneratingReport(false);
-    setMessage('✅ Full medical history downloaded successfully!');
-    setTimeout(() => setMessage(''), 3000);
-  };
-
   const getStatusBadge = (status) => {
     const styles = {
       pending: { backgroundColor: '#fff3e0', color: '#ff9800' },
@@ -266,176 +158,6 @@ Generated on: ${new Date().toLocaleString()}
       pending_payment: { backgroundColor: '#fff3e0', color: '#ff9800' }
     };
     return styles[status] || styles.pending;
-  };
-
-  // Styles
-  const styles = {
-    container: {
-      maxWidth: '1200px',
-      margin: '0 auto',
-      padding: '40px 20px',
-      fontFamily: 'Segoe UI, Arial, sans-serif'
-    },
-    header: {
-      background: 'linear-gradient(135deg, #1976d2, #0d47a1)',
-      color: 'white',
-      padding: '30px',
-      borderRadius: '15px',
-      marginBottom: '30px'
-    },
-    headerTitle: {
-      margin: 0,
-      fontSize: '2em'
-    },
-    headerSub: {
-      margin: '10px 0 0 0',
-      opacity: 0.9
-    },
-    statsGrid: {
-      display: 'grid',
-      gridTemplateColumns: 'repeat(4, 1fr)',
-      gap: '20px',
-      marginBottom: '30px'
-    },
-    statCard: {
-      background: 'white',
-      padding: '20px',
-      borderRadius: '12px',
-      boxShadow: '0 2px 10px rgba(0,0,0,0.05)',
-      textAlign: 'center'
-    },
-    statNumber: {
-      fontSize: '2.5em',
-      fontWeight: 'bold',
-      color: '#1976d2'
-    },
-    statLabel: {
-      color: '#666',
-      fontSize: '0.9em',
-      marginTop: '5px'
-    },
-    section: {
-      background: 'white',
-      border: '1px solid #e0e0e0',
-      borderRadius: '15px',
-      padding: '25px',
-      marginBottom: '30px'
-    },
-    sectionTitle: {
-      margin: '0 0 20px 0',
-      color: '#1976d2',
-      fontSize: '1.3em',
-      display: 'flex',
-      justifyContent: 'space-between',
-      alignItems: 'center'
-    },
-    scanItem: {
-      border: '1px solid #eee',
-      borderRadius: '10px',
-      padding: '15px',
-      marginBottom: '15px'
-    },
-    scanHeader: {
-      display: 'flex',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-      marginBottom: '10px',
-      flexWrap: 'wrap'
-    },
-    scanType: {
-      fontWeight: 'bold',
-      color: '#1976d2'
-    },
-    scanStatus: {
-      padding: '4px 12px',
-      borderRadius: '20px',
-      fontSize: '12px',
-      fontWeight: 'bold'
-    },
-    scanBody: {
-      color: '#666',
-      fontSize: '14px'
-    },
-    scanActions: {
-      display: 'flex',
-      gap: '10px',
-      marginTop: '10px',
-      flexWrap: 'wrap'
-    },
-    downloadBtn: {
-      padding: '6px 15px',
-      backgroundColor: '#4caf50',
-      color: 'white',
-      border: 'none',
-      borderRadius: '5px',
-      cursor: 'pointer',
-      fontSize: '13px',
-      transition: 'background 0.3s'
-    },
-    downloadBtnHover: {
-      backgroundColor: '#388e3c'
-    },
-    downloadBtnDisabled: {
-      opacity: 0.6,
-      cursor: 'not-allowed'
-    },
-    fullHistoryBtn: {
-      padding: '10px 25px',
-      backgroundColor: '#9c27b0',
-      color: 'white',
-      border: 'none',
-      borderRadius: '8px',
-      cursor: 'pointer',
-      fontSize: '15px',
-      fontWeight: '600',
-      transition: 'background 0.3s'
-    },
-    fullHistoryBtnHover: {
-      backgroundColor: '#7b1fa2'
-    },
-    noData: {
-      textAlign: 'center',
-      padding: '40px',
-      backgroundColor: '#f5f5f5',
-      borderRadius: '10px',
-      color: '#999'
-    },
-    consultItem: {
-      border: '1px solid #eee',
-      borderRadius: '10px',
-      padding: '15px',
-      marginBottom: '15px',
-      display: 'flex',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-      flexWrap: 'wrap'
-    },
-    consultDate: {
-      fontWeight: 'bold',
-      color: '#1976d2'
-    },
-    emptyIcon: {
-      fontSize: '3em',
-      margin: '0'
-    },
-    reviewBox: {
-      marginTop: '10px',
-      padding: '12px',
-      backgroundColor: '#e8f5e9',
-      borderRadius: '8px',
-      fontSize: '14px'
-    },
-    message: {
-      padding: '15px',
-      borderRadius: '8px',
-      marginBottom: '20px',
-      textAlign: 'center'
-    },
-    successMessage: {
-      backgroundColor: '#d4edda',
-      color: '#155724',
-      borderLeft: '4px solid #4caf50'
-    }
   };
 
   if (loading) {
@@ -469,147 +191,62 @@ Generated on: ${new Date().toLocaleString()}
   }
 
   return (
-    <div style={styles.container}>
+    <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '40px 20px', fontFamily: 'Segoe UI, Arial, sans-serif' }}>
       {/* Header */}
-      <div style={styles.header}>
-        <h1 style={styles.headerTitle}>👋 Welcome, {user.first_name || user.username}!</h1>
-        <p style={styles.headerSub}>Manage your medical records, view scans, and track consultations</p>
+      <div style={{ background: 'linear-gradient(135deg, #1976d2, #0d47a1)', color: 'white', padding: '30px', borderRadius: '15px', marginBottom: '30px' }}>
+        <h1 style={{ margin: 0, fontSize: '2em' }}>👋 Welcome, {user.first_name || user.username}!</h1>
+        <p style={{ margin: '10px 0 0 0', opacity: 0.9 }}>Manage your medical records, view scans, and track consultations</p>
       </div>
 
-      {/* Message */}
       {message && (
-        <div style={{ ...styles.message, ...styles.successMessage }}>
+        <div style={{ padding: '15px', backgroundColor: '#d4edda', borderRadius: '8px', color: '#155724', marginBottom: '20px' }}>
           {message}
         </div>
       )}
 
       {/* Stats Cards */}
-      <div style={styles.statsGrid}>
-        <div style={styles.statCard}>
-          <div style={styles.statNumber}>{stats.totalScans}</div>
-          <div style={styles.statLabel}>📄 Total Scans</div>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '20px', marginBottom: '30px' }}>
+        <div style={{ background: 'white', padding: '20px', borderRadius: '12px', boxShadow: '0 2px 10px rgba(0,0,0,0.05)', textAlign: 'center' }}>
+          <div style={{ fontSize: '2.5em', fontWeight: 'bold', color: '#1976d2' }}>{stats.totalScans}</div>
+          <div style={{ color: '#666', fontSize: '0.9em', marginTop: '5px' }}>📄 Total Scans</div>
         </div>
-        <div style={styles.statCard}>
-          <div style={{ ...styles.statNumber, color: '#ff9800' }}>{stats.pendingScans}</div>
-          <div style={styles.statLabel}>⏳ Pending Review</div>
+        <div style={{ background: 'white', padding: '20px', borderRadius: '12px', boxShadow: '0 2px 10px rgba(0,0,0,0.05)', textAlign: 'center' }}>
+          <div style={{ fontSize: '2.5em', fontWeight: 'bold', color: '#ff9800' }}>{stats.pendingScans}</div>
+          <div style={{ color: '#666', fontSize: '0.9em', marginTop: '5px' }}>⏳ Pending Review</div>
         </div>
-        <div style={styles.statCard}>
-          <div style={{ ...styles.statNumber, color: '#4caf50' }}>{stats.reviewedScans}</div>
-          <div style={styles.statLabel}>✅ Reviewed Scans</div>
+        <div style={{ background: 'white', padding: '20px', borderRadius: '12px', boxShadow: '0 2px 10px rgba(0,0,0,0.05)', textAlign: 'center' }}>
+          <div style={{ fontSize: '2.5em', fontWeight: 'bold', color: '#4caf50' }}>{stats.reviewedScans}</div>
+          <div style={{ color: '#666', fontSize: '0.9em', marginTop: '5px' }}>✅ Reviewed Scans</div>
         </div>
-        <div style={styles.statCard}>
-          <div style={{ ...styles.statNumber, color: '#1976d2' }}>{stats.totalConsultations}</div>
-          <div style={styles.statLabel}>🎥 Consultations</div>
+        <div style={{ background: 'white', padding: '20px', borderRadius: '12px', boxShadow: '0 2px 10px rgba(0,0,0,0.05)', textAlign: 'center' }}>
+          <div style={{ fontSize: '2.5em', fontWeight: 'bold', color: '#1976d2' }}>{stats.totalConsultations}</div>
+          <div style={{ color: '#666', fontSize: '0.9em', marginTop: '5px' }}>🎥 Consultations</div>
         </div>
       </div>
 
       {/* Quick Actions */}
-      <div style={{ ...styles.section, backgroundColor: '#e3f2fd', border: 'none' }}>
-        <div style={{ display: 'flex', gap: '15px', flexWrap: 'wrap', alignItems: 'center' }}>
-          <button 
-            onClick={() => navigate('/upload')}
-            style={{ 
-              padding: '12px 24px', 
-              backgroundColor: '#1976d2', 
-              color: 'white', 
-              border: 'none', 
-              borderRadius: '8px', 
-              cursor: 'pointer',
-              fontSize: '16px'
-            }}
-          >
+      <div style={{ background: 'white', border: '1px solid #e0e0e0', borderRadius: '15px', padding: '25px', marginBottom: '30px', backgroundColor: '#e3f2fd', border: 'none' }}>
+        <div style={{ display: 'flex', gap: '15px', flexWrap: 'wrap' }}>
+          <button onClick={() => navigate('/upload')} style={{ padding: '12px 24px', backgroundColor: '#1976d2', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer', fontSize: '16px' }}>
             📤 Upload New Scan
           </button>
-          <button 
-            onClick={() => navigate('/video-consult')}
-            style={{ 
-              padding: '12px 24px', 
-              backgroundColor: '#4caf50', 
-              color: 'white', 
-              border: 'none', 
-              borderRadius: '8px', 
-              cursor: 'pointer',
-              fontSize: '16px'
-            }}
-          >
+          <button onClick={() => navigate('/video-consult')} style={{ padding: '12px 24px', backgroundColor: '#4caf50', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer', fontSize: '16px' }}>
             🎥 Book Consultation
           </button>
-          <button 
-            onClick={() => navigate('/payment')}
-            style={{ 
-              padding: '12px 24px', 
-              backgroundColor: '#ff9800', 
-              color: 'white', 
-              border: 'none', 
-              borderRadius: '8px', 
-              cursor: 'pointer',
-              fontSize: '16px'
-            }}
-          >
+          <button onClick={() => navigate('/payment')} style={{ padding: '12px 24px', backgroundColor: '#ff9800', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer', fontSize: '16px' }}>
             💳 Make Payment
-          </button>
-          {/* ============ DOWNLOAD FULL HISTORY BUTTON ============ */}
-          <button 
-            onClick={downloadFullHistory}
-            disabled={generatingReport}
-            style={{ 
-              padding: '12px 24px', 
-              backgroundColor: '#9c27b0', 
-              color: 'white', 
-              border: 'none', 
-              borderRadius: '8px', 
-              cursor: generatingReport ? 'not-allowed' : 'pointer',
-              fontSize: '16px',
-              opacity: generatingReport ? 0.6 : 1
-            }}
-            onMouseEnter={(e) => {
-              if (!generatingReport) e.currentTarget.style.backgroundColor = '#7b1fa2';
-            }}
-            onMouseLeave={(e) => {
-              if (!generatingReport) e.currentTarget.style.backgroundColor = '#9c27b0';
-            }}
-          >
-            {generatingReport ? '⏳ Generating...' : '📋 Download Full History'}
           </button>
         </div>
       </div>
 
       {/* My Scans */}
-      <div style={styles.section}>
-        <div style={styles.sectionTitle}>
-          <span>🩻 My Medical Scans</span>
-          {scans.length > 0 && (
-            <button 
-              onClick={downloadFullHistory}
-              disabled={generatingReport}
-              style={{
-                ...styles.fullHistoryBtn,
-                padding: '6px 15px',
-                fontSize: '13px',
-                opacity: generatingReport ? 0.6 : 1,
-                cursor: generatingReport ? 'not-allowed' : 'pointer'
-              }}
-            >
-              {generatingReport ? '⏳...' : '📋 Download All'}
-            </button>
-          )}
-        </div>
+      <div style={{ background: 'white', border: '1px solid #e0e0e0', borderRadius: '15px', padding: '25px', marginBottom: '30px' }}>
+        <h2 style={{ margin: '0 0 20px 0', color: '#1976d2', fontSize: '1.3em' }}>🩻 My Medical Scans</h2>
         {scans.length === 0 ? (
-          <div style={styles.noData}>
-            <p style={styles.emptyIcon}>📭</p>
+          <div style={{ textAlign: 'center', padding: '40px', backgroundColor: '#f5f5f5', borderRadius: '10px', color: '#999' }}>
+            <p style={{ fontSize: '3em', margin: 0 }}>📭</p>
             <p>You haven't uploaded any scans yet.</p>
-            <button 
-              onClick={() => navigate('/upload')}
-              style={{ 
-                backgroundColor: '#1976d2', 
-                color: 'white', 
-                padding: '10px 20px', 
-                border: 'none', 
-                borderRadius: '5px', 
-                cursor: 'pointer',
-                marginTop: '10px'
-              }}
-            >
+            <button onClick={() => navigate('/upload')} style={{ backgroundColor: '#1976d2', color: 'white', padding: '10px 20px', border: 'none', borderRadius: '5px', cursor: 'pointer', marginTop: '10px' }}>
               Upload Your First Scan
             </button>
           </div>
@@ -617,19 +254,19 @@ Generated on: ${new Date().toLocaleString()}
           scans.map((scan) => {
             const statusStyle = getStatusBadge(scan.status);
             return (
-              <div key={scan.id} style={styles.scanItem}>
-                <div style={styles.scanHeader}>
-                  <span style={styles.scanType}>{scan.scan_type} - {scan.body_part}</span>
-                  <span style={{ ...styles.scanStatus, ...statusStyle }}>
+              <div key={scan.id} style={{ border: '1px solid #eee', borderRadius: '10px', padding: '15px', marginBottom: '15px' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px', flexWrap: 'wrap' }}>
+                  <span style={{ fontWeight: 'bold', color: '#1976d2' }}>{scan.scan_type} - {scan.body_part}</span>
+                  <span style={{ padding: '4px 12px', borderRadius: '20px', fontSize: '12px', fontWeight: 'bold', ...statusStyle }}>
                     {scan.status === 'pending' ? '⏳ Pending Review' : '✅ Reviewed'}
                   </span>
                 </div>
-                <div style={styles.scanBody}>
+                <div style={{ color: '#666', fontSize: '14px' }}>
                   <div>📅 {scan.uploaded_at}</div>
                   {scan.description && <div>📝 {scan.description}</div>}
                 </div>
                 {scan.diagnosis && (
-                  <div style={styles.reviewBox}>
+                  <div style={{ marginTop: '10px', padding: '12px', backgroundColor: '#e8f5e9', borderRadius: '8px', fontSize: '14px' }}>
                     <strong>📋 Diagnosis:</strong> {scan.diagnosis}
                     {scan.recommendations && (
                       <>
@@ -639,40 +276,14 @@ Generated on: ${new Date().toLocaleString()}
                     )}
                   </div>
                 )}
-                {/* ============ SCAN ACTIONS WITH DOWNLOAD BUTTON ============ */}
-                <div style={styles.scanActions}>
+                <div style={{ display: 'flex', gap: '10px', marginTop: '10px', flexWrap: 'wrap' }}>
                   {scan.image_url && (
-                    <button 
-                      onClick={() => window.open(scan.image_url, '_blank')}
-                      style={{ 
-                        padding: '6px 15px',
-                        backgroundColor: '#9c27b0',
-                        color: 'white',
-                        border: 'none',
-                        borderRadius: '5px',
-                        cursor: 'pointer',
-                        fontSize: '13px'
-                      }}
-                    >
+                    <button onClick={() => window.open(scan.image_url, '_blank')} style={{ padding: '6px 15px', backgroundColor: '#9c27b0', color: 'white', border: 'none', borderRadius: '5px', cursor: 'pointer', fontSize: '13px' }}>
                       🖼️ View Image
                     </button>
                   )}
                   {scan.status === 'reviewed' && (
-                    <button 
-                      onClick={() => downloadReport(scan)}
-                      disabled={generatingReport}
-                      style={{
-                        ...styles.downloadBtn,
-                        opacity: generatingReport ? 0.6 : 1,
-                        cursor: generatingReport ? 'not-allowed' : 'pointer'
-                      }}
-                      onMouseEnter={(e) => {
-                        if (!generatingReport) e.currentTarget.style.backgroundColor = '#388e3c';
-                      }}
-                      onMouseLeave={(e) => {
-                        if (!generatingReport) e.currentTarget.style.backgroundColor = '#4caf50';
-                      }}
-                    >
+                    <button onClick={() => downloadReport(scan)} disabled={generatingReport} style={{ padding: '6px 15px', backgroundColor: '#4caf50', color: 'white', border: 'none', borderRadius: '5px', cursor: 'pointer', fontSize: '13px', opacity: generatingReport ? 0.6 : 1 }}>
                       {generatingReport ? '⏳...' : '📥 Download Report'}
                     </button>
                   )}
@@ -684,24 +295,13 @@ Generated on: ${new Date().toLocaleString()}
       </div>
 
       {/* Consultations */}
-      <div style={styles.section}>
-        <h2 style={styles.sectionTitle}>🎥 My Consultations</h2>
+      <div style={{ background: 'white', border: '1px solid #e0e0e0', borderRadius: '15px', padding: '25px', marginBottom: '30px' }}>
+        <h2 style={{ margin: '0 0 20px 0', color: '#1976d2', fontSize: '1.3em' }}>🎥 My Consultations</h2>
         {consultations.length === 0 ? (
-          <div style={styles.noData}>
-            <p style={styles.emptyIcon}>📅</p>
+          <div style={{ textAlign: 'center', padding: '40px', backgroundColor: '#f5f5f5', borderRadius: '10px', color: '#999' }}>
+            <p style={{ fontSize: '3em', margin: 0 }}>📅</p>
             <p>No consultations scheduled.</p>
-            <button 
-              onClick={() => navigate('/video-consult')}
-              style={{ 
-                backgroundColor: '#4caf50', 
-                color: 'white', 
-                padding: '10px 20px', 
-                border: 'none', 
-                borderRadius: '5px', 
-                cursor: 'pointer',
-                marginTop: '10px'
-              }}
-            >
+            <button onClick={() => navigate('/video-consult')} style={{ backgroundColor: '#4caf50', color: 'white', padding: '10px 20px', border: 'none', borderRadius: '5px', cursor: 'pointer', marginTop: '10px' }}>
               Book a Consultation
             </button>
           </div>
@@ -709,29 +309,17 @@ Generated on: ${new Date().toLocaleString()}
           consultations.map((consult) => {
             const statusStyle = getStatusBadge(consult.status);
             return (
-              <div key={consult.id} style={styles.consultItem}>
+              <div key={consult.id} style={{ border: '1px solid #eee', borderRadius: '10px', padding: '15px', marginBottom: '15px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap' }}>
                 <div>
-                  <div style={styles.consultDate}>📅 {consult.scheduled_date}</div>
+                  <div style={{ fontWeight: 'bold', color: '#1976d2' }}>📅 {consult.scheduled_date}</div>
                   <div style={{ fontSize: '14px', color: '#666' }}>
-                    Status: <span style={{ ...styles.scanStatus, ...statusStyle }}>
+                    Status: <span style={{ padding: '4px 12px', borderRadius: '20px', fontSize: '12px', fontWeight: 'bold', ...statusStyle }}>
                       {consult.status === 'pending_payment' ? '⏳ Payment Pending' : consult.status}
                     </span>
                   </div>
                 </div>
                 {consult.zoom_link && consult.status === 'scheduled' && (
-                  <a 
-                    href={consult.zoom_link} 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    style={{
-                      backgroundColor: '#1976d2',
-                      color: 'white',
-                      padding: '8px 15px',
-                      borderRadius: '5px',
-                      textDecoration: 'none',
-                      fontSize: '14px'
-                    }}
-                  >
+                  <a href={consult.zoom_link} target="_blank" rel="noopener noreferrer" style={{ backgroundColor: '#1976d2', color: 'white', padding: '8px 15px', borderRadius: '5px', textDecoration: 'none', fontSize: '14px' }}>
                     🎥 Join
                   </a>
                 )}
@@ -745,4 +333,3 @@ Generated on: ${new Date().toLocaleString()}
 }
 
 export default PatientDashboard;
-

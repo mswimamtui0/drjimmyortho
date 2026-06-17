@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import API_URL from './apiConfig';
 
+
 function UploadPage() {
   const [user, setUser] = useState(null);
   const [file, setFile] = useState(null);
