@@ -66,7 +66,7 @@ function LoginRegister() {
           console.log('Redirecting to dashboard...');
           
           // Redirect to dashboard
-          navigate('/dashboard');
+          navigate('/');
         } else {
           alert('Account created successfully! Please login.');
           setIsLogin(true);
