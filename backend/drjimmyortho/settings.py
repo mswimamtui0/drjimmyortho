@@ -160,6 +160,7 @@ if not DEBUG:
     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 # ============ LOGGING ============
+# ============ LOGGING ============
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
