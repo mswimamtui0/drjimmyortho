@@ -1,5 +1,6 @@
 import os
 from pathlib import Path
+BASE_DIR = Path(__file__).resolve().parent.parent
 # ============ PRODUCTION SETTINGS ============
 import os
 import dj_database_url
