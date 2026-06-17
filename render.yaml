@@ -1,47 +1,41 @@
-- type: web
-  name: drjimmy-frontend
-  runtime: node
-  rootDir: frontend
-  buildCommand: bash render-build.sh
-  startCommand: npx serve -s build -l 3000
-  publishDirectory: build
-  envVars:
-    - key: NODE_ENV
-      value: production
-    - key: REACT_APP_API_URL
-      value: https://drjimmy-backend.onrender.com/api
-  healthCheckPath: /
-
 services:
- - type: web
-  name: drjimmy-backend
-  runtime: python
-  rootDir: backend
-  buildCommand: |
-    pip install -r requirements.txt
-    python manage.py migrate
-    python manage.py create_admin
-    python manage.py collectstatic --noinput
-  startCommand: gunicorn drjimmyortho.wsgi:application
-  envVars:
-    - key: DATABASE_URL
-      fromDatabase:
-        name: drjimmy-db
-        property: connectionString
-    - key: SECRET_KEY
-      generateValue: true
-    - key: DEBUG
-      value: false
-    - key: ALLOWED_HOSTS
-      value: .onrender.com
+  # Backend Service
+  - type: web
+    name: drjimmy-backend
+    runtime: python
+    rootDir: backend
+    buildCommand: |
+      pip install -r requirements.txt
+      python manage.py migrate
+      python manage.py create_admin
+      python manage.py create_doctor
+      python manage.py collectstatic --noinput
+    startCommand: gunicorn drjimmyortho.wsgi:application
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: drjimmy-db
+          property: connectionString
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DEBUG
+        value: false
+      - key: ALLOWED_HOSTS
+        value: .onrender.com
+      - key: CORS_ALLOWED_ORIGINS
+        value: https://drjimmy-frontend.onrender.com
 
+  # Frontend Service
   - type: web
     name: drjimmy-frontend
     runtime: node
     rootDir: frontend
-    buildCommand: npm install && npm run build
-    startCommand: npm start
+    buildCommand: bash render-build.sh
+    startCommand: npx serve -s build -l 3000
+    publishDirectory: build
     envVars:
+      - key: NODE_ENV
+        value: production
       - key: REACT_APP_API_URL
         value: https://drjimmy-backend.onrender.com/api
 
