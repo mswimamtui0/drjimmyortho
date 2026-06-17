@@ -15,7 +15,7 @@ function BlogPage() {
 
   const fetchPosts = async () => {
     try {
-      const response = await fetch(${API_URL}/blog/posts/');
+      const response = await fetch(`${API_URL}/blog/posts/`);
       const data = await response.json();
       setPosts(data.posts);
     } catch (error) {
@@ -44,7 +44,7 @@ function BlogPage() {
     }
 
     try {
-      const response = await fetch(${API_URL}/blog/comment/', {
+      const response = await fetch(`${API_URL}/blog/comment/`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

@@ -1,6 +1,6 @@
-import API_URL from './apiConfig';
 import React, { useState, useEffect } from 'react';
 import './DoctorDashboard.css';
+import API_URL from './apiConfig';
 
 function DoctorDashboard() {
   // State variables
@@ -27,7 +27,7 @@ function DoctorDashboard() {
     duration: '' 
   });
   
-  // Image View
+  // Image View Modal
   const [showImageModal, setShowImageModal] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
   const [selectedImageTitle, setSelectedImageTitle] = useState('');
@@ -53,7 +53,7 @@ function DoctorDashboard() {
     try {
       setLoading(true);
       
-      const response = await fetch(${API_URL}/doctor/dashboard/');
+      const response = await fetch(`${API_URL}/doctor/dashboard/`);
       const data = await response.json();
       
       if (data.success) {
@@ -96,7 +96,7 @@ function DoctorDashboard() {
     }
     
     try {
-      const response = await fetch(`http://drjimmy-backend.onrender.com/api/doctor/search-patients/?q=${query}`);
+      const response = await fetch(`${API_URL}/doctor/search-patients/?q=${query}`);
       const data = await response.json();
       
       if (data.patients) {
@@ -118,7 +118,7 @@ function DoctorDashboard() {
     }
 
     try {
-      const response = await fetch(${API_URL}/doctor/update-scan/', {
+      const response = await fetch(`${API_URL}/doctor/update-scan/`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -158,7 +158,7 @@ function DoctorDashboard() {
   // ============ EMAIL NOTIFICATION ============
   const sendEmailNotification = async (patientId, scanId) => {
     try {
-      await fetch(${API_URL}/doctor/send-email/', {
+      await fetch(`${API_URL}/doctor/send-email/`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -201,7 +201,7 @@ function DoctorDashboard() {
     setPrescriptionLoading(true);
 
     try {
-      const response = await fetch(${API_URL}/doctor/generate-prescription/', {
+      const response = await fetch(`${API_URL}/doctor/generate-prescription/`, {
         method: 'POST',
         headers: { 
           'Content-Type': 'application/json'
@@ -253,34 +253,29 @@ function DoctorDashboard() {
     setMedications(medications.filter(med => med.id !== id));
   };
 
-  // ============ VIEW IMAGE - FIXED WITH BACKEND URL ============
+  // ============ VIEW IMAGE ============
   const handleViewImage = (scan) => {
     console.log("🖼️ Viewing image for scan:", scan);
     
     let imageUrl = null;
     
-    // Check different ways the image URL might be stored
     if (scan.image_url) {
-      // If image_url already has full URL, use it
       if (scan.image_url.startsWith('http')) {
         imageUrl = scan.image_url;
       } else {
-        // Otherwise, prepend the backend URL (port 8000)
-        imageUrl = `http://drjimmy-backend.onrender.com${scan.image_url}`;
+        imageUrl = `${API_URL}${scan.image_url}`;
       }
     } else if (scan.image) {
-      // If image is just the path, prepend backend URL
       if (scan.image.startsWith('/media/')) {
-        imageUrl = `http://drjimmy-backend.onrender.com${scan.image}`;
+        imageUrl = `${API_URL}${scan.image}`;
       } else {
-        imageUrl = `http://drjimmy-backend.onrender.com/media/${scan.image}`;
+        imageUrl = `${API_URL}/media/${scan.image}`;
       }
     } else {
-      // Try to construct from scan ID (fallback)
-      imageUrl = `http://drjimmy-backend.onrender.com/media/patient_scans/${scan.id}/`;
+      imageUrl = `${API_URL}/media/patient_scans/${scan.id}/`;
     }
     
-    console.log("📸 Full Image URL (backend):", imageUrl);
+    console.log("📸 Full Image URL:", imageUrl);
     
     setSelectedImage(imageUrl);
     setSelectedImageTitle(`${scan.scan_type} - ${scan.body_part}`);
@@ -640,7 +635,7 @@ function DoctorDashboard() {
         </div>
       )}
 
-      {/* ============ IMAGE VIEW MODAL - FIXED ============ */}
+      {/* Image View Modal */}
       {showImageModal && selectedImage && (
         <div className="modal-overlay" onClick={() => setShowImageModal(false)}>
           <div className="modal-content image-modal" onClick={(e) => e.stopPropagation()}>

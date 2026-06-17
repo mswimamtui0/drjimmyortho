@@ -1,6 +1,6 @@
-import API_URL from './apiConfig';
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import API_URL from './apiConfig';
 
 function VideoConsultPage() {
   const [user, setUser] = useState(null);
@@ -28,7 +28,7 @@ function VideoConsultPage() {
 
   const fetchConsultations = async (userData) => {
     try {
-      const response = await fetch(`http://drjimmy-backend.onrender.com/api/doctor/appointments/`);
+      const response = await fetch(`${API_URL}/doctor/appointments/`);
       const data = await response.json();
       if (data.success) {
         const userConsults = data.appointments?.filter(
@@ -63,7 +63,7 @@ function VideoConsultPage() {
     setMessage({ type: 'info', text: 'Processing your booking and payment...' });
     
     try {
-      const response = await fetch(${API_URL}/book-and-pay-consultation/', {
+      const response = await fetch(`${API_URL}/book-and-pay-consultation/`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -108,6 +108,7 @@ function VideoConsultPage() {
     }
   };
 
+  // Get status badge style
   const getStatusBadge = (status) => {
     const styles = {
       pending_payment: { backgroundColor: '#fff3e0', color: '#ff9800' },
@@ -118,6 +119,7 @@ function VideoConsultPage() {
     return styles[status] || styles.pending_payment;
   };
 
+  // Styles
   const styles = {
     container: { maxWidth: '1000px', margin: '0 auto', padding: '40px 20px', fontFamily: 'Segoe UI, Arial, sans-serif' },
     header: { textAlign: 'center', marginBottom: '40px' },
@@ -136,7 +138,9 @@ function VideoConsultPage() {
     errorMessage: { backgroundColor: '#f8d7da', color: '#721c24', borderLeft: '4px solid #f44336' },
     infoMessage: { backgroundColor: '#e3f2fd', color: '#0d47a1', borderLeft: '4px solid #1976d2' },
     paymentMethod: { padding: '12px', border: '2px solid #ddd', borderRadius: '8px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '10px' },
-    paymentMethodSelected: { borderColor: '#1976d2', backgroundColor: '#e3f2fd' }
+    paymentMethodSelected: { borderColor: '#1976d2', backgroundColor: '#e3f2fd' },
+    consultItem: { border: '1px solid #ddd', borderRadius: '10px', padding: '15px', marginBottom: '15px', backgroundColor: '#f8f9fa' },
+    consultDate: { fontWeight: 'bold', color: '#1976d2' }
   };
 
   if (!user) {
@@ -314,9 +318,9 @@ function VideoConsultPage() {
               {consultations.map((consult) => {
                 const statusStyle = getStatusBadge(consult.status);
                 return (
-                  <div key={consult.id} style={{ border: '1px solid #ddd', borderRadius: '10px', padding: '15px', marginBottom: '15px', backgroundColor: '#f8f9fa' }}>
+                  <div key={consult.id} style={styles.consultItem}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
-                      <span style={{ fontWeight: 'bold', color: '#1976d2' }}>📅 {consult.scheduled_date}</span>
+                      <span style={styles.consultDate}>📅 {consult.scheduled_date}</span>
                       <span style={{ padding: '4px 12px', borderRadius: '20px', fontSize: '12px', fontWeight: 'bold', ...statusStyle }}>
                         {consult.status === 'pending_payment' ? '⏳ Payment Pending' : consult.status}
                       </span>
