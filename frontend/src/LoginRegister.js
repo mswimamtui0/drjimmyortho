@@ -31,7 +31,7 @@ function LoginRegister() {
       let response;
       if (isLogin) {
         // Login
-        response = await fetch('http://localhost:8000/api/login/', {
+        response = await fetch('https://drjimmy-backend.onrender.com/api/login/', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -41,7 +41,7 @@ function LoginRegister() {
         });
       } else {
         // Register - using formData that is defined
-        response = await fetch('http://localhost:8000/api/register/', {
+        response = await fetch('https://drjimmy-backend.onrender.com/api/register/', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
