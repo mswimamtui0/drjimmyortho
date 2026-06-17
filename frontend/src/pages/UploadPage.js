@@ -24,11 +24,13 @@ import { toast } from 'react-toastify';
 const API_URL = process.env.REACT_APP_API_URL || 'https://drjimmy-backend.onrender.com/api';
 
 // Then use:
+import API_URL from './apiConfig';
+
+// Then in your fetch call:
 const response = await fetch(`${API_URL}/upload/`, {
   method: 'POST',
   body: formData
 });
-
 function UploadPage() {
   const { t } = useTranslation();
   const dispatch = useDispatch();
