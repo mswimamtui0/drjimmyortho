@@ -1,3 +1,4 @@
+import API_URL from './apiConfig';
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -100,7 +101,7 @@ function UploadPage() {
     console.log('File:', file.name);
 
     try {
-      const response = await fetch('http://localhost:8000/api/upload/', {
+      const response = await fetch(${API_URL}/upload/', {
         method: 'POST',
         body: formData
       });

@@ -1,3 +1,4 @@
+import API_URL from './apiConfig';
 import React, { useState, useEffect } from 'react';
 import './DoctorDashboard.css';
 
@@ -52,7 +53,7 @@ function DoctorDashboard() {
     try {
       setLoading(true);
       
-      const response = await fetch('http://localhost:8000/api/doctor/dashboard/');
+      const response = await fetch(${API_URL}/doctor/dashboard/');
       const data = await response.json();
       
       if (data.success) {
@@ -117,7 +118,7 @@ function DoctorDashboard() {
     }
 
     try {
-      const response = await fetch('http://localhost:8000/api/doctor/update-scan/', {
+      const response = await fetch(${API_URL}/doctor/update-scan/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -157,7 +158,7 @@ function DoctorDashboard() {
   // ============ EMAIL NOTIFICATION ============
   const sendEmailNotification = async (patientId, scanId) => {
     try {
-      await fetch('http://localhost:8000/api/doctor/send-email/', {
+      await fetch(${API_URL}/doctor/send-email/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -200,7 +201,7 @@ function DoctorDashboard() {
     setPrescriptionLoading(true);
 
     try {
-      const response = await fetch('http://localhost:8000/api/doctor/generate-prescription/', {
+      const response = await fetch(${API_URL}/doctor/generate-prescription/', {
         method: 'POST',
         headers: { 
           'Content-Type': 'application/json'

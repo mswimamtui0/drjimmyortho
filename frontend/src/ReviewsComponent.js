@@ -1,3 +1,4 @@
+import API_URL from './apiConfig';
 import React, { useState, useEffect } from 'react';
 import './ReviewsComponent.css';
 
@@ -16,7 +17,7 @@ function ReviewsComponent() {
 
   const fetchReviews = async () => {
     try {
-      const response = await fetch('http://localhost:8000/api/reviews/');
+      const response = await fetch(${API_URL}/reviews/');
       const data = await response.json();
       setReviews(data.reviews || []);
       setAverageRating(data.average_rating || 0);
@@ -40,7 +41,7 @@ function ReviewsComponent() {
 
     setSubmitting(true);
     try {
-      const response = await fetch('http://localhost:8000/api/reviews/submit/', {
+      const response = await fetch(${API_URL}/reviews/submit/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

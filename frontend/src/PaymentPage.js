@@ -1,3 +1,4 @@
+import API_URL from './apiConfig';
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './PaymentPage.css';
@@ -37,7 +38,7 @@ function PaymentPage() {
     setMessage('');
 
     try {
-      const response = await fetch('http://localhost:8000/api/payment/initiate/', {
+      const response = await fetch(${API_URL}/payment/initiate/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

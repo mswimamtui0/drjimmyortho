@@ -1,3 +1,4 @@
+import API_URL from './apiConfig';
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -50,7 +51,7 @@ function PatientProfile() {
     setMessage('');
 
     try {
-      const response = await fetch('http://localhost:8000/api/update-profile/', {
+      const response = await fetch(${API_URL}/update-profile/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

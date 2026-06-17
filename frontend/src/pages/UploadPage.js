@@ -21,6 +21,14 @@ import { CloudUpload as CloudUploadIcon } from '@mui/icons-material';
 import { uploadScan, setUploadProgress } from '../store/uploadSlice';
 import { toast } from 'react-toastify';
 
+const API_URL = process.env.REACT_APP_API_URL || 'https://drjimmy-backend.onrender.com/api';
+
+// Then use:
+const response = await fetch(`${API_URL}/upload/`, {
+  method: 'POST',
+  body: formData
+});
+
 function UploadPage() {
   const { t } = useTranslation();
   const dispatch = useDispatch();

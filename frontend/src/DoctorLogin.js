@@ -1,3 +1,4 @@
+import API_URL from './apiConfig';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './DoctorLogin.css';
@@ -15,7 +16,7 @@ function DoctorLogin() {
   setLoading(true);
 
   try {
-    const response = await fetch('http://localhost:8000/api/login/', {
+    const response = await fetch(${API_URL}/login/', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ username, password })

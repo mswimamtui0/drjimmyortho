@@ -1,3 +1,4 @@
+import API_URL from './apiConfig';
 import React, { useState, useEffect } from 'react';
 import { useAuth } from './AuthContext';
 
@@ -16,7 +17,7 @@ function AdminDashboard() {
 
   const fetchPatients = async () => {
     try {
-      const response = await fetch('http://localhost:8000/api/patients/');
+      const response = await fetch(${API_URL}/patients/');
       const data = await response.json();
       setPatients(data.patients || []);
     } catch (error) {
@@ -27,7 +28,7 @@ function AdminDashboard() {
   const fetchAllScans = async () => {
     // For admin, fetch all scans from all patients
     try {
-      const response = await fetch('http://localhost:8000/api/my-scans/?username=admin');
+      const response = await fetch(${API_URL}/my-scans/?username=admin');
       const data = await response.json();
       setScans(data.scans || []);
     } catch (error) {
@@ -37,7 +38,7 @@ function AdminDashboard() {
 
   const updateScan = async (scanId) => {
   try {
-    const response = await fetch('http://localhost:8000/api/update-scan/', {
+    const response = await fetch(${API_URL}/update-scan/', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({

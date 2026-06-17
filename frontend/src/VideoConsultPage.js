@@ -1,3 +1,4 @@
+import API_URL from './apiConfig';
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -62,7 +63,7 @@ function VideoConsultPage() {
     setMessage({ type: 'info', text: 'Processing your booking and payment...' });
     
     try {
-      const response = await fetch('http://localhost:8000/api/book-and-pay-consultation/', {
+      const response = await fetch(${API_URL}/book-and-pay-consultation/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
