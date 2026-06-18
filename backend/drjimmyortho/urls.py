@@ -11,6 +11,17 @@ import json
 import random
 from datetime import datetime
 
+# Serve media files in development
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+from django.conf.urls.static import static
+from django.conf import settings
+
+# At the bottom of the file
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+
 # Import models from medical app
 from medical.models import PatientScan, Consultation, Payment, BlogPost, BlogComment, PatientReview, ChatMessage, ChatRoom
 
@@ -978,6 +989,19 @@ def payment_callback_consultation(request):
             return JsonResponse({'error': str(e)}, status=400)
     
     return JsonResponse({'error': 'Method not allowed'}, status=405)
+
+
+
+from django.http import HttpResponse
+import os
+
+def check_image(request, scan_id, filename):
+    """Check if image exists"""
+    media_path = os.path.join(settings.MEDIA_ROOT, 'patient_scans', scan_id, filename)
+    if os.path.exists(media_path):
+        return HttpResponse(f"✅ Image exists at: {media_path}")
+    else:
+        return HttpResponse(f"❌ Image not found at: {media_path}")
 
 
 
