@@ -31,12 +31,16 @@ function HomePage() {
       nav: {
         home: 'Mwanzo',
         treatments: 'Huduma',
-        upload: 'Pakia Scan',
-        video: 'Ushauri wa Video',
         global: 'Huduma za Kimataifa',
         about: 'Kuhusu Daktari',
+        upload: 'Pakia Scan',
+        video: 'Ushauri wa Video',
         payment: 'Malipo',
-        dashboard: 'Dashibodi Yangu'
+        dashboard: 'Dashibodi Yangu',
+        consultationHistory: 'Historia ya Ushauri',
+        profile: 'Profaili Yangu',
+        medicalHistory: 'Historia ya Matibabu',
+        forms: 'Patient Forms'
       },
       hero: {
         title: 'Dk. Jimmy – Daktari wa Kimataifa wa Upasuaji wa Mifupa na Uti wa Mgongo',
@@ -63,12 +67,16 @@ function HomePage() {
       nav: {
         home: 'Home',
         treatments: 'Treatments',
-        upload: 'Upload Scan',
-        video: 'Video Consult',
         global: 'Global Outreach',
         about: 'About Dr. Jimmy',
+        upload: 'Upload Scan',
+        video: 'Video Consult',
         payment: 'Payments',
-        dashboard: 'My Dashboard'
+        dashboard: 'My Dashboard',
+        consultationHistory: 'Consultation History',
+        profile: 'My Profile',
+        medicalHistory: 'Medical History',
+        forms: 'Patient Forms'
       },
       hero: {
         title: 'Dr. Jimmy – International Orthopedic & Spine Surgeon',
@@ -100,7 +108,6 @@ function HomePage() {
       {/* Top Title Bar - LEFT ALIGNED with ORANGE BACKGROUND */}
       <div className="top-title-bar">
         <div className="title-container">
-          {/* Left side: Logo and Text */}
           <div className="title-left">
             <img src={logoImage} alt="Dr. Jimmy Logo" className="title-logo" onError={(e) => { e.target.style.display = 'none'; }} />
             <div className="title-text">
@@ -109,8 +116,6 @@ function HomePage() {
               <p className="tagline">EXCELLENCE IN SPINE CARE • TRUSTED WORLDWIDE • TRANSFORMING LIVES</p>
             </div>
           </div>
-
-          {/* Right side: Buttons */}
           <div className="title-right">
             <button className="lang-btn" onClick={() => setLanguage(language === 'sw' ? 'en' : 'sw')}>
               {language === 'sw' ? 'English' : 'Kiswahili'}
@@ -130,7 +135,7 @@ function HomePage() {
         </div>
       </div>
 
-      {/* Navigation Bar */}
+      {/* Navigation Bar - All Tabs */}
       <nav className={`navbar ${scrolling ? 'scrolled' : ''}`}>
         <div className="nav-container">
           <ul className="nav-links">
@@ -142,11 +147,15 @@ function HomePage() {
             <li><a href="/video-consult">🎥 {t.nav.video}</a></li>
             <li><a href="/payment">💳 {t.nav.payment}</a></li>
             <li><a href="/dashboard">📊 {t.nav.dashboard}</a></li>
+            <li><a href="/consultation-history">📋 {t.nav.consultationHistory}</a></li>
+            <li><a href="/profile">👤 {t.nav.profile}</a></li>
+            <li><a href="/medical-history">📋 {t.nav.medicalHistory}</a></li>
+            <li><a href="/forms">📄 {t.nav.forms}</a></li>
           </ul>
         </div>
       </nav>
 
-      {/* Hero Section with IMAGE BACKGROUND */}
+      {/* Hero Section */}
       <section id="home" className="hero-section">
         <div className="hero-image-background">
           <img 
@@ -220,7 +229,7 @@ function HomePage() {
             <p><a href="/upload">📤 Upload Scan</a></p>
             <p><a href="/video-consult">🎥 Video Consultation</a></p>
             <p><a href="/payment">💳 Make Payment</a></p>
-            <p><a href="/about">👨‍⚕️ About Dr. Jimmy</a></p>
+            <p><a href="/dashboard">📊 Dashboard</a></p>
           </div>
         </div>
         <div className="footer-bottom">
