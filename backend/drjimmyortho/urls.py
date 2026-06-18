@@ -1034,6 +1034,35 @@ def doctor_register(request):
     return JsonResponse({'error': 'Method not allowed'}, status=405)
 
 
+@csrf_exempt
+def test_upload(request):
+    """Test endpoint to check if uploads are working"""
+    if request.method == 'POST':
+        try:
+            import os
+            from django.core.files.storage import default_storage
+            from django.core.files.base import ContentFile
+            
+            if request.FILES.get('image_file'):
+                file = request.FILES['image_file']
+                username = request.POST.get('username', 'test')
+                
+                # Create test directory
+                path = f"patient_scans/test/{file.name}"
+                saved_path = default_storage.save(path, ContentFile(file.read()))
+                
+                return JsonResponse({
+                    'success': True,
+                    'message': 'File uploaded successfully',
+                    'path': saved_path,
+                    'url': f'/media/{saved_path}'
+                })
+            return JsonResponse({'error': 'No file'}, status=400)
+        except Exception as e:
+            return JsonResponse({'error': str(e)}, status=400)
+    return JsonResponse({'message': 'Send POST to test upload'})
+
+
 # ==================== URL PATTERNS - COMPLETE LIST ====================
 # ============ URL PATTERNS ============
 urlpatterns = [
@@ -1062,6 +1091,7 @@ urlpatterns = [
     path('api/reviews/', get_reviews),
     path('api/reviews/submit/', submit_review),
     path('api/doctor/register/', doctor_register),
+path('api/test-upload/', test_upload),
 ]
 
 # ============ SERVE MEDIA FILES (ALWAYS, NOT JUST DEBUG) ============
