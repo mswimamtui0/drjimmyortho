@@ -15,6 +15,7 @@ import ReviewsComponent from './ReviewsComponent';
 import ChatComponent from './ChatComponent';
 import PatientDashboard from './PatientDashboard';
 import PatientForms from './PatientForms';
+import DoctorRegister from './DoctorRegister';
 
 // Protected Route Component
 function ProtectedRoute({ children }) {
@@ -34,6 +35,7 @@ function AppContent() {
         <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<LoginRegister />} />
         <Route path="/doctor-login" element={<DoctorLogin />} />
+	<Route path="/doctor-register" element={<DoctorRegister />} />
         <Route path="/upload" element={
           <ProtectedRoute>
             <UploadPage />

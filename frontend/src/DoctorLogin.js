@@ -233,6 +233,25 @@ function DoctorLogin() {
             </button>
           </p>
         </div>
+<div style={styles.footer}>
+  <p>
+    Don't have an account?{' '}
+    <button 
+      style={styles.link}
+      onClick={() => navigate('/doctor-register')}
+    >
+      Register here
+    </button>
+  </p>
+  <p>
+    <button 
+      style={styles.link}
+      onClick={() => navigate('/')}
+    >
+      ← Back to Homepage
+    </button>
+  </p>
+</div>
 
         <div style={styles.infoBox}>
           <strong style={styles.infoBoxTitle}>📋 Doctor Access</strong>

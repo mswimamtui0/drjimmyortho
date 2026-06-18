@@ -980,6 +980,58 @@ def payment_callback_consultation(request):
     return JsonResponse({'error': 'Method not allowed'}, status=405)
 
 
+
+@csrf_exempt
+def doctor_register(request):
+    """Register a new doctor account with secret key"""
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            username = data.get('username')
+            password = data.get('password')
+            email = data.get('email', '')
+            first_name = data.get('first_name', '')
+            last_name = data.get('last_name', '')
+            secret_key = data.get('secret_key', '')
+            
+            # Check secret key (only doctors know this)
+            if secret_key != 'DRJIMMY2024':
+                return JsonResponse({'error': 'Invalid secret key. Please contact admin.'}, status=401)
+            
+            if User.objects.filter(username=username).exists():
+                return JsonResponse({'error': 'Username already exists'}, status=400)
+            
+            # Create doctor user
+            user = User.objects.create_user(
+                username=username,
+                password=password,
+                email=email,
+                first_name=first_name,
+                last_name=last_name
+            )
+            user.is_staff = True  # Give staff access
+            user.save()
+            
+            print(f"✅ Doctor registered: {username}")
+            
+            return JsonResponse({
+                'success': True,
+                'message': 'Doctor account created successfully',
+                'user': {
+                    'id': user.id,
+                    'username': user.username,
+                    'email': user.email,
+                    'first_name': user.first_name,
+                    'last_name': user.last_name
+                }
+            }, status=201)
+            
+        except Exception as e:
+            return JsonResponse({'error': str(e)}, status=400)
+    
+    return JsonResponse({'error': 'Method not allowed'}, status=405)
+
+
 # ==================== URL PATTERNS - COMPLETE LIST ====================
 urlpatterns = [
     path('', home_page),
@@ -1009,6 +1061,7 @@ urlpatterns = [
     path('api/book-and-pay-consultation/', book_and_pay_consultation),
 path('api/verify-consultation-payment/', verify_consultation_payment),
 path('api/payment-callback-consultation/', payment_callback_consultation),
+path('api/doctor/register/', doctor_register),
 ]
 
 # Serve media files in development

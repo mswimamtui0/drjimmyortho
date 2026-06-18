@@ -133,6 +133,7 @@ function HomePage() {
 <>
               <a href="/login" className="login-btn-top">Login / Register</a>
 	      <a href="/doctor-login">👨‍⚕️ Doctor Login</a></>
+		<li><a href="/doctor-register">👨‍⚕️ Doctor Register</a></li>
             )}
           </div>
         </div>
