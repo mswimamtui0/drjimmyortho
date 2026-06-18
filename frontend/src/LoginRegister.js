@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import API_URL from './apiConfig';
+import { useAuth } from './AuthContext';
 
 function LoginRegister() {
   const [isLogin, setIsLogin] = useState(true);
@@ -15,6 +16,7 @@ function LoginRegister() {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const { login } = useAuth();
 
   const handleChange = (e) => {
     setFormData({
@@ -59,13 +61,26 @@ function LoginRegister() {
       if (response.ok) {
         if (isLogin) {
           // Save user data to localStorage
-          localStorage.setItem('user', JSON.stringify(data.user));
+          const userData = {
+            id: data.user.id,
+            username: data.user.username,
+            email: data.user.email,
+            first_name: data.user.first_name || '',
+            last_name: data.user.last_name || '',
+            phone: data.user.phone || ''
+          };
+          
+          localStorage.setItem('user', JSON.stringify(userData));
+          localStorage.setItem('isLoggedIn', 'true');
           localStorage.setItem('access_token', data.access || 'demo_token');
           
-          console.log('✅ User saved:', data.user);
-          console.log('Redirecting to dashboard...');
+          console.log('✅ User saved to localStorage:', userData);
+          console.log('✅ isLoggedIn:', localStorage.getItem('isLoggedIn'));
           
-          // Redirect to dashboard
+          // Use AuthContext login
+          login(userData);
+          
+          // Redirect to homepage
           navigate('/');
         } else {
           alert('Account created successfully! Please login.');

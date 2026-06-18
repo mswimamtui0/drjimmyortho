@@ -135,27 +135,34 @@ function HomePage() {
         </div>
       </div>
 
-      {/* Navigation Bar - All Tabs */}
+      {/* Navigation Bar - Public and Patient Tabs */}
       <nav className={`navbar ${scrolling ? 'scrolled' : ''}`}>
         <div className="nav-container">
           <ul className="nav-links">
+            {/* Always Visible - Public Tabs */}
             <li><a href="#home" onClick={(e) => { e.preventDefault(); scrollToSection('home'); }}>{t.nav.home}</a></li>
             <li><a href="#services" onClick={(e) => { e.preventDefault(); scrollToSection('services'); }}>{t.nav.treatments}</a></li>
             <li><a href="/global-outreach">🌍 {t.nav.global}</a></li>
             <li><a href="/about">👨‍⚕️ {t.nav.about}</a></li>
-            <li><a href="/upload">📤 {t.nav.upload}</a></li>
-            <li><a href="/video-consult">🎥 {t.nav.video}</a></li>
-            <li><a href="/payment">💳 {t.nav.payment}</a></li>
-            <li><a href="/dashboard">📊 {t.nav.dashboard}</a></li>
-            <li><a href="/consultation-history">📋 {t.nav.consultationHistory}</a></li>
-            <li><a href="/profile">👤 {t.nav.profile}</a></li>
-            <li><a href="/medical-history">📋 {t.nav.medicalHistory}</a></li>
-            <li><a href="/forms">📄 {t.nav.forms}</a></li>
+            
+            {/* Only Visible When Logged In - Patient Tabs */}
+            {user && (
+              <>
+                <li><a href="/upload">📤 {t.nav.upload}</a></li>
+                <li><a href="/video-consult">🎥 {t.nav.video}</a></li>
+                <li><a href="/payment">💳 {t.nav.payment}</a></li>
+                <li><a href="/dashboard">📊 {t.nav.dashboard}</a></li>
+                <li><a href="/consultation-history">📋 {t.nav.consultationHistory}</a></li>
+                <li><a href="/profile">👤 {t.nav.profile}</a></li>
+                <li><a href="/medical-history">📋 {t.nav.medicalHistory}</a></li>
+                <li><a href="/forms">📄 {t.nav.forms}</a></li>
+              </>
+            )}
           </ul>
         </div>
       </nav>
 
-      {/* Hero Section */}
+      {/* Hero Section with IMAGE BACKGROUND */}
       <section id="home" className="hero-section">
         <div className="hero-image-background">
           <img 

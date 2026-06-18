@@ -1,5 +1,4 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
-import axios from 'axios';
 
 const AuthContext = createContext();
 
@@ -10,63 +9,61 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const token = localStorage.getItem('access_token');
-    const userData = localStorage.getItem('user');
-    if (token && userData) {
-      setUser(JSON.parse(userData));
-      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-    }
-    setLoading(false);
+    // Load user from localStorage
+    const loadUser = () => {
+      try {
+        const userData = localStorage.getItem('user');
+        const isLoggedIn = localStorage.getItem('isLoggedIn');
+        
+        console.log('🔍 AuthContext checking localStorage...');
+        console.log('userData:', userData);
+        console.log('isLoggedIn:', isLoggedIn);
+        
+        if (userData && isLoggedIn === 'true') {
+          const parsedUser = JSON.parse(userData);
+          setUser(parsedUser);
+          console.log('✅ User loaded from localStorage:', parsedUser);
+        } else {
+          console.log('❌ No user found in localStorage');
+          setUser(null);
+        }
+      } catch (error) {
+        console.error('❌ Error loading user:', error);
+        localStorage.removeItem('user');
+        localStorage.removeItem('isLoggedIn');
+        setUser(null);
+      } finally {
+        setLoading(false);
+      }
+    };
+    
+    loadUser();
   }, []);
 
-  const login = async (username, password) => {
+  const login = (userData) => {
     try {
-      const response = await axios.post('http://drjimmy-backend.onrender.com/api/login/', {
-        username,
-        password
-      });
-      
-      const { access, refresh, user } = response.data;
-      localStorage.setItem('access_token', access);
-      localStorage.setItem('refresh_token', refresh);
-      localStorage.setItem('user', JSON.stringify(user));
-      
-      axios.defaults.headers.common['Authorization'] = `Bearer ${access}`;
-      setUser(user);
+      localStorage.setItem('user', JSON.stringify(userData));
+      localStorage.setItem('isLoggedIn', 'true');
+      setUser(userData);
+      console.log('✅ User logged in:', userData);
       return { success: true };
     } catch (error) {
-      return { success: false, error: error.response?.data?.error || 'Login failed' };
-    }
-  };
-
-  const register = async (userData) => {
-    try {
-      const response = await axios.post('http://drjimmy-backend.onrender.com/api/register/', userData);
-      const { access, refresh, user } = response.data;
-      localStorage.setItem('access_token', access);
-      localStorage.setItem('refresh_token', refresh);
-      localStorage.setItem('user', JSON.stringify(user));
-      
-      axios.defaults.headers.common['Authorization'] = `Bearer ${access}`;
-      setUser(user);
-      return { success: true };
-    } catch (error) {
-      return { success: false, error: error.response?.data?.error || 'Registration failed' };
+      console.error('Login error:', error);
+      return { success: false, error: error.message };
     }
   };
 
   const logout = () => {
-    localStorage.removeItem('access_token');
-    localStorage.removeItem('refresh_token');
     localStorage.removeItem('user');
-    delete axios.defaults.headers.common['Authorization'];
+    localStorage.removeItem('access_token');
+    localStorage.removeItem('isLoggedIn');
     setUser(null);
+    console.log('✅ User logged out');
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, register, logout, loading }}>
+    <AuthContext.Provider value={{ user, login, logout, loading }}>
       {children}
     </AuthContext.Provider>
   );
 };
-
