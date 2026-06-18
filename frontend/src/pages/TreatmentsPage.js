@@ -35,3 +35,6 @@ function TreatmentsPage() {
 
 export default TreatmentsPage;
 
+
+
+

@@ -54,3 +54,6 @@ const uploadSlice = createSlice({
 export const { setUploadProgress } = uploadSlice.actions;
 export default uploadSlice.reducer;
 
+
+
+

@@ -50,7 +50,7 @@ function DoctorDashboard() {
     
     // Auto-refresh every 30 seconds
     const interval = setInterval(() => {
-      console.log('⏰ Auto-refreshing dashboard...');
+      console.log(' Auto-refreshing dashboard...');
       fetchDashboard();
     }, 30000);
     
@@ -60,17 +60,17 @@ function DoctorDashboard() {
   const fetchDashboard = async () => {
     try {
       setLoading(true);
-      console.log("📊 Fetching doctor dashboard...");
+      console.log(" Fetching doctor dashboard...");
       
       const response = await fetch(`${API_URL}/doctor/dashboard/`);
       const data = await response.json();
       
-      console.log("📥 Dashboard response:", data);
+      console.log(" Dashboard response:", data);
       
       if (data.success) {
         setPatients(data.patients || []);
         updateStats(data.patients || []);
-        setMessage({ type: 'success', text: `✅ Loaded ${data.patients?.length || 0} patients` });
+        setMessage({ type: 'success', text: ` Loaded ${data.patients?.length || 0} patients` });
         setTimeout(() => setMessage({ type: '', text: '' }), 3000);
       } else {
         console.error("❌ Dashboard error:", data.error);
@@ -110,11 +110,11 @@ function DoctorDashboard() {
     }
     
     try {
-      console.log(`🔍 Searching for: "${query}"`);
+      console.log(` Searching for: "${query}"`);
       const response = await fetch(`${API_URL}/doctor/search-patients/?q=${query}`);
       const data = await response.json();
       
-      console.log("📥 Search results:", data);
+      console.log(" Search results:", data);
       
       if (data.patients) {
         setPatients(data.patients);
@@ -156,7 +156,7 @@ function DoctorDashboard() {
         
         setMessage({ 
           type: 'success', 
-          text: '✅ Scan reviewed successfully! Patient notified via Email.' 
+          text: ' Scan reviewed successfully! Patient notified via Email.' 
         });
         
         // Refresh dashboard immediately
@@ -173,7 +173,7 @@ function DoctorDashboard() {
       }
     } catch (error) {
       console.error('Update error:', error);
-      setMessage({ type: 'error', text: '❌ Error updating scan. Please try again.' });
+      setMessage({ type: 'error', text: ' Error updating scan. Please try again.' });
     }
   };
 
@@ -744,3 +744,5 @@ function DoctorDashboard() {
 }
 
 export default DoctorDashboard;
+
+

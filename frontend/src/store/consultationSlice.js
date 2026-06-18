@@ -17,3 +17,6 @@ const consultationSlice = createSlice({
 export const { setCurrentMeeting } = consultationSlice.actions;
 export default consultationSlice.reducer;
 
+
+
+
