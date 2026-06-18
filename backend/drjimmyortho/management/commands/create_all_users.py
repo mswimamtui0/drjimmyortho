@@ -2,10 +2,25 @@ from django.core.management.base import BaseCommand
 from django.contrib.auth.models import User
 
 class Command(BaseCommand):
-    help = 'Create doctor users'
+    help = 'Create all required users (admin and doctors)'
 
     def handle(self, *args, **options):
-        # List of doctors to create
+        self.stdout.write("=" * 50)
+        self.stdout.write("🚀 CREATING USERS...")
+        self.stdout.write("=" * 50)
+
+        # Create Admin
+        admin_username = 'admin'
+        admin_email = 'admin@example.com'
+        admin_password = 'admin123'
+
+        if not User.objects.filter(username=admin_username).exists():
+            User.objects.create_superuser(admin_username, admin_email, admin_password)
+            self.stdout.write(self.style.SUCCESS(f'✅ Admin "{admin_username}" created!'))
+        else:
+            self.stdout.write(self.style.WARNING(f'⚠️ Admin "{admin_username}" already exists!'))
+
+        # Create Doctors
         doctors = [
             {
                 'username': 'drjimmy',
@@ -20,13 +35,6 @@ class Command(BaseCommand):
                 'email': 'drjames@example.com',
                 'first_name': 'James',
                 'last_name': 'Johnson'
-            },
-            {
-                'username': 'drsarah',
-                'password': 'drsarah123',
-                'email': 'drsarah@example.com',
-                'first_name': 'Sarah',
-                'last_name': 'Wilson'
             }
         ]
 
@@ -47,7 +55,11 @@ class Command(BaseCommand):
             else:
                 self.stdout.write(self.style.WARNING(f'⚠️ Doctor "{username}" already exists!'))
 
-        # List all users
-        self.stdout.write("\n📋 All users in database:")
+        # Summary
+        self.stdout.write("=" * 50)
+        self.stdout.write("📋 ALL USERS IN DATABASE:")
         for user in User.objects.all():
-            self.stdout.write(f"  - {user.username} (is_staff: {user.is_staff}, is_superuser: {user.is_superuser})")
+            is_admin = "👑" if user.is_superuser else "👨‍⚕️" if user.is_staff else "👤"
+            self.stdout.write(f"  {is_admin} {user.username} (staff: {user.is_staff}, superuser: {user.is_superuser})")
+        self.stdout.write("=" * 50)
+        self.stdout.write(self.style.SUCCESS("✅ User creation completed!"))
