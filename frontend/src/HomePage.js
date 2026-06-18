@@ -98,27 +98,37 @@ function HomePage() {
   return (
     <div className="homepage">
       {/* Top Title Bar - LEFT ALIGNED with ORANGE BACKGROUND */}
-<div className="top-title-bar">
-  <div className="title-container">
-    {/* Left side: Logo and Text */}
-    <div className="title-left">
-      <img src={logoImage} alt="Dr. Jimmy Logo" className="title-logo" onError={(e) => { e.target.style.display = 'none'; }} />
-      <div className="title-text">
-        <h1 className="main-title">DR. JIMMY</h1>
-        <p className="sub-title">Spine & Orthopedic Institute</p>
-      </div>
-    </div>
+      <div className="top-title-bar">
+        <div className="title-container">
+          {/* Left side: Logo and Text */}
+          <div className="title-left">
+            <img src={logoImage} alt="Dr. Jimmy Logo" className="title-logo" onError={(e) => { e.target.style.display = 'none'; }} />
+            <div className="title-text">
+              <h1 className="main-title">DR. JIMMY</h1>
+              <p className="sub-title">Spine & Orthopedic Institute</p>
+              <p className="tagline">EXCELLENCE IN SPINE CARE • TRUSTED WORLDWIDE • TRANSFORMING LIVES</p>
+            </div>
+          </div>
 
-    {/* Right side: Buttons */}
-    <div className="title-right">
-      <button className="lang-btn" onClick={() => setLanguage(language === 'sw' ? 'en' : 'sw')}>
-        {language === 'sw' ? 'English' : 'Kiswahili'}
-      </button>
-      <a href="/login" className="title-login-btn">Login / Register</a>
-      <a href="/doctor-login" className="title-doctor-btn">👨‍⚕️ Doctor</a>
-    </div>
-  </div>
-</div>
+          {/* Right side: Buttons */}
+          <div className="title-right">
+            <button className="lang-btn" onClick={() => setLanguage(language === 'sw' ? 'en' : 'sw')}>
+              {language === 'sw' ? 'English' : 'Kiswahili'}
+            </button>
+            {user ? (
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                <span style={{ color: 'white', fontWeight: 'bold' }}>👋 {user.first_name || user.username}</span>
+                <button onClick={handleLogout} className="title-logout-btn">Logout</button>
+              </div>
+            ) : (
+              <>
+                <a href="/login" className="title-login-btn">Login / Register</a>
+                <a href="/doctor-login" className="title-doctor-btn">👨‍⚕️ Doctor</a>
+              </>
+            )}
+          </div>
+        </div>
+      </div>
 
       {/* Navigation Bar */}
       <nav className={`navbar ${scrolling ? 'scrolled' : ''}`}>
@@ -131,9 +141,9 @@ function HomePage() {
             <li><a href="/upload">📤 {t.nav.upload}</a></li>
             <li><a href="/video-consult">🎥 {t.nav.video}</a></li>
             <li><a href="/payment">💳 {t.nav.payment}</a></li>
-            
+            <li><a href="/dashboard">📊 {t.nav.dashboard}</a></li>
           </ul>
-                 </div>
+        </div>
       </nav>
 
       {/* Hero Section with IMAGE BACKGROUND */}

@@ -14,7 +14,7 @@
 .top-title-bar {
   background: #ff9800; /* Orange background */
   padding: 10px 0;
-  border-bottom: 3px solid #e65100; /* Darker orange border */
+  border-bottom: 3px solid #e65100;
   position: relative;
   z-index: 1001;
 }
@@ -25,12 +25,11 @@
   padding: 0 20px;
   display: flex;
   align-items: center;
-  justify-content: space-between; /* Pushes logo left and nav items right */
+  justify-content: space-between;
   flex-wrap: wrap;
   gap: 15px;
 }
 
-/* Left side: Logo and text */
 .title-left {
   display: flex;
   align-items: center;
@@ -64,7 +63,13 @@
   opacity: 0.9;
 }
 
-/* Right side: Buttons */
+.tagline {
+  font-size: 0.6em;
+  color: #ffffff;
+  margin: 2px 0 0 0;
+  opacity: 0.8;
+}
+
 .title-right {
   display: flex;
   align-items: center;
@@ -122,6 +127,22 @@
 .title-doctor-btn:hover {
   background: #bf360c;
   transform: translateY(-1px);
+}
+
+.title-logout-btn {
+  background: #dc3545;
+  color: white;
+  padding: 6px 16px;
+  border-radius: 25px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.85em;
+  transition: background 0.3s;
+}
+
+.title-logout-btn:hover {
+  background: #c82333;
 }
 
 /* ===================== NAVIGATION BAR ===================== */
