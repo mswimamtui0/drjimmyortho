@@ -38,7 +38,8 @@ class PatientScan(models.Model):
     patient = models.ForeignKey(User, on_delete=models.CASCADE, related_name='scans')
     scan_type = models.CharField(max_length=20, choices=SCAN_TYPES)
     body_part = models.CharField(max_length=50, choices=BODY_PARTS)
-    image = models.FileField(upload_to=get_upload_path, null=True, blank=True)
+    # In PatientScan model, change the image field to:
+image = models.ImageField(upload_to='patient_scans/', null=True, blank=True)
     description = models.TextField(blank=True)
     uploaded_at = models.DateTimeField(auto_now_add=True)
     

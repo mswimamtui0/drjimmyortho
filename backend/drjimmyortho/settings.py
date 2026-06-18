@@ -36,6 +36,8 @@ CORS_ALLOWED_ORIGINS = os.environ.get(
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
+      'cloudinary_storage',  # Add this
+    'cloudinary', 
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',

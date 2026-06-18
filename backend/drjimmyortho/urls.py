@@ -167,7 +167,6 @@ def login_user(request):
 
 # ==================== UPLOAD SCAN ====================
 @csrf_exempt
-@csrf_exempt
 def upload_scan(request):
     if request.method == 'POST':
         try:
@@ -184,13 +183,13 @@ def upload_scan(request):
             if not image_file:
                 return JsonResponse({'error': 'No file uploaded'}, status=400)
             
-            # Create the scan - Cloudinary will handle the upload
+            # Create scan - this will upload to Cloudinary
             scan = PatientScan.objects.create(
                 patient=user,
                 scan_type=scan_type,
                 body_part=body_part,
                 description=description,
-                image=image_file,
+                image=image_file,  # Cloudinary handles this automatically
                 status='pending'
             )
             
@@ -205,9 +204,13 @@ def upload_scan(request):
             }, status=201)
             
         except Exception as e:
+            print(f"❌ Upload error: {str(e)}")
             return JsonResponse({'error': str(e)}, status=400)
     
     return JsonResponse({'error': 'Method not allowed'}, status=405)
+
+
+
 @csrf_exempt
 def get_patient_scans(request):
     if request.method == 'GET':
