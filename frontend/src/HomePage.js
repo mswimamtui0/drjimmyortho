@@ -1,21 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import './HomePage.css';
+import { useAuth } from './AuthContext';
 import logoImage from './assets/images/logo.png';
-
-// Use online image URL - no local file needed
-const heroImage = 'https://images.pexels.com/photos/2380794/pexels-photo-2380794.jpeg?auto=compress&cs=tinysrgb&w=1920&h=1080&fit=crop';
 
 function HomePage() {
   const [language, setLanguage] = useState('sw');
-  const [user, setUser] = useState(null);
+  const { user, logout } = useAuth();
   const [scrolling, setScrolling] = useState(false);
 
   useEffect(() => {
-    const userData = localStorage.getItem('user');
-    if (userData) {
-      setUser(JSON.parse(userData));
-    }
-    
     window.addEventListener('scroll', () => {
       setScrolling(window.scrollY > 50);
     });
@@ -29,9 +22,7 @@ function HomePage() {
   };
 
   const handleLogout = () => {
-    localStorage.removeItem('user');
-    localStorage.removeItem('access_token');
-    localStorage.removeItem('refresh_token');
+    logout();
     window.location.href = '/';
   };
 
@@ -45,10 +36,7 @@ function HomePage() {
         global: 'Huduma za Kimataifa',
         about: 'Kuhusu Daktari',
         payment: 'Malipo',
-        profile: 'Profaili Yangu',
-        history: 'Historia ya Matibabu',
-        dashboard: 'Dashibodi Yangu',
-        consultation: 'Historia ya Ushauri'
+        dashboard: 'Dashibodi Yangu'
       },
       hero: {
         title: 'Dk. Jimmy – Daktari wa Kimataifa wa Upasuaji wa Mifupa na Uti wa Mgongo',
@@ -65,6 +53,9 @@ function HomePage() {
       },
       footer: {
         contact: 'Wasiliana Nasi',
+        phone: 'Simu / WhatsApp',
+        hours: 'Saa za Kazi',
+        hoursDetail: 'Jumatatu hadi Ijumaa, Saa 8 asubuhi – 5 usiku',
         emergency: 'Hii si huduma ya dharura. Kama una maumivu makali, nenda hospitali ya karibu.'
       }
     },
@@ -77,10 +68,7 @@ function HomePage() {
         global: 'Global Outreach',
         about: 'About Dr. Jimmy',
         payment: 'Payments',
-        profile: 'My Profile',
-        history: 'Medical History',
-        dashboard: 'My Dashboard',
-        consultation: 'Consultation History'
+        dashboard: 'My Dashboard'
       },
       hero: {
         title: 'Dr. Jimmy – International Orthopedic & Spine Surgeon',
@@ -97,6 +85,9 @@ function HomePage() {
       },
       footer: {
         contact: 'Contact Us',
+        phone: 'Phone / WhatsApp',
+        hours: 'Working Hours',
+        hoursDetail: 'Monday to Friday, 8am – 5pm',
         emergency: 'This is not an emergency service. If you have severe pain, go to your nearest hospital.'
       }
     }
@@ -106,40 +97,19 @@ function HomePage() {
 
   return (
     <div className="homepage">
-      {/* Top Title Bar with Logo + Language & Login on RIGHT */}
+      {/* Top Title Bar with Logo - LEFT ALIGNED */}
       <div className="top-title-bar">
         <div className="title-container">
-          <div className="title-left">
-            <img src={logoImage} alt="Dr. Jimmy Logo" className="title-logo" onError={(e) => { e.target.style.display = 'none'; }} />
-            <div className="title-text">
-              <h1 className="main-title">DR. JIMMY</h1>
-              <p className="sub-title">Spine & Orthopedic Institute</p>
-              <p className="tagline">EXCELLENCE IN SPINE CARE • TRUSTED WORLDWIDE • TRANSFORMING LIVES</p>
-            </div>
-          </div>
-          
-          {/* RIGHT SIDE - Language Switcher & Login/Register */}
-          <div className="title-right">
-            <button className="lang-btn-top" onClick={() => setLanguage(language === 'sw' ? 'en' : 'sw')}>
-              {language === 'sw' ? 'English' : 'Kiswahili'}
-            </button>
-            
-            {user ? (
-              <div className="user-info-top">
-                <span className="user-name">👋 {user.first_name || user.username}</span>
-                <button onClick={handleLogout} className="logout-btn-top">Logout</button>
-              </div>
-            ) : (
-<>
-              <a href="/login" className="login-btn-top">Login / Register</a>
-	      <a href="/doctor-login">👨‍⚕️ Doctor Login</a></>
-		<li><a href="/doctor-register">👨‍⚕️ Doctor Register</a></li>
-            )}
+          <img src={logoImage} alt="Dr. Jimmy Logo" className="title-logo" onError={(e) => { e.target.style.display = 'none'; }} />
+          <div className="title-text">
+            <h1 className="main-title">DR. JIMMY</h1>
+            <p className="sub-title">Spine & Orthopedic Institute</p>
+            <p className="tagline">EXCELLENCE IN SPINE CARE • TRUSTED WORLDWIDE • TRANSFORMING LIVES</p>
           </div>
         </div>
       </div>
 
-      {/* Navigation Bar - CLEAN SINGLE LINE */}
+      {/* Navigation Bar */}
       <nav className={`navbar ${scrolling ? 'scrolled' : ''}`}>
         <div className="nav-container">
           <ul className="nav-links">
@@ -150,24 +120,39 @@ function HomePage() {
             <li><a href="/upload">📤 {t.nav.upload}</a></li>
             <li><a href="/video-consult">🎥 {t.nav.video}</a></li>
             <li><a href="/payment">💳 {t.nav.payment}</a></li>
-            {user && (
-              <>
-                <li><a href="/dashboard">📋 {t.nav.dashboard}</a></li>
-                <li><a href="/consultation-history">🎥 {t.nav.consultation}</a></li>
-                <li><a href="/profile">👤 {t.nav.profile}</a></li>
-                <li><a href="/medical-history">📋 {t.nav.history}</a></li>
-		<li><a href="/forms">📄 Patient Forms</a></li>
-		 <li><a href="/dashboard">📊 Dashboard</a></li>
-              </>
-            )}
+            <li><a href="/dashboard">📊 {t.nav.dashboard}</a></li>
+            <li><a href="/doctor-login">👨‍⚕️ Doctor Login</a></li>
+            <li><a href="/doctor-register">📝 Doctor Register</a></li>
           </ul>
+          <div className="nav-actions">
+            <button className="lang-btn" onClick={() => setLanguage(language === 'sw' ? 'en' : 'sw')}>
+              {language === 'sw' ? 'English' : 'Kiswahili'}
+            </button>
+            
+            {user ? (
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                <span style={{ color: 'white' }}>👋 {user.first_name || user.username}</span>
+                <button onClick={handleLogout} className="logout-btn">
+                  Logout
+                </button>
+              </div>
+            ) : (
+              <a href="/login" className="login-nav-btn">
+                Login / Register
+              </a>
+            )}
+          </div>
         </div>
       </nav>
 
       {/* Hero Section with IMAGE BACKGROUND */}
       <section id="home" className="hero-section">
         <div className="hero-image-background">
-          <img src={heroImage} alt="Dr. Jimmy Orthopedic Center" className="hero-image" />
+          <img 
+            src="https://images.pexels.com/photos/2380794/pexels-photo-2380794.jpeg?auto=compress&cs=tinysrgb&w=1920&h=1080&fit=crop" 
+            alt="Dr. Jimmy Orthopedic Center" 
+            className="hero-image" 
+          />
           <div className="hero-overlay"></div>
         </div>
         <div className="hero-content">
@@ -214,23 +199,32 @@ function HomePage() {
           <div className="footer-section">
             <h3>🏥 Dr. Jimmy Orthopedic & Spine Center</h3>
             <p>International Orthopedic & Spine Surgeon</p>
+            <p>Daktari wa Kimataifa wa Upasuaji wa Mifupa na Uti wa Mgongo</p>
           </div>
           <div className="footer-section">
             <h3>📞 {t.footer.contact}</h3>
-            <p><strong>Phone:</strong> +255 787 688 659</p>
+            <p><strong>Phone/Call:</strong> +255 787 688 659</p>
             <p><strong>WhatsApp:</strong> +255 787 688 659</p>
             <p><strong>Email:</strong> info@drjimmy.com</p>
+            <p><strong>Location:</strong> Dar es Salaam, Tanzania</p>
+          </div>
+          <div className="footer-section">
+            <h3>🕒 {t.footer.hours}</h3>
+            <p>Monday - Friday: 8:00 AM - 5:00 PM</p>
+            <p>Saturday: 9:00 AM - 1:00 PM</p>
+            <p>Sunday: Closed</p>
           </div>
           <div className="footer-section">
             <h3>🔗 Quick Links</h3>
-            <p><a href="/upload">Upload Scan</a></p>
-            <p><a href="/video-consult">Video Consultation</a></p>
-            <p><a href="/payment">Make Payment</a></p>
+            <p><a href="/upload">📤 Upload Scan</a></p>
+            <p><a href="/video-consult">🎥 Video Consultation</a></p>
+            <p><a href="/payment">💳 Make Payment</a></p>
+            <p><a href="/about">👨‍⚕️ About Dr. Jimmy</a></p>
           </div>
         </div>
         <div className="footer-bottom">
           <p>🚨 {t.footer.emergency}</p>
-          <p>© 2024 Dr. Jimmy Orthopedic & Spine Center</p>
+          <p>© 2024 Dr. Jimmy Orthopedic & Spine Center. All rights reserved.</p>
         </div>
       </footer>
     </div>
@@ -238,4 +232,3 @@ function HomePage() {
 }
 
 export default HomePage;
-
