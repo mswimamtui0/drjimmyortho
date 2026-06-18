@@ -8,13 +8,13 @@ import cloudinary.uploader
 import cloudinary.api
 
 cloudinary.config(
-    cloud_name = "YOUR_CLOUD_NAME",  # Replace with your cloud name
-    api_key = "YOUR_API_KEY",        # Replace with your API key
-    api_secret = "YOUR_API_SECRET"   # Replace with your API secret
+    cloud_name = "dnr7zfsdy",
+    api_key = "177473167615218",
+    api_secret = "r8eukAH0rO0_LHP5mF_1OnAZ2d8"  # Replace with your actual API secret
 )
 
-# Use Cloudinary for file storage
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+
 
 # ============ BASE DIRECTORY ============
 BASE_DIR = Path(__file__).resolve().parent.parent
