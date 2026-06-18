@@ -1035,9 +1035,7 @@ def doctor_register(request):
 
 
 # ==================== URL PATTERNS - COMPLETE LIST ====================
-# ... all your imports and functions ...
-
-# ============ URL PATTERNS - DEFINED FIRST ============
+# ============ URL PATTERNS ============
 urlpatterns = [
     path('', home_page),
     path('admin/', admin.site.urls),
@@ -1066,12 +1064,9 @@ urlpatterns = [
     path('api/doctor/register/', doctor_register),
 ]
 
-# ============ SERVE MEDIA FILES (AT THE VERY END) ============
+# ============ SERVE MEDIA FILES (ALWAYS, NOT JUST DEBUG) ============
 from django.conf import settings
 from django.conf.urls.static import static
 
-if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-
-# Also serve media files in production (Render)
+# This should work for both development and production
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

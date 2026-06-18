@@ -44,27 +44,41 @@ function DoctorDashboard() {
     patientsNeedingReview: 0
   });
 
+  // ============ FETCH DASHBOARD WITH AUTO-REFRESH ============
   useEffect(() => {
     fetchDashboard();
+    
+    // Auto-refresh every 30 seconds
+    const interval = setInterval(() => {
+      console.log('⏰ Auto-refreshing dashboard...');
+      fetchDashboard();
+    }, 30000);
+    
+    return () => clearInterval(interval);
   }, []);
 
-  // ============ FETCH DASHBOARD ============
   const fetchDashboard = async () => {
     try {
       setLoading(true);
+      console.log("📊 Fetching doctor dashboard...");
       
       const response = await fetch(`${API_URL}/doctor/dashboard/`);
       const data = await response.json();
       
+      console.log("📥 Dashboard response:", data);
+      
       if (data.success) {
         setPatients(data.patients || []);
         updateStats(data.patients || []);
+        setMessage({ type: 'success', text: `✅ Loaded ${data.patients?.length || 0} patients` });
+        setTimeout(() => setMessage({ type: '', text: '' }), 3000);
       } else {
+        console.error("❌ Dashboard error:", data.error);
         setMessage({ type: 'error', text: data.error || 'Failed to load dashboard' });
         setPatients([]);
       }
     } catch (error) {
-      console.error('Fetch error:', error);
+      console.error('❌ Fetch error:', error);
       setMessage({ type: 'error', text: 'Failed to connect to server' });
       setPatients([]);
     } finally {
@@ -96,17 +110,23 @@ function DoctorDashboard() {
     }
     
     try {
+      console.log(`🔍 Searching for: "${query}"`);
       const response = await fetch(`${API_URL}/doctor/search-patients/?q=${query}`);
       const data = await response.json();
+      
+      console.log("📥 Search results:", data);
       
       if (data.patients) {
         setPatients(data.patients);
         updateStats(data.patients);
       } else {
         setPatients([]);
+        setMessage({ type: 'error', text: 'No patients found' });
+        setTimeout(() => setMessage({ type: '', text: '' }), 3000);
       }
     } catch (error) {
       console.error('Search error:', error);
+      setMessage({ type: 'error', text: 'Search failed' });
     }
   };
 
@@ -131,6 +151,7 @@ function DoctorDashboard() {
       });
       
       if (response.ok) {
+        // Send Email Notification
         await sendEmailNotification(selectedPatient.patient_id, scanId);
         
         setMessage({ 
@@ -138,7 +159,8 @@ function DoctorDashboard() {
           text: '✅ Scan reviewed successfully! Patient notified via Email.' 
         });
         
-        fetchDashboard();
+        // Refresh dashboard immediately
+        await fetchDashboard();
         setSelectedScan(null);
         setDiagnosis('');
         setRecommendations('');
@@ -166,6 +188,7 @@ function DoctorDashboard() {
           scan_id: scanId
         })
       });
+      console.log('📧 Email notification sent');
     } catch (error) {
       console.error('Email error:', error);
     }
@@ -198,6 +221,8 @@ function DoctorDashboard() {
       doctor_notes: doctorNotes.trim() || 'No additional notes'
     };
 
+    console.log('📤 Sending prescription data:', prescriptionData);
+
     setPrescriptionLoading(true);
 
     try {
@@ -210,6 +235,7 @@ function DoctorDashboard() {
       });
       
       const data = await response.json();
+      console.log('📥 Prescription response:', data);
       
       if (response.ok && data.success) {
         setMessage({ 
@@ -225,7 +251,7 @@ function DoctorDashboard() {
         setPrescriptionLoading(false);
       }
     } catch (error) {
-      console.error('Prescription error:', error);
+      console.error('❌ Prescription error:', error);
       setMessage({ type: 'error', text: '❌ Error generating prescription. Please try again.' });
       setPrescriptionLoading(false);
     }
@@ -253,41 +279,37 @@ function DoctorDashboard() {
     setMedications(medications.filter(med => med.id !== id));
   };
 
-  // ============ VIEW IMAGE - FIXED WITH BACKEND URL ============
+  // ============ GET IMAGE URL FROM BACKEND ============
   const getImageUrl = (scan) => {
+    if (!scan) return null;
+    
     console.log("🖼️ Getting image URL for scan:", scan);
     
-    let imageUrl = null;
-    
+    // If scan has image_url
     if (scan.image_url) {
-      // If image_url already starts with http, use it as is
       if (scan.image_url.startsWith('http')) {
-        imageUrl = scan.image_url;
-      } else {
-        // Otherwise, prepend the backend URL
-        const backendBase = API_URL.replace('/api', '');
-        imageUrl = `${backendBase}${scan.image_url}`;
+        return scan.image_url;
       }
-    } else if (scan.image) {
-      // If image is just the path, prepend backend URL
+      // If relative path, prepend backend URL
       const backendBase = API_URL.replace('/api', '');
-      if (scan.image.startsWith('/media/')) {
-        imageUrl = `${backendBase}${scan.image}`;
-      } else {
-        imageUrl = `${backendBase}/media/${scan.image}`;
-      }
-    } else {
-      // Try to construct from scan ID (fallback)
-      const backendBase = API_URL.replace('/api', '');
-      imageUrl = `${backendBase}/media/patient_scans/${scan.id}/`;
+      return `${backendBase}${scan.image_url}`;
     }
     
-    console.log("📸 Full Image URL:", imageUrl);
-    return imageUrl;
+    // If scan has image field
+    if (scan.image) {
+      const backendBase = API_URL.replace('/api', '');
+      if (scan.image.startsWith('/media/')) {
+        return `${backendBase}${scan.image}`;
+      }
+      return `${backendBase}/media/${scan.image}`;
+    }
+    
+    return null;
   };
 
   const handleViewImage = (scan) => {
     const imageUrl = getImageUrl(scan);
+    console.log("📸 Full Image URL:", imageUrl);
     setSelectedImage(imageUrl);
     setSelectedImageTitle(`${scan.scan_type} - ${scan.body_part}`);
     setImageLoading(true);
@@ -325,6 +347,20 @@ function DoctorDashboard() {
       <div className="dashboard-header">
         <h1>👨‍⚕️ Dr. Jimmy - Medical Dashboard</h1>
         <p>Manage patients, review scans, and conduct video consultations</p>
+        <button 
+          onClick={() => fetchDashboard()} 
+          style={{
+            marginTop: '10px',
+            padding: '8px 20px',
+            backgroundColor: '#1976d2',
+            color: 'white',
+            border: 'none',
+            borderRadius: '5px',
+            cursor: 'pointer'
+          }}
+        >
+          🔄 Refresh Data
+        </button>
       </div>
 
       {/* Message */}
