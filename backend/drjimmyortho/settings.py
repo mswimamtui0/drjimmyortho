@@ -24,7 +24,9 @@ INSTALLED_APPS = [
     'rest_framework',
     'cloudinary_storage',
     'cloudinary',
+ 'users',
     'medical',
+
 ]
 
 MIDDLEWARE = [
@@ -99,7 +101,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Custom user model
-AUTH_USER_MODEL = 'users.User'
+#AUTH_USER_MODEL = 'users.User'
 
 # CORS settings
 CORS_ALLOW_ALL_ORIGINS = True
