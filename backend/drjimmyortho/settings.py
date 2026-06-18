@@ -111,7 +111,6 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # ============ MEDIA FILES ============
-# Media files configuration
 import os
 
 # Media files configuration
@@ -120,8 +119,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Create media directory if it doesn't exist
 if not os.path.exists(MEDIA_ROOT):
-    os.makedirs(MEDIA_ROOT)# ============ DEFAULT FIELD ============
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+    os.makedirs(MEDIA_ROOT)
 
 # ============ CUSTOM USER ============
 #AUTH_USER_MODEL = 'users.User'

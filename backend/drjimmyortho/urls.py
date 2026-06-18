@@ -1098,5 +1098,5 @@ path('api/test-upload/', test_upload),
 from django.conf import settings
 from django.conf.urls.static import static
 
-# This should work for both development and production
+# Serve media files in production
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

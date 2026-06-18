@@ -6,7 +6,6 @@ def get_upload_path(instance, filename):
     """Generate secure path for medical images"""
     import os
     import uuid
-    from datetime import datetime
     
     # Get file extension
     ext = filename.split('.')[-1]
@@ -14,7 +13,6 @@ def get_upload_path(instance, filename):
     new_filename = f"{uuid.uuid4().hex}.{ext}"
     # Create path: patient_scans/patient_id/filename
     return f"patient_scans/{instance.patient.id}/{new_filename}"
-
 
 class PatientScan(models.Model):
     SCAN_TYPES = [

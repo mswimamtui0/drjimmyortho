@@ -125,27 +125,28 @@ function UploadPage() {
   };
 
   // Get image URL from backend
-  const getImageUrl = (scan) => {
-    if (!scan) return null;
-    
-    if (scan.image_url) {
-      if (scan.image_url.startsWith('http')) {
-        return scan.image_url;
-      }
-      const backendBase = API_URL.replace('/api', '');
-      return `${backendBase}${scan.image_url}`;
+  // ============ GET IMAGE URL FROM BACKEND ============
+const getImageUrl = (scan) => {
+  if (!scan) return null;
+  
+  const backendBase = 'https://drjimmy-backend.onrender.com';
+  
+  if (scan.image_url) {
+    if (scan.image_url.startsWith('http')) {
+      return scan.image_url;
     }
-    
-    if (scan.image) {
-      const backendBase = API_URL.replace('/api', '');
-      if (scan.image.startsWith('/media/')) {
-        return `${backendBase}${scan.image}`;
-      }
-      return `${backendBase}/media/${scan.image}`;
+    return `${backendBase}${scan.image_url}`;
+  }
+  
+  if (scan.image) {
+    if (scan.image.startsWith('/media/')) {
+      return `${backendBase}${scan.image}`;
     }
-    
-    return null;
-  };
+    return `${backendBase}/media/${scan.image}`;
+  }
+  
+  return null;
+};
 
   // Styles
   const styles = {
