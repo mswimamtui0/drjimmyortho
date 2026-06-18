@@ -133,25 +133,7 @@ function HomePage() {
             <li><a href="/payment">💳 {t.nav.payment}</a></li>
             
           </ul>
-          <div className="nav-actions">
-            <button className="lang-btn" onClick={() => setLanguage(language === 'sw' ? 'en' : 'sw')}>
-              {language === 'sw' ? 'English' : 'Kiswahili'}
-            </button>
-            
-            {user ? (
-              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                <span style={{ color: 'white' }}>👋 {user.first_name || user.username}</span>
-                <button onClick={handleLogout} className="logout-btn">
-                  Logou
-                </button>
-              </div>
-            ) : (
-              <a href="/login" className="login-nav-btn">
-                Login / Register
-              </a>
-            )}
-          </div>
-        </div>
+                 </div>
       </nav>
 
       {/* Hero Section with IMAGE BACKGROUND */}
