@@ -131,9 +131,7 @@ function HomePage() {
             <li><a href="/upload">📤 {t.nav.upload}</a></li>
             <li><a href="/video-consult">🎥 {t.nav.video}</a></li>
             <li><a href="/payment">💳 {t.nav.payment}</a></li>
-            <li><a href="/dashboard">📊 {t.nav.dashboard}</a></li>
-            /*<li><a href="/doctor-login">👨‍⚕️ Doctor Login</a></li>
-            <li><a href="/doctor-register">📝 Doctor Register</a></li>*/
+            
           </ul>
           <div className="nav-actions">
             <button className="lang-btn" onClick={() => setLanguage(language === 'sw' ? 'en' : 'sw')}>
@@ -144,7 +142,7 @@ function HomePage() {
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                 <span style={{ color: 'white' }}>👋 {user.first_name || user.username}</span>
                 <button onClick={handleLogout} className="logout-btn">
-                  Logout
+                  Logou
                 </button>
               </div>
             ) : (
