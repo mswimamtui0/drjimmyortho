@@ -253,30 +253,41 @@ function DoctorDashboard() {
     setMedications(medications.filter(med => med.id !== id));
   };
 
-  // ============ VIEW IMAGE ============
-  const handleViewImage = (scan) => {
-    console.log("🖼️ Viewing image for scan:", scan);
+  // ============ VIEW IMAGE - FIXED WITH BACKEND URL ============
+  const getImageUrl = (scan) => {
+    console.log("🖼️ Getting image URL for scan:", scan);
     
     let imageUrl = null;
     
     if (scan.image_url) {
+      // If image_url already starts with http, use it as is
       if (scan.image_url.startsWith('http')) {
         imageUrl = scan.image_url;
       } else {
-        imageUrl = `${API_URL}${scan.image_url}`;
+        // Otherwise, prepend the backend URL
+        const backendBase = API_URL.replace('/api', '');
+        imageUrl = `${backendBase}${scan.image_url}`;
       }
     } else if (scan.image) {
+      // If image is just the path, prepend backend URL
+      const backendBase = API_URL.replace('/api', '');
       if (scan.image.startsWith('/media/')) {
-        imageUrl = `${API_URL}${scan.image}`;
+        imageUrl = `${backendBase}${scan.image}`;
       } else {
-        imageUrl = `${API_URL}/media/${scan.image}`;
+        imageUrl = `${backendBase}/media/${scan.image}`;
       }
     } else {
-      imageUrl = `${API_URL}/media/patient_scans/${scan.id}/`;
+      // Try to construct from scan ID (fallback)
+      const backendBase = API_URL.replace('/api', '');
+      imageUrl = `${backendBase}/media/patient_scans/${scan.id}/`;
     }
     
     console.log("📸 Full Image URL:", imageUrl);
-    
+    return imageUrl;
+  };
+
+  const handleViewImage = (scan) => {
+    const imageUrl = getImageUrl(scan);
     setSelectedImage(imageUrl);
     setSelectedImageTitle(`${scan.scan_type} - ${scan.body_part}`);
     setImageLoading(true);

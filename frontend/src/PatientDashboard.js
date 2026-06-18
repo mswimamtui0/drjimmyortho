@@ -8,13 +8,13 @@ function PatientDashboard() {
   const [consultations, setConsultations] = useState([]);
   const [loading, setLoading] = useState(true);
   const [generatingReport, setGeneratingReport] = useState(false);
+  const [message, setMessage] = useState('');
   const [stats, setStats] = useState({
     totalScans: 0,
     pendingScans: 0,
     reviewedScans: 0,
     totalConsultations: 0
   });
-  const [message, setMessage] = useState('');
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -33,7 +33,7 @@ function PatientDashboard() {
       setLoading(true);
       console.log("📊 Fetching patient data for:", userData.username);
       
-      // Fetch scans from production backend
+      // Fetch scans
       const scansResponse = await fetch(`${API_URL}/my-scans/?username=${userData.username}`);
       const scansData = await scansResponse.json();
       console.log("📥 Scans data:", scansData);
@@ -160,6 +160,23 @@ Generated on: ${new Date().toLocaleString()}
     return styles[status] || styles.pending;
   };
 
+  // ============ FIXED: Get Image URL from Backend ============
+  const getImageUrl = (scan) => {
+    if (scan.image_url) {
+      // If image_url already starts with http, use it as is
+      if (scan.image_url.startsWith('http')) {
+        return scan.image_url;
+      }
+      // Otherwise, prepend the backend URL
+      return `${API_URL.replace('/api', '')}${scan.image_url}`;
+    }
+    if (scan.image) {
+      // If image is just the path, prepend backend URL
+      return `${API_URL.replace('/api', '')}/media/${scan.image}`;
+    }
+    return null;
+  };
+
   if (loading) {
     return (
       <div style={{ textAlign: 'center', padding: '50px' }}>
@@ -253,6 +270,9 @@ Generated on: ${new Date().toLocaleString()}
         ) : (
           scans.map((scan) => {
             const statusStyle = getStatusBadge(scan.status);
+            // ============ FIXED: Get image URL from backend ============
+            const imageUrl = getImageUrl(scan);
+            
             return (
               <div key={scan.id} style={{ border: '1px solid #eee', borderRadius: '10px', padding: '15px', marginBottom: '15px' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px', flexWrap: 'wrap' }}>
@@ -277,8 +297,12 @@ Generated on: ${new Date().toLocaleString()}
                   </div>
                 )}
                 <div style={{ display: 'flex', gap: '10px', marginTop: '10px', flexWrap: 'wrap' }}>
-                  {scan.image_url && (
-                    <button onClick={() => window.open(scan.image_url, '_blank')} style={{ padding: '6px 15px', backgroundColor: '#9c27b0', color: 'white', border: 'none', borderRadius: '5px', cursor: 'pointer', fontSize: '13px' }}>
+                  {/* ============ FIXED: View Image button using backend URL ============ */}
+                  {imageUrl && (
+                    <button 
+                      onClick={() => window.open(imageUrl, '_blank')} 
+                      style={{ padding: '6px 15px', backgroundColor: '#9c27b0', color: 'white', border: 'none', borderRadius: '5px', cursor: 'pointer', fontSize: '13px' }}
+                    >
                       🖼️ View Image
                     </button>
                   )}
