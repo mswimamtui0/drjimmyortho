@@ -1,52 +1,78 @@
 from django.db import models
 from django.contrib.auth.models import User
 import uuid
+import os
 
 def get_upload_path(instance, filename):
     """Generate secure path for medical images"""
-    import os
-    import uuid
-    
-    # Get file extension
     ext = filename.split('.')[-1]
-    # Generate unique filename
-    new_filename = f"{uuid.uuid4().hex}.{ext}"
-    # Create path: patient_scans/patient_id/filename
-    return f"patient_scans/{instance.patient.id}/{new_filename}"
+    filename = f"{uuid.uuid4().hex}.{ext}"
+    return f"patient_scans/{instance.patient.id}/{filename}"
 
-
+# ==================== PATIENT SCAN MODEL ====================
 class PatientScan(models.Model):
     SCAN_TYPES = [
         ('xray', 'X-Ray'),
         ('mri', 'MRI'),
         ('ct', 'CT-Scan'),
+        ('ultrasound', 'Ultrasound'),
+    ]
+    
+    BODY_PARTS = [
+        ('spine', 'Spine'),
+        ('knee', 'Knee'),
+        ('hip', 'Hip'),
+        ('shoulder', 'Shoulder'),
+        ('elbow', 'Elbow'),
+        ('wrist', 'Wrist'),
+        ('ankle', 'Ankle'),
+        ('other', 'Other'),
+    ]
+    
+    STATUS_CHOICES = [
+        ('pending', 'Pending Review'),
+        ('reviewed', 'Reviewed'),
+        ('needs_followup', 'Needs Follow-up'),
     ]
     
     patient = models.ForeignKey(User, on_delete=models.CASCADE, related_name='scans')
-    scan_type = models.CharField(max_length=10, choices=SCAN_TYPES)
-    body_part = models.CharField(max_length=50)
+    scan_type = models.CharField(max_length=20, choices=SCAN_TYPES)
+    body_part = models.CharField(max_length=50, choices=BODY_PARTS)
+    image = models.FileField(upload_to=get_upload_path, null=True, blank=True)
     description = models.TextField(blank=True)
-    # Remove the upload_to path - Cloudinary handles it
-image = models.FileField(null=True, blank=True)
     uploaded_at = models.DateTimeField(auto_now_add=True)
-    status = models.CharField(max_length=20, default='pending')
+    
+    # Doctor's review
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
+    doctor_notes = models.TextField(blank=True)
     diagnosis = models.TextField(blank=True)
     recommendations = models.TextField(blank=True)
+    reviewed_at = models.DateTimeField(null=True, blank=True)
+    reviewed_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='reviewed_scans')
     
     def __str__(self):
-        return f"{self.patient.username} - {self.scan_type}"
+        return f"{self.get_scan_type_display()} - {self.patient.username} - {self.uploaded_at.date()}"
 
+# ==================== CONSULTATION MODEL ====================
 class Consultation(models.Model):
+    STATUS_CHOICES = [
+        ('scheduled', 'Scheduled'),
+        ('completed', 'Completed'),
+        ('cancelled', 'Cancelled'),
+    ]
+    
     patient = models.ForeignKey(User, on_delete=models.CASCADE, related_name='consultations')
-    scheduled_date = models.DateTimeField(null=True, blank=True)
-    zoom_link = models.URLField(blank=True)
-    status = models.CharField(max_length=20, default='scheduled')
     doctor_notes = models.TextField(blank=True)
+    prescription = models.TextField(blank=True)
+    scheduled_date = models.DateTimeField()
+    zoom_link = models.URLField(blank=True)
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='scheduled')
     created_at = models.DateTimeField(auto_now_add=True)
     
     def __str__(self):
-        return f"{self.patient.username} - {self.scheduled_date}"
+        return f"Consultation - {self.patient.username} on {self.scheduled_date.date()}"
 
+# ==================== PAYMENT MODEL ====================
 class Payment(models.Model):
     PAYMENT_METHODS = [
         ('mpesa', 'M-Pesa'),
@@ -81,30 +107,7 @@ class Payment(models.Model):
     def __str__(self):
         return f"{self.patient.username} - {self.amount} - {self.status}"
 
-
-class ChatMessage(models.Model):
-    room_name = models.CharField(max_length=100)
-    sender = models.ForeignKey(User, on_delete=models.CASCADE, related_name='sent_messages')
-    receiver = models.ForeignKey(User, on_delete=models.CASCADE, related_name='received_messages')
-    message = models.TextField()
-    is_read = models.BooleanField(default=False)
-    created_at = models.DateTimeField(auto_now_add=True)
-    
-    class Meta:
-        ordering = ['created_at']
-    
-    def __str__(self):
-        return f"{self.sender.username} -> {self.receiver.username}: {self.message[:50]}"
-
-class ChatRoom(models.Model):
-    name = models.CharField(max_length=100, unique=True)
-    participants = models.ManyToManyField(User, related_name='chat_rooms')
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-    
-    def __str__(self):
-        return self.name
-
+# ==================== BLOG MODELS ====================
 class BlogPost(models.Model):
     STATUS_CHOICES = [
         ('draft', 'Draft'),
@@ -146,6 +149,7 @@ class BlogComment(models.Model):
     def __str__(self):
         return f"{self.author.username} - {self.post.title[:30]}"
 
+# ==================== REVIEW MODEL ====================
 class PatientReview(models.Model):
     patient = models.ForeignKey(User, on_delete=models.CASCADE, related_name='reviews')
     rating = models.IntegerField(choices=[(i, i) for i in range(1, 6)])
@@ -157,7 +161,31 @@ class PatientReview(models.Model):
     def __str__(self):
         return f"{self.patient.username} - {self.rating} stars"
 
+# ==================== CHAT MODELS ====================
+class ChatMessage(models.Model):
+    room_name = models.CharField(max_length=100)
+    sender = models.ForeignKey(User, on_delete=models.CASCADE, related_name='sent_messages')
+    receiver = models.ForeignKey(User, on_delete=models.CASCADE, related_name='received_messages')
+    message = models.TextField()
+    is_read = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+    
+    class Meta:
+        ordering = ['created_at']
+    
+    def __str__(self):
+        return f"{self.sender.username} -> {self.receiver.username}: {self.message[:50]}"
 
+class ChatRoom(models.Model):
+    name = models.CharField(max_length=100, unique=True)
+    participants = models.ManyToManyField(User, related_name='chat_rooms')
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    def __str__(self):
+        return self.name
+
+# ==================== CONSULTATION PAYMENT MODEL ====================
 class ConsultationPayment(models.Model):
     PAYMENT_STATUS = [
         ('pending', 'Pending'),
