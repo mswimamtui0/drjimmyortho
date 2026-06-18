@@ -67,7 +67,7 @@ function PatientProfile() {
         const updatedUser = { ...user, ...formData };
         localStorage.setItem('user', JSON.stringify(updatedUser));
         setUser(updatedUser);
-        setMessage({ type: 'success', text: '✅ Profile updated successfully!' });
+        setMessage({ type: 'success', text: ' Profile updated successfully!' });
       } else {
         setMessage({ type: 'error', text: data.error || 'Update failed' });
       }
@@ -82,7 +82,7 @@ function PatientProfile() {
 
   return (
     <div style={{ maxWidth: '800px', margin: '50px auto', padding: '20px' }}>
-      <h1 style={{ color: '#1976d2' }}>👤 My Profile</h1>
+      <h1 style={{ color: '#1976d2' }}> My Profile</h1>
       <p>Update your personal information</p>
 
       <form onSubmit={handleSubmit} style={{ marginTop: '30px' }}>
@@ -195,7 +195,7 @@ function PatientProfile() {
             opacity: loading ? 0.6 : 1
           }}
         >
-          {loading ? 'Saving...' : '💾 Save Changes'}
+          {loading ? 'Saving...' : ' Save Changes'}
         </button>
 
         {message && (

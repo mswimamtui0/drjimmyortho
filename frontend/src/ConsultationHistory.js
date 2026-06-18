@@ -50,7 +50,7 @@ function ConsultationHistory() {
 
   return (
     <div style={{ maxWidth: '900px', margin: '50px auto', padding: '20px' }}>
-      <h1 style={{ color: '#1976d2' }}>🎥 Consultation History</h1>
+      <h1 style={{ color: '#1976d2' }}> Consultation History</h1>
       <p>View all your past and upcoming video consultations</p>
 
       {consultations.length === 0 ? (
@@ -61,7 +61,7 @@ function ConsultationHistory() {
           borderRadius: '10px',
           marginTop: '30px'
         }}>
-          <div style={{ fontSize: '48px', marginBottom: '10px' }}>📭</div>
+          <div style={{ fontSize: '48px', marginBottom: '10px' }}></div>
           <h3>No consultations yet</h3>
           <p style={{ color: '#666' }}>Book your first video consultation with Dr. Jimmy</p>
           <a href="/video-consult">
@@ -92,7 +92,7 @@ function ConsultationHistory() {
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
-                    <span style={{ fontSize: '24px' }}>📅</span>
+                    <span style={{ fontSize: '24px' }}></span>
                     <div>
                       <div style={{ fontWeight: 'bold', fontSize: '1.1em' }}>
                         {consult.scheduled_date || 'Date pending'}
@@ -117,7 +117,7 @@ function ConsultationHistory() {
                         cursor: 'pointer',
                         marginRight: '10px'
                       }}>
-                        🎥 Join Meeting
+                         Join Meeting
                       </button>
                     </a>
                   )}
@@ -131,7 +131,7 @@ function ConsultationHistory() {
                   backgroundColor: '#f5f5f5',
                   borderRadius: '5px'
                 }}>
-                  <strong>📝 Doctor's Notes:</strong>
+                  <strong> Doctor's Notes:</strong>
                   <p style={{ marginTop: '5px', color: '#555' }}>{consult.doctor_notes}</p>
                 </div>
               )}
@@ -144,7 +144,7 @@ function ConsultationHistory() {
                   borderRadius: '5px',
                   borderLeft: '4px solid #1976d2'
                 }}>
-                  <strong>💊 Prescription:</strong>
+                  <strong> Prescription:</strong>
                   <p style={{ marginTop: '5px', color: '#555' }}>{consult.prescription}</p>
                 </div>
               )}
@@ -152,9 +152,9 @@ function ConsultationHistory() {
           ))}
           
           <div style={{ marginTop: '20px', padding: '15px', backgroundColor: '#e8f5e9', borderRadius: '10px' }}>
-            <p>📊 <strong>Total Consultations:</strong> {consultations.length}</p>
-            <p>📅 <strong>Scheduled:</strong> {consultations.filter(c => c.status === 'scheduled').length}</p>
-            <p>✅ <strong>Completed:</strong> {consultations.filter(c => c.status === 'completed').length}</p>
+            <p> <strong>Total Consultations:</strong> {consultations.length}</p>
+            <p> <strong>Scheduled:</strong> {consultations.filter(c => c.status === 'scheduled').length}</p>
+            <p> <strong>Completed:</strong> {consultations.filter(c => c.status === 'completed').length}</p>
           </div>
         </div>
       )}

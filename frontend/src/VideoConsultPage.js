@@ -90,19 +90,19 @@ function VideoConsultPage() {
         
         setMessage({ 
           type: 'success', 
-          text: data.message || '✅ Payment initiated! Check your phone for M-Pesa prompt.' 
+          text: data.message || ' Payment initiated! Check your phone for M-Pesa prompt.' 
         });
         setShowPaymentForm(false);
         fetchConsultations(user);
       } else {
         setMessage({ 
           type: 'error', 
-          text: data.error || '❌ Booking failed. Please try again.' 
+          text: data.error || ' Booking failed. Please try again.' 
         });
       }
     } catch (error) {
       console.error('Booking error:', error);
-      setMessage({ type: 'error', text: '❌ Error booking consultation. Please try again.' });
+      setMessage({ type: 'error', text: ' Error booking consultation. Please try again.' });
     } finally {
       setLoading(false);
     }
@@ -159,19 +159,19 @@ function VideoConsultPage() {
   return (
     <div style={styles.container}>
       <div style={styles.header}>
-        <h1 style={styles.headerTitle}>🎥 Video Consultation</h1>
+        <h1 style={styles.headerTitle}> Video Consultation</h1>
         <p style={styles.headerSub}>Book and pay for your consultation with Dr. Jimmy</p>
       </div>
 
       <div style={styles.grid}>
         {/* Booking Form */}
         <div style={styles.formCard}>
-          <h2 style={{ color: '#1976d2', marginTop: 0 }}>📅 Book & Pay</h2>
+          <h2 style={{ color: '#1976d2', marginTop: 0 }}> Book & Pay</h2>
           <p style={{ color: '#666' }}>Pay $50 (TZS 120,000) for your consultation</p>
 
           <form onSubmit={handleBookingWithPayment}>
             <div style={styles.formGroup}>
-              <label style={styles.label}>📅 Date *</label>
+              <label style={styles.label}> Date *</label>
               <input
                 type="date"
                 value={appointmentDate}
@@ -183,7 +183,7 @@ function VideoConsultPage() {
             </div>
 
             <div style={styles.formGroup}>
-              <label style={styles.label}>🕐 Time (East Africa Time) *</label>
+              <label style={styles.label}> Time (East Africa Time) *</label>
               <select
                 value={appointmentTime}
                 onChange={(e) => setAppointmentTime(e.target.value)}
@@ -203,7 +203,7 @@ function VideoConsultPage() {
             </div>
 
             <div style={styles.formGroup}>
-              <label style={styles.label}>📝 Notes for Dr. Jimmy</label>
+              <label style={styles.label}> Notes for Dr. Jimmy</label>
               <textarea
                 value={notes}
                 onChange={(e) => setNotes(e.target.value)}
@@ -214,7 +214,7 @@ function VideoConsultPage() {
             </div>
 
             <div style={styles.formGroup}>
-              <label style={styles.label}>💳 Payment Method *</label>
+              <label style={styles.label}> Payment Method *</label>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
                 <div 
                   style={{
@@ -223,7 +223,7 @@ function VideoConsultPage() {
                   }}
                   onClick={() => setPaymentMethod('mpesa')}
                 >
-                  <span>📱</span>
+                  <span></span>
                   <span><strong>M-Pesa</strong> (Tanzania)</span>
                 </div>
                 <div 
@@ -233,7 +233,7 @@ function VideoConsultPage() {
                   }}
                   onClick={() => setPaymentMethod('card')}
                 >
-                  <span>💳</span>
+                  <span></span>
                   <span><strong>Credit/Debit Card</strong></span>
                 </div>
               </div>
@@ -241,7 +241,7 @@ function VideoConsultPage() {
 
             {paymentMethod === 'mpesa' && (
               <div style={styles.formGroup}>
-                <label style={styles.label}>📱 M-Pesa Phone Number *</label>
+                <label style={styles.label}> M-Pesa Phone Number *</label>
                 <input
                   type="tel"
                   placeholder="e.g., 0712345678"
@@ -273,7 +273,7 @@ function VideoConsultPage() {
                 ...(loading ? styles.buttonDisabled : {})
               }}
             >
-              {loading ? '⏳ Processing...' : '💳 Book & Pay Now'}
+              {loading ? ' Processing...' : ' Book & Pay Now'}
             </button>
           </form>
 
@@ -290,7 +290,7 @@ function VideoConsultPage() {
 
           {paymentStatus && paymentStatus.status === 'pending' && (
             <div style={{ marginTop: '20px', padding: '15px', backgroundColor: '#fff3e0', borderRadius: '8px' }}>
-              <h4>⏳ Payment Pending</h4>
+              <h4> Payment Pending</h4>
               <p>Reference: {paymentStatus.reference}</p>
               <p>Amount: TZS {paymentStatus.amount}</p>
               <p style={{ fontSize: '14px', color: '#666' }}>
@@ -304,12 +304,12 @@ function VideoConsultPage() {
 
         {/* Upcoming Consultations */}
         <div style={styles.formCard}>
-          <h2 style={{ color: '#1976d2', marginTop: 0 }}>📋 Your Consultations</h2>
+          <h2 style={{ color: '#1976d2', marginTop: 0 }}> Your Consultations</h2>
           <p style={{ color: '#666' }}>View your upcoming and past consultations</p>
 
           {consultations.length === 0 ? (
             <div style={{ textAlign: 'center', padding: '40px', backgroundColor: '#f5f5f5', borderRadius: '10px' }}>
-              <p style={{ fontSize: '2em', margin: 0 }}>📭</p>
+              <p style={{ fontSize: '2em', margin: 0 }}></p>
               <p style={{ color: '#666' }}>No consultations yet</p>
               <p style={{ fontSize: '14px', color: '#999' }}>Book your first consultation above</p>
             </div>
@@ -320,19 +320,19 @@ function VideoConsultPage() {
                 return (
                   <div key={consult.id} style={styles.consultItem}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
-                      <span style={styles.consultDate}>📅 {consult.scheduled_date}</span>
+                      <span style={styles.consultDate}> {consult.scheduled_date}</span>
                       <span style={{ padding: '4px 12px', borderRadius: '20px', fontSize: '12px', fontWeight: 'bold', ...statusStyle }}>
-                        {consult.status === 'pending_payment' ? '⏳ Payment Pending' : consult.status}
+                        {consult.status === 'pending_payment' ? ' Payment Pending' : consult.status}
                       </span>
                     </div>
                     {consult.zoom_link && consult.status === 'scheduled' && (
                       <a href={consult.zoom_link} target="_blank" rel="noopener noreferrer" style={{ display: 'inline-block', backgroundColor: '#1976d2', color: 'white', padding: '8px 15px', borderRadius: '5px', textDecoration: 'none', marginTop: '10px', fontSize: '14px' }}>
-                        🎥 Join Zoom Meeting
+                         Join Zoom Meeting
                       </a>
                     )}
                     {consult.status === 'pending_payment' && (
                       <p style={{ fontSize: '13px', color: '#ff9800', marginTop: '10px' }}>
-                        ⚠️ Awaiting payment confirmation
+                         Awaiting payment confirmation
                       </p>
                     )}
                   </div>
@@ -345,13 +345,13 @@ function VideoConsultPage() {
 
       {/* Footer Info */}
       <div style={{ marginTop: '40px', padding: '20px', backgroundColor: '#e3f2fd', borderRadius: '10px', textAlign: 'center' }}>
-        <h3 style={{ color: '#1976d2' }}>✅ Payment Before Consultation</h3>
+        <h3 style={{ color: '#1976d2' }}> Payment Before Consultation</h3>
         <p>All consultations require payment before booking to confirm your appointment.</p>
         <p style={{ fontSize: '14px' }}>
           <strong>Accepted Payments:</strong> M-Pesa, Airtel Money, Credit/Debit Cards
         </p>
         <p style={{ fontSize: '14px' }}>
-          📧 Confirmation email sent after successful payment
+           Confirmation email sent after successful payment
         </p>
       </div>
     </div>

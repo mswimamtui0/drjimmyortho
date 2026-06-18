@@ -52,7 +52,7 @@ function ReviewsComponent() {
       
       const data = await response.json();
       if (data.success) {
-        alert('✅ Thank you for your review!');
+        alert(' Thank you for your review!');
         setRating(0);
         setComment('');
         fetchReviews();
@@ -65,7 +65,7 @@ function ReviewsComponent() {
   };
 
   const renderStars = (rating) => {
-    return '⭐'.repeat(rating) + '☆'.repeat(5 - rating);
+    return ''.repeat(rating) + ''.repeat(5 - rating);
   };
 
   // Styles
@@ -198,7 +198,7 @@ function ReviewsComponent() {
   return (
     <div style={styles.container}>
       <div style={styles.header}>
-        <h2 style={styles.headerTitle}>⭐ Patient Reviews</h2>
+        <h2 style={styles.headerTitle}> Patient Reviews</h2>
         <div style={styles.ratingSummary}>
           <div style={styles.averageRating}>
             <span style={styles.ratingNumber}>{averageRating}</span>
@@ -239,7 +239,7 @@ function ReviewsComponent() {
               onMouseEnter={() => setHover(star)}
               onMouseLeave={() => setHover(0)}
             >
-              ⭐
+              
             </button>
           ))}
         </div>

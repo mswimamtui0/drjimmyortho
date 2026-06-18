@@ -72,7 +72,7 @@ function MedicalHistory() {
       const data = await response.json();
 
       if (response.ok) {
-        setMessage({ type: 'success', text: '✅ Medical history saved successfully!' });
+        setMessage({ type: 'success', text: ' Medical history saved successfully!' });
       } else {
         setMessage({ type: 'error', text: data.error || 'Save failed' });
       }
@@ -87,7 +87,7 @@ function MedicalHistory() {
 
   return (
     <div style={{ maxWidth: '800px', margin: '50px auto', padding: '20px' }}>
-      <h1 style={{ color: '#1976d2' }}>📋 Medical History</h1>
+      <h1 style={{ color: '#1976d2' }}> Medical History</h1>
       <p>Provide your complete medical history for better diagnosis</p>
 
       <form onSubmit={handleSubmit} style={{ marginTop: '30px' }}>
@@ -178,7 +178,7 @@ function MedicalHistory() {
             opacity: loading ? 0.6 : 1
           }}
         >
-          {loading ? 'Saving...' : '💾 Save Medical History'}
+          {loading ? 'Saving...' : ' Save Medical History'}
         </button>
 
         {message && (

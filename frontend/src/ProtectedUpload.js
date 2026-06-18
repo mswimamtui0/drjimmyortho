@@ -45,16 +45,16 @@ function ProtectedUpload() {
       const data = await response.json();
       
       if (response.ok) {
-        setMessage('✅ Scan uploaded successfully! Dr. Jimmy will review it.');
+        setMessage(' Scan uploaded successfully! Dr. Jimmy will review it.');
         setFile(null);
         setBodyPart('');
         setDescription('');
         document.getElementById('file-input').value = '';
       } else {
-        setMessage('❌ Upload failed: ' + (data.error || 'Unknown error'));
+        setMessage(' Upload failed: ' + (data.error || 'Unknown error'));
       }
     } catch (error) {
-      setMessage('❌ Cannot connect to server');
+      setMessage(' Cannot connect to server');
     } finally {
       setUploading(false);
     }

@@ -73,12 +73,12 @@ function DoctorDashboard() {
         setMessage({ type: 'success', text: ` Loaded ${data.patients?.length || 0} patients` });
         setTimeout(() => setMessage({ type: '', text: '' }), 3000);
       } else {
-        console.error("❌ Dashboard error:", data.error);
+        console.error(" Dashboard error:", data.error);
         setMessage({ type: 'error', text: data.error || 'Failed to load dashboard' });
         setPatients([]);
       }
     } catch (error) {
-      console.error('❌ Fetch error:', error);
+      console.error(' Fetch error:', error);
       setMessage({ type: 'error', text: 'Failed to connect to server' });
       setPatients([]);
     } finally {
@@ -188,7 +188,7 @@ function DoctorDashboard() {
           scan_id: scanId
         })
       });
-      console.log('📧 Email notification sent');
+      console.log(' Email notification sent');
     } catch (error) {
       console.error('Email error:', error);
     }
@@ -221,7 +221,7 @@ function DoctorDashboard() {
       doctor_notes: doctorNotes.trim() || 'No additional notes'
     };
 
-    console.log('📤 Sending prescription data:', prescriptionData);
+    console.log(' Sending prescription data:', prescriptionData);
 
     setPrescriptionLoading(true);
 
@@ -235,12 +235,12 @@ function DoctorDashboard() {
       });
       
       const data = await response.json();
-      console.log('📥 Prescription response:', data);
+      console.log(' Prescription response:', data);
       
       if (response.ok && data.success) {
         setMessage({ 
           type: 'success', 
-          text: '✅ Prescription generated successfully!' 
+          text: ' Prescription generated successfully!' 
         });
         setShowPrescriptionModal(false);
         setMedications([]);
@@ -251,8 +251,8 @@ function DoctorDashboard() {
         setPrescriptionLoading(false);
       }
     } catch (error) {
-      console.error('❌ Prescription error:', error);
-      setMessage({ type: 'error', text: '❌ Error generating prescription. Please try again.' });
+      console.error(' Prescription error:', error);
+      setMessage({ type: 'error', text: ' Error generating prescription. Please try again.' });
       setPrescriptionLoading(false);
     }
   };
@@ -283,7 +283,7 @@ function DoctorDashboard() {
   const getImageUrl = (scan) => {
     if (!scan) return null;
     
-    console.log("🖼️ Getting image URL for scan:", scan);
+    console.log(" Getting image URL for scan:", scan);
     
     // If scan has image_url
     if (scan.image_url) {
@@ -309,7 +309,7 @@ function DoctorDashboard() {
 
   const handleViewImage = (scan) => {
     const imageUrl = getImageUrl(scan);
-    console.log("📸 Full Image URL:", imageUrl);
+    console.log(" Full Image URL:", imageUrl);
     setSelectedImage(imageUrl);
     setSelectedImageTitle(`${scan.scan_type} - ${scan.body_part}`);
     setImageLoading(true);
@@ -345,7 +345,7 @@ function DoctorDashboard() {
     <div className="doctor-dashboard">
       {/* Header */}
       <div className="dashboard-header">
-        <h1>👨‍⚕️ Dr. Jimmy - Medical Dashboard</h1>
+        <h1>‍ Dr. Jimmy - Medical Dashboard</h1>
         <p>Manage patients, review scans, and conduct video consultations</p>
         <button 
           onClick={() => fetchDashboard()} 
@@ -359,7 +359,7 @@ function DoctorDashboard() {
             cursor: 'pointer'
           }}
         >
-          🔄 Refresh Data
+           Refresh Data
         </button>
       </div>
 
@@ -373,22 +373,22 @@ function DoctorDashboard() {
       {/* Stats Cards */}
       <div className="stats-grid">
         <div className="stat-card blue">
-          <div className="stat-icon">👥</div>
+          <div className="stat-icon"></div>
           <div className="stat-number">{stats.totalPatients}</div>
           <div className="stat-label">Total Patients</div>
         </div>
         <div className="stat-card orange">
-          <div className="stat-icon">⏳</div>
+          <div className="stat-icon"></div>
           <div className="stat-number">{stats.totalPending}</div>
           <div className="stat-label">Pending Reviews</div>
         </div>
         <div className="stat-card green">
-          <div className="stat-icon">🩻</div>
+          <div className="stat-icon"></div>
           <div className="stat-number">{stats.totalScans}</div>
           <div className="stat-label">Total Scans</div>
         </div>
         <div className="stat-card red">
-          <div className="stat-icon">🔴</div>
+          <div className="stat-icon"></div>
           <div className="stat-number">{stats.patientsNeedingReview}</div>
           <div className="stat-label">Patients Needing Review</div>
         </div>
@@ -399,7 +399,7 @@ function DoctorDashboard() {
         <div className="search-wrapper">
           <input
             type="text"
-            placeholder="🔍 Search patients by name, email, or username..."
+            placeholder=" Search patients by name, email, or username..."
             value={searchQuery}
             onChange={(e) => handleSearch(e.target.value)}
             className="search-input"
@@ -409,9 +409,9 @@ function DoctorDashboard() {
             onChange={(e) => setFilterStatus(e.target.value)}
             className="filter-select"
           >
-            <option value="all">📋 All Scans</option>
-            <option value="pending">⏳ Pending Only</option>
-            <option value="reviewed">✅ Reviewed Only</option>
+            <option value="all"> All Scans</option>
+            <option value="pending"> Pending Only</option>
+            <option value="reviewed"> Reviewed Only</option>
           </select>
         </div>
       </div>
@@ -420,7 +420,7 @@ function DoctorDashboard() {
       <div className="dashboard-grid">
         {/* Patients Sidebar */}
         <div className="patients-sidebar">
-          <h3>📋 Patients List</h3>
+          <h3> Patients List</h3>
           <div className="patients-list">
             {patients.length === 0 ? (
               <p style={{ textAlign: 'center', color: '#999', padding: '20px' }}>
@@ -436,7 +436,7 @@ function DoctorDashboard() {
                   <div className="patient-name">{patient.patient_name}</div>
                   <div className="patient-email">{patient.email}</div>
                   <div className="patient-stats">
-                    📄 {patient.total_scans || 0} scans | ⏳ {patient.pending_scans || 0} pending
+                     {patient.total_scans || 0} scans |  {patient.pending_scans || 0} pending
                     {(patient.pending_scans || 0) > 0 && (
                       <span className="pending-badge">{patient.pending_scans}</span>
                     )}
@@ -455,10 +455,10 @@ function DoctorDashboard() {
                 <div>
                   <h2>{selectedPatient.patient_name}</h2>
                   <div className="patient-info">
-                    <span>📧 {selectedPatient.email}</span>
-                    <span>📞 {selectedPatient.phone || 'No phone'}</span>
-                    <span>🆔 ID: {selectedPatient.patient_id}</span>
-                    <span>📅 Joined: {selectedPatient.date_joined}</span>
+                    <span> {selectedPatient.email}</span>
+                    <span> {selectedPatient.phone || 'No phone'}</span>
+                    <span> ID: {selectedPatient.patient_id}</span>
+                    <span> Joined: {selectedPatient.date_joined}</span>
                   </div>
                 </div>
                 <div className="header-actions">
@@ -469,7 +469,7 @@ function DoctorDashboard() {
                     }} 
                     className="btn-prescription"
                   >
-                    📋 Prescription
+                     Prescription
                   </button>
                 </div>
               </div>
@@ -487,17 +487,17 @@ function DoctorDashboard() {
                       <div className="scan-header">
                         <div>
                           <span className="scan-type">{scan.scan_type}</span>
-                          <span className="scan-body">📍 {scan.body_part}</span>
+                          <span className="scan-body"> {scan.body_part}</span>
                         </div>
                         <span className={`scan-status ${scan.status}`}>
-                          {scan.status === 'pending' ? '⏳ Pending' : '✅ Reviewed'}
+                          {scan.status === 'pending' ? ' Pending' : ' Reviewed'}
                         </span>
                       </div>
                       <div className="scan-meta">
-                        <span>📅 {scan.uploaded_at}</span>
+                        <span> {scan.uploaded_at}</span>
                       </div>
                       {scan.description && (
-                        <div className="scan-description">📝 {scan.description}</div>
+                        <div className="scan-description"> {scan.description}</div>
                       )}
                       
                       {/* View Image Button */}
@@ -506,7 +506,7 @@ function DoctorDashboard() {
                           onClick={() => handleViewImage(scan)}
                           className="btn-view-image"
                         >
-                          🖼️ View Image
+                           View Image
                         </button>
                       </div>
                       
@@ -535,7 +535,7 @@ function DoctorDashboard() {
                           />
                           <div className="review-actions">
                             <button onClick={() => updateScan(scan.id)} className="btn-submit-review">
-                              📤 Submit & Notify
+                               Submit & Notify
                             </button>
                             <button onClick={() => setSelectedScan(null)} className="btn-cancel-review">
                               Cancel
@@ -544,7 +544,7 @@ function DoctorDashboard() {
                         </div>
                       ) : (
                         <button onClick={() => setSelectedScan(scan.id)} className="btn-review">
-                          {scan.status === 'pending' ? '📝 Review Scan' : '✏️ Edit Review'}
+                          {scan.status === 'pending' ? ' Review Scan' : ' Edit Review'}
                         </button>
                       )}
                       
@@ -565,7 +565,7 @@ function DoctorDashboard() {
             </>
           ) : (
             <div className="no-patient-selected">
-              <div className="no-patient-icon">👨‍⚕️</div>
+              <div className="no-patient-icon">‍</div>
               <h3>Select a Patient</h3>
               <p>Choose a patient from the list to view their medical records, scans, and consultations</p>
             </div>
@@ -577,7 +577,7 @@ function DoctorDashboard() {
       {showPrescriptionModal && selectedPatient && (
         <div className="modal-overlay">
           <div className="modal-content">
-            <h2>📋 Generate Prescription</h2>
+            <h2> Generate Prescription</h2>
             <p><strong>Patient:</strong> {selectedPatient.patient_name}</p>
             <p><strong>Email:</strong> {selectedPatient.email}</p>
             
@@ -666,7 +666,7 @@ function DoctorDashboard() {
                 className="btn-generate"
                 disabled={prescriptionLoading}
               >
-                {prescriptionLoading ? '⏳ Generating...' : '📄 Generate & Send'}
+                {prescriptionLoading ? ' Generating...' : ' Generate & Send'}
               </button>
               <button 
                 onClick={() => { 
@@ -687,12 +687,12 @@ function DoctorDashboard() {
         <div className="modal-overlay" onClick={() => setShowImageModal(false)}>
           <div className="modal-content image-modal" onClick={(e) => e.stopPropagation()}>
             <div className="image-modal-header">
-              <h2>🖼️ {selectedImageTitle || 'Medical Image'}</h2>
+              <h2> {selectedImageTitle || 'Medical Image'}</h2>
               <button 
                 onClick={() => setShowImageModal(false)} 
                 className="btn-close-image"
               >
-                ✕
+                
               </button>
             </div>
             <div className="image-container">
@@ -708,14 +708,14 @@ function DoctorDashboard() {
                 className="modal-image"
                 style={{ display: imageLoading ? 'none' : 'block' }}
                 onError={(e) => {
-                  console.error("❌ Image failed to load:", selectedImage);
+                  console.error(" Image failed to load:", selectedImage);
                   e.target.src = 'https://via.placeholder.com/600x400?text=Image+Not+Available';
                   e.target.style.objectFit = 'contain';
                   e.target.style.display = 'block';
                   setImageLoading(false);
                 }}
                 onLoad={() => {
-                  console.log("✅ Image loaded successfully:", selectedImage);
+                  console.log(" Image loaded successfully:", selectedImage);
                   setImageLoading(false);
                 }}
               />
@@ -729,7 +729,7 @@ function DoctorDashboard() {
                   }}
                   className="btn-open-new-tab"
                 >
-                  📎 Open in New Tab
+                   Open in New Tab
                 </button>
                 <button onClick={() => setShowImageModal(false)} className="btn-close-modal">
                   Close

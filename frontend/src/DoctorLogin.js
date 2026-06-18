@@ -32,7 +32,7 @@ function DoctorLogin() {
         localStorage.setItem('access_token', data.access || 'demo_token');
         localStorage.setItem('isLoggedIn', 'true');
         
-        console.log('✅ Doctor logged in:', data.user);
+        console.log(' Doctor logged in:', data.user);
         
         // Redirect to doctor dashboard
         navigate('/doctor');
@@ -171,7 +171,7 @@ function DoctorLogin() {
     <div style={styles.container}>
       <div style={styles.card}>
         <div style={styles.header}>
-          <div style={styles.logo}>👨‍⚕️</div>
+          <div style={styles.logo}>‍</div>
           <h1 style={styles.title}>Doctor Login</h1>
           <p style={styles.subtitle}>Access the Dr. Jimmy Medical Dashboard</p>
         </div>
@@ -254,12 +254,12 @@ function DoctorLogin() {
 </div>
 
         <div style={styles.infoBox}>
-          <strong style={styles.infoBoxTitle}>📋 Doctor Access</strong>
+          <strong style={styles.infoBoxTitle}> Doctor Access</strong>
           <ul style={styles.infoList}>
-            <li style={styles.infoItem}>✓ View all patients</li>
-            <li style={styles.infoItem}>✓ Review medical scans</li>
-            <li style={styles.infoItem}>✓ Add diagnosis and recommendations</li>
-            <li style={styles.infoItem}>✓ Generate prescriptions</li>
+            <li style={styles.infoItem}> View all patients</li>
+            <li style={styles.infoItem}> Review medical scans</li>
+            <li style={styles.infoItem}> Add diagnosis and recommendations</li>
+            <li style={styles.infoItem}> Generate prescriptions</li>
           </ul>
         </div>
       </div>

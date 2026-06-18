@@ -69,7 +69,7 @@ function BlogPage() {
   return (
     <div className="blog-container">
       <div className="blog-header">
-        <h1>📝 Dr. Jimmy's Medical Blog</h1>
+        <h1> Dr. Jimmy's Medical Blog</h1>
         <p>Expert insights on spine health, orthopedic care, and medical innovations</p>
       </div>
 
@@ -81,10 +81,10 @@ function BlogPage() {
           
           <h1>{selectedPost.title}</h1>
           <div className="post-meta">
-            <span>👨‍⚕️ {selectedPost.author}</span>
-            <span>📅 {selectedPost.published_at}</span>
-            <span>👁️ {selectedPost.views} views</span>
-            <span>🏷️ {selectedPost.tags?.join(', ')}</span>
+            <span>‍ {selectedPost.author}</span>
+            <span> {selectedPost.published_at}</span>
+            <span> {selectedPost.views} views</span>
+            <span> {selectedPost.tags?.join(', ')}</span>
           </div>
           
           {selectedPost.featured_image && (
@@ -98,7 +98,7 @@ function BlogPage() {
           <div className="post-content">{selectedPost.content}</div>
           
           <div className="comments-section">
-            <h3>💬 Comments ({comments.length})</h3>
+            <h3> Comments ({comments.length})</h3>
             {comments.map((comment) => (
               <div key={comment.id} className="comment">
                 <strong>{comment.author}</strong>
@@ -132,9 +132,9 @@ function BlogPage() {
                 <h3>{post.title}</h3>
                 <p>{post.excerpt || post.content.substring(0, 150)}...</p>
                 <div className="blog-card-meta">
-                  <span>📅 {post.published_at}</span>
-                  <span>👁️ {post.views}</span>
-                  <span>💬 {post.comment_count}</span>
+                  <span> {post.published_at}</span>
+                  <span> {post.views}</span>
+                  <span> {post.comment_count}</span>
                 </div>
               </div>
             </div>

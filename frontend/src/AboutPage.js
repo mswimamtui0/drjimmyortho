@@ -27,7 +27,7 @@ function AboutPage() {
       {/* Hero */}
       <div className="about-hero">
         <div className="about-hero-content">
-          <h1>👨‍⚕️ About Dr. Jimmy</h1>
+          <h1>‍ About Dr. Jimmy</h1>
           <p>International Orthopedic & Spine Surgeon</p>
         </div>
       </div>
@@ -37,7 +37,7 @@ function AboutPage() {
           {/* Bio Section */}
           <div className="bio-section">
             <div className="bio-image">
-              <div className="placeholder-image">👨‍⚕️</div>
+              <div className="placeholder-image">‍</div>
             </div>
             <div className="bio-text">
               <h2>Dr. Jimmy Mswima</h2>
@@ -66,7 +66,7 @@ function AboutPage() {
 
           {/* Publications */}
           <div className="publications-section">
-            <h2>📚 Selected Publications</h2>
+            <h2> Selected Publications</h2>
             <ul>
               {publications.map((pub, index) => (
                 <li key={index}>{pub}</li>
@@ -76,7 +76,7 @@ function AboutPage() {
 
           {/* Memberships */}
           <div className="memberships-section">
-            <h2>🤝 Professional Memberships</h2>
+            <h2> Professional Memberships</h2>
             <div className="memberships-grid">
               {memberships.map((membership, index) => (
                 <div key={index} className="membership-card">
@@ -88,11 +88,11 @@ function AboutPage() {
 
           {/* Languages */}
           <div className="languages-section">
-            <h2>🗣️ Languages</h2>
+            <h2> Languages</h2>
             <div className="languages">
-              <span>🇬🇧 English (Fluent)</span>
-              <span>🇹🇿 Swahili (Native)</span>
-              <span>🇫🇷 French (Conversational)</span>
+              <span> English (Fluent)</span>
+              <span> Swahili (Native)</span>
+              <span> French (Conversational)</span>
             </div>
           </div>
         </div>

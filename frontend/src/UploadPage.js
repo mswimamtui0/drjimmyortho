@@ -33,7 +33,7 @@ function UploadPage() {
     try {
       const response = await fetch(`${API_URL}/my-scans/?username=${userData.username}`);
       const data = await response.json();
-      console.log('📥 My scans:', data);
+      console.log(' My scans:', data);
       if (data.scans) {
         setScans(data.scans);
       }
@@ -65,17 +65,17 @@ function UploadPage() {
     e.preventDefault();
     
     if (!user) {
-      setMessage({ type: 'error', text: '❌ Please login first to upload scans' });
+      setMessage({ type: 'error', text: ' Please login first to upload scans' });
       return;
     }
     
     if (!file) {
-      setMessage({ type: 'error', text: '❌ Please select a file to upload' });
+      setMessage({ type: 'error', text: ' Please select a file to upload' });
       return;
     }
 
     if (!bodyPart) {
-      setMessage({ type: 'error', text: '❌ Please select body part' });
+      setMessage({ type: 'error', text: ' Please select body part' });
       return;
     }
 
@@ -89,10 +89,10 @@ function UploadPage() {
     formData.append('description', description);
     formData.append('username', user.username);
 
-    console.log('📤 Uploading scan for user:', user.username);
-    console.log('📤 File:', file.name);
-    console.log('📤 Scan Type:', scanType);
-    console.log('📤 Body Part:', bodyPart);
+    console.log(' Uploading scan for user:', user.username);
+    console.log(' File:', file.name);
+    console.log(' Scan Type:', scanType);
+    console.log(' Body Part:', bodyPart);
 
     try {
       const response = await fetch(`${API_URL}/upload/`, {
@@ -101,10 +101,10 @@ function UploadPage() {
       });
       
       const data = await response.json();
-      console.log('📤 Upload response:', data);
+      console.log(' Upload response:', data);
       
       if (response.ok && data.success) {
-        setMessage({ type: 'success', text: '✅ Scan uploaded successfully! Dr. Jimmy will review it soon.' });
+        setMessage({ type: 'success', text: ' Scan uploaded successfully! Dr. Jimmy will review it soon.' });
         // Reset form
         setFile(null);
         setBodyPart('');
@@ -114,11 +114,11 @@ function UploadPage() {
         // Refresh scans list
         fetchMyScans(user);
       } else {
-        setMessage({ type: 'error', text: `❌ Upload failed: ${data.error || 'Please try again'}` });
+        setMessage({ type: 'error', text: ` Upload failed: ${data.error || 'Please try again'}` });
       }
     } catch (error) {
       console.error('Upload error:', error);
-      setMessage({ type: 'error', text: '❌ Cannot connect to server. Please make sure backend is running.' });
+      setMessage({ type: 'error', text: ' Cannot connect to server. Please make sure backend is running.' });
     } finally {
       setUploading(false);
     }
@@ -353,7 +353,7 @@ function UploadPage() {
   if (!user) {
     return (
       <div style={{ maxWidth: '600px', margin: '100px auto', padding: '40px', textAlign: 'center', backgroundColor: '#f8d7da', borderRadius: '10px' }}>
-        <h2 style={{ color: '#721c24' }}>🔒 Access Denied</h2>
+        <h2 style={{ color: '#721c24' }}> Access Denied</h2>
         <p>Please login first to upload medical scans.</p>
         <button onClick={() => navigate('/login')} style={{ backgroundColor: '#1976d2', color: 'white', padding: '12px 24px', border: 'none', borderRadius: '5px', cursor: 'pointer', marginTop: '20px' }}>
           Go to Login
@@ -366,7 +366,7 @@ function UploadPage() {
     <div style={styles.container}>
       {/* Header */}
       <div style={styles.header}>
-        <h1 style={styles.headerTitle}>📤 Upload Medical Scan</h1>
+        <h1 style={styles.headerTitle}> Upload Medical Scan</h1>
         <p style={styles.headerSub}>Welcome back, {user.first_name || user.username}! Upload your MRI, X-Ray, or CT-Scan for Dr. Jimmy to review.</p>
       </div>
 
@@ -447,11 +447,11 @@ function UploadPage() {
                   required
                 />
                 <label htmlFor="file-input" style={styles.fileLabel}>
-                  📁 Choose File
+                   Choose File
                 </label>
                 {file && (
                   <div style={styles.fileName}>
-                    ✅ Selected: {file.name} ({(file.size / 1024 / 1024).toFixed(2)} MB)
+                     Selected: {file.name} ({(file.size / 1024 / 1024).toFixed(2)} MB)
                   </div>
                 )}
                 <p style={styles.fileHint}>Supported formats: JPG, PNG, JPEG, DICOM. Max size: 50MB</p>
@@ -475,13 +475,13 @@ function UploadPage() {
                 ...(uploading ? styles.submitBtnDisabled : {})
               }}
             >
-              {uploading ? '⏳ Uploading...' : '🚀 Upload Scan for Review'}
+              {uploading ? ' Uploading...' : ' Upload Scan for Review'}
             </button>
           </form>
 
           {/* Info Box */}
           <div style={styles.infoBox}>
-            <h4 style={{ margin: 0, color: '#1976d2' }}>📋 What happens next?</h4>
+            <h4 style={{ margin: 0, color: '#1976d2' }}> What happens next?</h4>
             <p style={{ margin: '10px 0 0 0', fontSize: '14px' }}>
               Dr. Jimmy will review your scan within 24-48 hours. You will receive a diagnosis and recommendations.
               Check your dashboard for updates.
@@ -491,7 +491,7 @@ function UploadPage() {
 
         {/* My Scans History */}
         <div style={styles.historyCard}>
-          <h2 style={styles.formTitle}>📋 My Scans</h2>
+          <h2 style={styles.formTitle}> My Scans</h2>
           
           {loadingScans ? (
             <div style={{ textAlign: 'center', padding: '40px' }}>
@@ -499,7 +499,7 @@ function UploadPage() {
             </div>
           ) : scans.length === 0 ? (
             <div style={styles.noScans}>
-              <div style={{ fontSize: '48px', marginBottom: '10px' }}>📭</div>
+              <div style={{ fontSize: '48px', marginBottom: '10px' }}></div>
               <p>No scans uploaded yet.</p>
               <p style={{ fontSize: '14px', color: '#666' }}>Upload your first scan using the form above.</p>
             </div>
@@ -512,17 +512,17 @@ function UploadPage() {
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '5px' }}>
                       <span style={styles.scanType}>{scan.scan_type}</span>
                       <span style={{ ...styles.scanStatus, ...(scan.status === 'pending' ? styles.statusPending : styles.statusReviewed) }}>
-                        {scan.status === 'pending' ? '⏳ Pending' : '✅ Reviewed'}
+                        {scan.status === 'pending' ? ' Pending' : ' Reviewed'}
                       </span>
                     </div>
                     <div style={styles.scanBody}>
-                      📍 {scan.body_part}
+                       {scan.body_part}
                       <br />
-                      📅 {scan.uploaded_at}
+                       {scan.uploaded_at}
                     </div>
                     {scan.description && (
                       <div style={styles.scanBody}>
-                        📝 {scan.description}
+                         {scan.description}
                       </div>
                     )}
                     {imageUrl && (
@@ -530,7 +530,7 @@ function UploadPage() {
                         onClick={() => window.open(imageUrl, '_blank')}
                         style={styles.viewImageBtn}
                       >
-                        🖼️ View Image
+                         View Image
                       </button>
                     )}
                     {scan.diagnosis && (

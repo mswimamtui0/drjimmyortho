@@ -27,7 +27,7 @@ function PatientForms() {
       title: 'Patient Registration Form',
       description: 'Complete this form to register as a new patient',
       category: 'Registration',
-      icon: '📝',
+      icon: '',
       fields: ['Full Name', 'Date of Birth', 'Phone Number', 'Email', 'Address', 'Emergency Contact']
     },
     {
@@ -35,7 +35,7 @@ function PatientForms() {
       title: 'Medical History Form',
       description: 'Provide your complete medical history',
       category: 'Medical',
-      icon: '📋',
+      icon: '',
       fields: ['Previous Surgeries', 'Allergies', 'Chronic Conditions', 'Current Medications', 'Family History']
     },
     {
@@ -43,7 +43,7 @@ function PatientForms() {
       title: 'Surgical Consent Form',
       description: 'Consent for surgical procedures',
       category: 'Legal',
-      icon: '📄',
+      icon: '',
       fields: ['Patient Name', 'Procedure Details', 'Risks Acknowledged', 'Signature', 'Date']
     },
     {
@@ -51,7 +51,7 @@ function PatientForms() {
       title: 'Telemedicine Consent Form',
       description: 'Consent for video consultation services',
       category: 'Legal',
-      icon: '📱',
+      icon: '',
       fields: ['Patient Name', 'Video Consultation Agreement', 'Privacy Acknowledgment', 'Signature']
     },
     {
@@ -59,7 +59,7 @@ function PatientForms() {
       title: 'Insurance Information Form',
       description: 'Provide your insurance details',
       category: 'Insurance',
-      icon: '🏥',
+      icon: '',
       fields: ['Insurance Provider', 'Policy Number', 'Group Number', 'Member ID', 'Contact']
     },
     {
@@ -67,7 +67,7 @@ function PatientForms() {
       title: 'HIPAA Consent Form',
       description: 'Privacy and confidentiality agreement',
       category: 'Legal',
-      icon: '🔒',
+      icon: '',
       fields: ['Patient Name', 'Information Release', 'Privacy Acknowledgment', 'Signature']
     }
   ];
@@ -281,7 +281,7 @@ This is a demo form. In production, this would be a PDF file.
       URL.revokeObjectURL(url);
       
       setDownloading(null);
-      setMessage(`✅ ${formTitle} downloaded successfully!`);
+      setMessage(` ${formTitle} downloaded successfully!`);
       setTimeout(() => setMessage(''), 3000);
     }, 1500);
   };
@@ -327,7 +327,7 @@ This is a demo form. In production, this would be a PDF file.
     <div style={styles.container}>
       {/* Header */}
       <div style={styles.header}>
-        <h1 style={styles.headerTitle}>📄 Patient Forms</h1>
+        <h1 style={styles.headerTitle}> Patient Forms</h1>
         <p style={styles.headerSub}>Download and fill medical forms for your consultation</p>
       </div>
 
@@ -342,7 +342,7 @@ This is a demo form. In production, this would be a PDF file.
       <div style={styles.searchBox}>
         <input
           type="text"
-          placeholder="🔍 Search forms..."
+          placeholder=" Search forms..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           style={styles.searchInput}
@@ -364,7 +364,7 @@ This is a demo form. In production, this would be a PDF file.
       <div style={styles.formsGrid}>
         {filteredForms.length === 0 ? (
           <div style={styles.noForms}>
-            <p style={styles.emptyIcon}>📭</p>
+            <p style={styles.emptyIcon}></p>
             <p>No forms found matching your search</p>
           </div>
         ) : (
@@ -404,7 +404,7 @@ This is a demo form. In production, this would be a PDF file.
                   if (!downloading) e.currentTarget.style.backgroundColor = '#1976d2';
                 }}
               >
-                {downloading === form.id ? '⏳ Downloading...' : '📥 Download Form'}
+                {downloading === form.id ? ' Downloading...' : ' Download Form'}
               </button>
             </div>
           ))
@@ -413,7 +413,7 @@ This is a demo form. In production, this would be a PDF file.
 
       {/* Info Box */}
       <div style={styles.infoBox}>
-        <h4 style={{ margin: 0, color: '#1976d2' }}>💡 How it works</h4>
+        <h4 style={{ margin: 0, color: '#1976d2' }}> How it works</h4>
         <p style={{ margin: '10px 0 0 0', fontSize: '14px' }}>
           1. Download the form you need<br />
           2. Print and fill it out<br />

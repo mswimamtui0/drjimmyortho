@@ -23,7 +23,7 @@ function ReportDownload({ scan }) {
       </div>
       
       <div style="margin: 20px 0;">
-        <h2 style="color: #333; font-size: 18px; border-bottom: 2px solid #eee; padding-bottom: 10px;">📋 Medical Report</h2>
+        <h2 style="color: #333; font-size: 18px; border-bottom: 2px solid #eee; padding-bottom: 10px;"> Medical Report</h2>
         
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 20px 0;">
           <div><strong>Patient Name:</strong> ${scan.patient_name || 'Patient'}</div>
@@ -36,18 +36,18 @@ function ReportDownload({ scan }) {
       </div>
       
       <div style="background: #e3f2fd; padding: 20px; border-radius: 10px; margin: 20px 0; border-left: 4px solid #1976d2;">
-        <h3 style="color: #1976d2; margin: 0 0 10px 0;">📋 Diagnosis</h3>
+        <h3 style="color: #1976d2; margin: 0 0 10px 0;"> Diagnosis</h3>
         <p style="margin: 0; line-height: 1.6; color: #333;">${scan.diagnosis || 'Pending review...'}</p>
       </div>
       
       <div style="background: #e8f5e9; padding: 20px; border-radius: 10px; margin: 20px 0; border-left: 4px solid #4caf50;">
-        <h3 style="color: #2e7d32; margin: 0 0 10px 0;">💊 Recommendations</h3>
+        <h3 style="color: #2e7d32; margin: 0 0 10px 0;"> Recommendations</h3>
         <p style="margin: 0; line-height: 1.6; color: #333;">${scan.recommendations || 'No recommendations yet'}</p>
       </div>
       
       ${scan.description ? `
       <div style="background: #fff3e0; padding: 20px; border-radius: 10px; margin: 20px 0; border-left: 4px solid #ff9800;">
-        <h3 style="color: #e65100; margin: 0 0 10px 0;">📝 Patient Description</h3>
+        <h3 style="color: #e65100; margin: 0 0 10px 0;"> Patient Description</h3>
         <p style="margin: 0; line-height: 1.6; color: #333;">${scan.description}</p>
       </div>
       ` : ''}
@@ -103,7 +103,7 @@ function ReportDownload({ scan }) {
         gap: '8px'
       }}
     >
-      {loading ? '⏳ Generating...' : '📄 Download Report'}
+      {loading ? ' Generating...' : ' Download Report'}
     </button>
   );
 }

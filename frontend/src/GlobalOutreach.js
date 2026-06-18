@@ -5,56 +5,56 @@ function GlobalOutreach() {
   const programs = [
     {
       country: 'Tanzania',
-      flag: '🇹🇿',
+      flag: '',
       title: 'Mobile Spine Clinic',
       description: 'Bringing spine care to remote villages in Mbeya, Arusha, and Mwanza regions.',
       impact: '500+ patients treated',
-      image: '🏥'
+      image: ''
     },
     {
       country: 'Kenya',
-      flag: '🇰🇪',
+      flag: '',
       title: 'Orthopedic Training Program',
       description: 'Training local surgeons in minimally invasive spine techniques.',
       impact: '15 surgeons trained',
-      image: '📚'
+      image: ''
     },
     {
       country: 'Uganda',
-      flag: '🇺🇬',
+      flag: '',
       title: 'Spinal Deformity Campaign',
       description: 'Free scoliosis surgery for children in need.',
       impact: '50+ children helped',
-      image: '👶'
+      image: ''
     },
     {
       country: 'Rwanda',
-      flag: '🇷🇼',
+      flag: '',
       title: 'Telemedicine Expansion',
       description: 'Setting up video consultation hubs in rural health centers.',
       impact: '20 centers established',
-      image: '📡'
+      image: ''
     }
   ];
 
   const initiatives = [
     {
-      icon: '🎓',
+      icon: '',
       title: 'Scholarship Program',
       desc: 'Sponsoring East African medical students specializing in orthopedics'
     },
     {
-      icon: '🔬',
+      icon: '',
       title: 'Research Grants',
       desc: 'Funding research on spine conditions prevalent in East Africa'
     },
     {
-      icon: '🏗️',
+      icon: '',
       title: 'Infrastructure Support',
       desc: 'Equipping local hospitals with spine surgery equipment'
     },
     {
-      icon: '🤝',
+      icon: '',
       title: 'Community Outreach',
       desc: 'Free spine health screenings and awareness campaigns'
     }
@@ -65,7 +65,7 @@ function GlobalOutreach() {
       {/* Hero Section */}
       <div className="outreach-hero">
         <div className="outreach-hero-content">
-          <h1>🌍 Global Outreach Program</h1>
+          <h1> Global Outreach Program</h1>
           <p>Bringing world-class spine care to underserved communities across East Africa and beyond</p>
         </div>
       </div>

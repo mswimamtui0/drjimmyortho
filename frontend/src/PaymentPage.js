@@ -55,8 +55,8 @@ function PaymentPage() {
         setMessage({ 
           type: 'success', 
           text: paymentMethod === 'mpesa' 
-            ? '✅ Payment initiated! Check your phone for M-Pesa prompt and enter PIN.' 
-            : '✅ Payment link generated! Check your email.' 
+            ? ' Payment initiated! Check your phone for M-Pesa prompt and enter PIN.' 
+            : ' Payment link generated! Check your email.' 
         });
         
         if (data.payment_link) {
@@ -238,7 +238,7 @@ function PaymentPage() {
   return (
     <div style={styles.container}>
       <div style={styles.card}>
-        <h1 style={styles.title}>💳 Make a Payment</h1>
+        <h1 style={styles.title}> Make a Payment</h1>
         <p style={styles.subtitle}>Secure payment for Dr. Jimmy Orthopedic services</p>
 
         {/* Payment Purpose */}
@@ -266,7 +266,7 @@ function PaymentPage() {
                   }
                 }}
               >
-                🎥 {opt.label}<br/>
+                 {opt.label}<br/>
                 <small>TZS {opt.amount.toLocaleString()}</small>
               </button>
             ))}
@@ -294,10 +294,10 @@ function PaymentPage() {
                   onChange={() => setPaymentMethod(method)}
                 />
                 <span>
-                  {method === 'mpesa' && '📱 M-Pesa'}
-                  {method === 'airtel_money' && '📱 Airtel Money'}
-                  {method === 'tigo_pesa' && '📱 Tigo Pesa'}
-                  {method === 'card' && '💳 Credit/Debit Card'}
+                  {method === 'mpesa' && ' M-Pesa'}
+                  {method === 'airtel_money' && ' Airtel Money'}
+                  {method === 'tigo_pesa' && ' Tigo Pesa'}
+                  {method === 'card' && ' Credit/Debit Card'}
                 </span>
               </label>
             ))}
@@ -359,7 +359,7 @@ function PaymentPage() {
 
         {/* Security Info */}
         <div style={styles.securityInfo}>
-          <p>🔒 Secure payment powered by</p>
+          <p> Secure payment powered by</p>
           <div style={styles.paymentLogos}>
             <span style={styles.logo}>Visa</span>
             <span style={styles.logo}>Mastercard</span>

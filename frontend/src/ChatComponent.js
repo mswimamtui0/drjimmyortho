@@ -46,9 +46,9 @@ function ChatComponent({ patientId, doctorId, patientName }) {
   return (
     <div className="chat-container">
       <div className="chat-header">
-        <h3>💬 Live Chat - {patientName}</h3>
+        <h3> Live Chat - {patientName}</h3>
         <span className={`status ${isConnected ? 'online' : 'offline'}`}>
-          {isConnected ? '🟢 Online' : '🔴 Offline'}
+          {isConnected ? ' Online' : ' Offline'}
         </span>
       </div>
       

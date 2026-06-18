@@ -31,12 +31,12 @@ function PatientDashboard() {
   const fetchPatientData = async (userData) => {
     try {
       setLoading(true);
-      console.log("📊 Fetching patient data for:", userData.username);
+      console.log(" Fetching patient data for:", userData.username);
       
       // Fetch scans
       const scansResponse = await fetch(`${API_URL}/my-scans/?username=${userData.username}`);
       const scansData = await scansResponse.json();
-      console.log("📥 Scans data:", scansData);
+      console.log(" Scans data:", scansData);
       
       if (scansData.scans) {
         setScans(scansData.scans);
@@ -71,7 +71,7 @@ function PatientDashboard() {
 
     } catch (error) {
       console.error('Error fetching patient data:', error);
-      setMessage('❌ Error loading your data. Please try again.');
+      setMessage(' Error loading your data. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -144,7 +144,7 @@ Generated on: ${new Date().toLocaleString()}
     URL.revokeObjectURL(url);
     
     setGeneratingReport(false);
-    setMessage('✅ Report downloaded successfully!');
+    setMessage(' Report downloaded successfully!');
     setTimeout(() => setMessage(''), 3000);
   };
 
@@ -211,7 +211,7 @@ Generated on: ${new Date().toLocaleString()}
     <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '40px 20px', fontFamily: 'Segoe UI, Arial, sans-serif' }}>
       {/* Header */}
       <div style={{ background: 'linear-gradient(135deg, #1976d2, #0d47a1)', color: 'white', padding: '30px', borderRadius: '15px', marginBottom: '30px' }}>
-        <h1 style={{ margin: 0, fontSize: '2em' }}>👋 Welcome, {user.first_name || user.username}!</h1>
+        <h1 style={{ margin: 0, fontSize: '2em' }}> Welcome, {user.first_name || user.username}!</h1>
         <p style={{ margin: '10px 0 0 0', opacity: 0.9 }}>Manage your medical records, view scans, and track consultations</p>
       </div>
 
@@ -225,19 +225,19 @@ Generated on: ${new Date().toLocaleString()}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '20px', marginBottom: '30px' }}>
         <div style={{ background: 'white', padding: '20px', borderRadius: '12px', boxShadow: '0 2px 10px rgba(0,0,0,0.05)', textAlign: 'center' }}>
           <div style={{ fontSize: '2.5em', fontWeight: 'bold', color: '#1976d2' }}>{stats.totalScans}</div>
-          <div style={{ color: '#666', fontSize: '0.9em', marginTop: '5px' }}>📄 Total Scans</div>
+          <div style={{ color: '#666', fontSize: '0.9em', marginTop: '5px' }}> Total Scans</div>
         </div>
         <div style={{ background: 'white', padding: '20px', borderRadius: '12px', boxShadow: '0 2px 10px rgba(0,0,0,0.05)', textAlign: 'center' }}>
           <div style={{ fontSize: '2.5em', fontWeight: 'bold', color: '#ff9800' }}>{stats.pendingScans}</div>
-          <div style={{ color: '#666', fontSize: '0.9em', marginTop: '5px' }}>⏳ Pending Review</div>
+          <div style={{ color: '#666', fontSize: '0.9em', marginTop: '5px' }}> Pending Review</div>
         </div>
         <div style={{ background: 'white', padding: '20px', borderRadius: '12px', boxShadow: '0 2px 10px rgba(0,0,0,0.05)', textAlign: 'center' }}>
           <div style={{ fontSize: '2.5em', fontWeight: 'bold', color: '#4caf50' }}>{stats.reviewedScans}</div>
-          <div style={{ color: '#666', fontSize: '0.9em', marginTop: '5px' }}>✅ Reviewed Scans</div>
+          <div style={{ color: '#666', fontSize: '0.9em', marginTop: '5px' }}> Reviewed Scans</div>
         </div>
         <div style={{ background: 'white', padding: '20px', borderRadius: '12px', boxShadow: '0 2px 10px rgba(0,0,0,0.05)', textAlign: 'center' }}>
           <div style={{ fontSize: '2.5em', fontWeight: 'bold', color: '#1976d2' }}>{stats.totalConsultations}</div>
-          <div style={{ color: '#666', fontSize: '0.9em', marginTop: '5px' }}>🎥 Consultations</div>
+          <div style={{ color: '#666', fontSize: '0.9em', marginTop: '5px' }}> Consultations</div>
         </div>
       </div>
 
@@ -245,23 +245,23 @@ Generated on: ${new Date().toLocaleString()}
       <div style={{ background: 'white', border: '1px solid #e0e0e0', borderRadius: '15px', padding: '25px', marginBottom: '30px', backgroundColor: '#e3f2fd', border: 'none' }}>
         <div style={{ display: 'flex', gap: '15px', flexWrap: 'wrap' }}>
           <button onClick={() => navigate('/upload')} style={{ padding: '12px 24px', backgroundColor: '#1976d2', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer', fontSize: '16px' }}>
-            📤 Upload New Scan
+             Upload New Scan
           </button>
           <button onClick={() => navigate('/video-consult')} style={{ padding: '12px 24px', backgroundColor: '#4caf50', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer', fontSize: '16px' }}>
-            🎥 Book Consultation
+             Book Consultation
           </button>
           <button onClick={() => navigate('/payment')} style={{ padding: '12px 24px', backgroundColor: '#ff9800', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer', fontSize: '16px' }}>
-            💳 Make Payment
+             Make Payment
           </button>
         </div>
       </div>
 
       {/* My Scans */}
       <div style={{ background: 'white', border: '1px solid #e0e0e0', borderRadius: '15px', padding: '25px', marginBottom: '30px' }}>
-        <h2 style={{ margin: '0 0 20px 0', color: '#1976d2', fontSize: '1.3em' }}>🩻 My Medical Scans</h2>
+        <h2 style={{ margin: '0 0 20px 0', color: '#1976d2', fontSize: '1.3em' }}> My Medical Scans</h2>
         {scans.length === 0 ? (
           <div style={{ textAlign: 'center', padding: '40px', backgroundColor: '#f5f5f5', borderRadius: '10px', color: '#999' }}>
-            <p style={{ fontSize: '3em', margin: 0 }}>📭</p>
+            <p style={{ fontSize: '3em', margin: 0 }}></p>
             <p>You haven't uploaded any scans yet.</p>
             <button onClick={() => navigate('/upload')} style={{ backgroundColor: '#1976d2', color: 'white', padding: '10px 20px', border: 'none', borderRadius: '5px', cursor: 'pointer', marginTop: '10px' }}>
               Upload Your First Scan
@@ -278,20 +278,20 @@ Generated on: ${new Date().toLocaleString()}
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px', flexWrap: 'wrap' }}>
                   <span style={{ fontWeight: 'bold', color: '#1976d2' }}>{scan.scan_type} - {scan.body_part}</span>
                   <span style={{ padding: '4px 12px', borderRadius: '20px', fontSize: '12px', fontWeight: 'bold', ...statusStyle }}>
-                    {scan.status === 'pending' ? '⏳ Pending Review' : '✅ Reviewed'}
+                    {scan.status === 'pending' ? ' Pending Review' : ' Reviewed'}
                   </span>
                 </div>
                 <div style={{ color: '#666', fontSize: '14px' }}>
-                  <div>📅 {scan.uploaded_at}</div>
-                  {scan.description && <div>📝 {scan.description}</div>}
+                  <div> {scan.uploaded_at}</div>
+                  {scan.description && <div> {scan.description}</div>}
                 </div>
                 {scan.diagnosis && (
                   <div style={{ marginTop: '10px', padding: '12px', backgroundColor: '#e8f5e9', borderRadius: '8px', fontSize: '14px' }}>
-                    <strong>📋 Diagnosis:</strong> {scan.diagnosis}
+                    <strong> Diagnosis:</strong> {scan.diagnosis}
                     {scan.recommendations && (
                       <>
                         <br />
-                        <strong>💊 Recommendations:</strong> {scan.recommendations}
+                        <strong> Recommendations:</strong> {scan.recommendations}
                       </>
                     )}
                   </div>
@@ -303,12 +303,12 @@ Generated on: ${new Date().toLocaleString()}
                       onClick={() => window.open(imageUrl, '_blank')} 
                       style={{ padding: '6px 15px', backgroundColor: '#9c27b0', color: 'white', border: 'none', borderRadius: '5px', cursor: 'pointer', fontSize: '13px' }}
                     >
-                      🖼️ View Image
+                       View Image
                     </button>
                   )}
                   {scan.status === 'reviewed' && (
                     <button onClick={() => downloadReport(scan)} disabled={generatingReport} style={{ padding: '6px 15px', backgroundColor: '#4caf50', color: 'white', border: 'none', borderRadius: '5px', cursor: 'pointer', fontSize: '13px', opacity: generatingReport ? 0.6 : 1 }}>
-                      {generatingReport ? '⏳...' : '📥 Download Report'}
+                      {generatingReport ? '...' : ' Download Report'}
                     </button>
                   )}
                 </div>
@@ -320,10 +320,10 @@ Generated on: ${new Date().toLocaleString()}
 
       {/* Consultations */}
       <div style={{ background: 'white', border: '1px solid #e0e0e0', borderRadius: '15px', padding: '25px', marginBottom: '30px' }}>
-        <h2 style={{ margin: '0 0 20px 0', color: '#1976d2', fontSize: '1.3em' }}>🎥 My Consultations</h2>
+        <h2 style={{ margin: '0 0 20px 0', color: '#1976d2', fontSize: '1.3em' }}> My Consultations</h2>
         {consultations.length === 0 ? (
           <div style={{ textAlign: 'center', padding: '40px', backgroundColor: '#f5f5f5', borderRadius: '10px', color: '#999' }}>
-            <p style={{ fontSize: '3em', margin: 0 }}>📅</p>
+            <p style={{ fontSize: '3em', margin: 0 }}></p>
             <p>No consultations scheduled.</p>
             <button onClick={() => navigate('/video-consult')} style={{ backgroundColor: '#4caf50', color: 'white', padding: '10px 20px', border: 'none', borderRadius: '5px', cursor: 'pointer', marginTop: '10px' }}>
               Book a Consultation
@@ -335,16 +335,16 @@ Generated on: ${new Date().toLocaleString()}
             return (
               <div key={consult.id} style={{ border: '1px solid #eee', borderRadius: '10px', padding: '15px', marginBottom: '15px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap' }}>
                 <div>
-                  <div style={{ fontWeight: 'bold', color: '#1976d2' }}>📅 {consult.scheduled_date}</div>
+                  <div style={{ fontWeight: 'bold', color: '#1976d2' }}> {consult.scheduled_date}</div>
                   <div style={{ fontSize: '14px', color: '#666' }}>
                     Status: <span style={{ padding: '4px 12px', borderRadius: '20px', fontSize: '12px', fontWeight: 'bold', ...statusStyle }}>
-                      {consult.status === 'pending_payment' ? '⏳ Payment Pending' : consult.status}
+                      {consult.status === 'pending_payment' ? ' Payment Pending' : consult.status}
                     </span>
                   </div>
                 </div>
                 {consult.zoom_link && consult.status === 'scheduled' && (
                   <a href={consult.zoom_link} target="_blank" rel="noopener noreferrer" style={{ backgroundColor: '#1976d2', color: 'white', padding: '8px 15px', borderRadius: '5px', textDecoration: 'none', fontSize: '14px' }}>
-                    🎥 Join
+                     Join
                   </a>
                 )}
               </div>

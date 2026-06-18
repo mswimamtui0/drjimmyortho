@@ -48,18 +48,18 @@ function ProtectedRoute({ children }) {
   }
   
   if (!user) {
-    console.log('🔒 ProtectedRoute: No user, redirecting to login');
+    console.log(' ProtectedRoute: No user, redirecting to login');
     return <Navigate to="/login" replace />;
   }
   
-  console.log('🔒 ProtectedRoute: User authenticated:', user.username);
+  console.log(' ProtectedRoute: User authenticated:', user.username);
   return children;
 }
 
 // ============ APP CONTENT ============
 function AppContent() {
   const { user } = useAuth();
-  console.log('📱 AppContent - Current user:', user);
+  console.log(' AppContent - Current user:', user);
 
   return (
     <Router>

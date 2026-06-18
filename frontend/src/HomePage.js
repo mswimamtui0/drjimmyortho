@@ -122,13 +122,13 @@ function HomePage() {
             </button>
             {user ? (
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                <span style={{ color: 'white', fontWeight: 'bold' }}>👋 {user.first_name || user.username}</span>
+                <span style={{ color: 'white', fontWeight: 'bold' }}> {user.first_name || user.username}</span>
                 <button onClick={handleLogout} className="title-logout-btn">Logout</button>
               </div>
             ) : (
               <>
                 <a href="/login" className="title-login-btn">Login / Register</a>
-                <a href="/doctor-login" className="title-doctor-btn">👨‍⚕️ Doctor</a>
+                <a href="/doctor-login" className="title-doctor-btn">‍ Doctor</a>
               </>
             )}
           </div>
@@ -142,20 +142,20 @@ function HomePage() {
             {/* Always Visible - Public Tabs */}
             <li><a href="#home" onClick={(e) => { e.preventDefault(); scrollToSection('home'); }}>{t.nav.home}</a></li>
             <li><a href="#services" onClick={(e) => { e.preventDefault(); scrollToSection('services'); }}>{t.nav.treatments}</a></li>
-            <li><a href="/global-outreach">🌍 {t.nav.global}</a></li>
-            <li><a href="/about">👨‍⚕️ {t.nav.about}</a></li>
+            <li><a href="/global-outreach"> {t.nav.global}</a></li>
+            <li><a href="/about">‍ {t.nav.about}</a></li>
             
             {/* Only Visible When Logged In - Patient Tabs */}
             {user && (
               <>
-                <li><a href="/upload">📤 {t.nav.upload}</a></li>
-                <li><a href="/video-consult">🎥 {t.nav.video}</a></li>
-                <li><a href="/payment">💳 {t.nav.payment}</a></li>
-                <li><a href="/dashboard">📊 {t.nav.dashboard}</a></li>
-                <li><a href="/consultation-history">📋 {t.nav.consultationHistory}</a></li>
-                <li><a href="/profile">👤 {t.nav.profile}</a></li>
-                <li><a href="/medical-history">📋 {t.nav.medicalHistory}</a></li>
-                <li><a href="/forms">📄 {t.nav.forms}</a></li>
+                <li><a href="/upload"> {t.nav.upload}</a></li>
+                <li><a href="/video-consult"> {t.nav.video}</a></li>
+                <li><a href="/payment"> {t.nav.payment}</a></li>
+                <li><a href="/dashboard"> {t.nav.dashboard}</a></li>
+                <li><a href="/consultation-history"> {t.nav.consultationHistory}</a></li>
+                <li><a href="/profile"> {t.nav.profile}</a></li>
+                <li><a href="/medical-history"> {t.nav.medicalHistory}</a></li>
+                <li><a href="/forms"> {t.nav.forms}</a></li>
               </>
             )}
           </ul>
@@ -176,8 +176,8 @@ function HomePage() {
           <h1 className="hero-title">{t.hero.title}</h1>
           <p className="hero-subtitle">{t.hero.subtitle}</p>
           <div className="hero-buttons">
-            <a href="/upload" className="btn-primary">📤 {t.hero.button1}</a>
-            <a href="/video-consult" className="btn-secondary">🎥 {t.hero.button2}</a>
+            <a href="/upload" className="btn-primary"> {t.hero.button1}</a>
+            <a href="/video-consult" className="btn-secondary"> {t.hero.button2}</a>
           </div>
         </div>
       </section>
@@ -189,19 +189,19 @@ function HomePage() {
           <p className="section-subtitle">{t.services.subtitle}</p>
           <div className="services-grid">
             <div className="service-card">
-              <div className="service-icon">🩻</div>
+              <div className="service-icon"></div>
               <h3>{t.services.spine}</h3>
               <p>Matibabu ya hernia ya diski, mgongo uliojiunika, uvimbe, na magonjwa mengine ya uti wa mgongo.</p>
               <a href="/upload" className="service-link">Learn More →</a>
             </div>
             <div className="service-card">
-              <div className="service-icon">🦴</div>
+              <div className="service-icon"></div>
               <h3>{t.services.ortho}</h3>
               <p>Kurekebisha mifupa iliyovunjika, uingizaji wa viungo bandia, na matibabu ya majeraha ya michezo.</p>
               <a href="/upload" className="service-link">Learn More →</a>
             </div>
             <div className="service-card">
-              <div className="service-icon">📹</div>
+              <div className="service-icon"></div>
               <h3>{t.services.tele}</h3>
               <p>Ushauri wa video kwa wagonjwa wa mbali ambao hawawezi kusafiri kwenda kwa daktari.</p>
               <a href="/video-consult" className="service-link">Learn More →</a>
@@ -214,33 +214,33 @@ function HomePage() {
       <footer className="footer">
         <div className="footer-content">
           <div className="footer-section">
-            <h3>🏥 Dr. Jimmy Orthopedic & Spine Center</h3>
+            <h3> Dr. Jimmy Orthopedic & Spine Center</h3>
             <p>International Orthopedic & Spine Surgeon</p>
             <p>Daktari wa Kimataifa wa Upasuaji wa Mifupa na Uti wa Mgongo</p>
           </div>
           <div className="footer-section">
-            <h3>📞 {t.footer.contact}</h3>
+            <h3> {t.footer.contact}</h3>
             <p><strong>Phone/Call:</strong> +255 787 688 659</p>
             <p><strong>WhatsApp:</strong> +255 787 688 659</p>
             <p><strong>Email:</strong> info@drjimmy.com</p>
             <p><strong>Location:</strong> Dar es Salaam, Tanzania</p>
           </div>
           <div className="footer-section">
-            <h3>🕒 {t.footer.hours}</h3>
+            <h3> {t.footer.hours}</h3>
             <p>Monday - Friday: 8:00 AM - 5:00 PM</p>
             <p>Saturday: 9:00 AM - 1:00 PM</p>
             <p>Sunday: Closed</p>
           </div>
           <div className="footer-section">
-            <h3>🔗 Quick Links</h3>
-            <p><a href="/upload">📤 Upload Scan</a></p>
-            <p><a href="/video-consult">🎥 Video Consultation</a></p>
-            <p><a href="/payment">💳 Make Payment</a></p>
-            <p><a href="/dashboard">📊 Dashboard</a></p>
+            <h3> Quick Links</h3>
+            <p><a href="/upload"> Upload Scan</a></p>
+            <p><a href="/video-consult"> Video Consultation</a></p>
+            <p><a href="/payment"> Make Payment</a></p>
+            <p><a href="/dashboard"> Dashboard</a></p>
           </div>
         </div>
         <div className="footer-bottom">
-          <p>🚨 {t.footer.emergency}</p>
+          <p> {t.footer.emergency}</p>
           <p>© 2024 Dr. Jimmy Orthopedic & Spine Center. All rights reserved.</p>
         </div>
       </footer>

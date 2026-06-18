@@ -74,8 +74,8 @@ function LoginRegister() {
           localStorage.setItem('isLoggedIn', 'true');
           localStorage.setItem('access_token', data.access || 'demo_token');
           
-          console.log('✅ User saved to localStorage:', userData);
-          console.log('✅ isLoggedIn:', localStorage.getItem('isLoggedIn'));
+          console.log(' User saved to localStorage:', userData);
+          console.log(' isLoggedIn:', localStorage.getItem('isLoggedIn'));
           
           // Use AuthContext login
           login(userData);
@@ -250,7 +250,7 @@ function LoginRegister() {
     <div style={styles.container}>
       <div style={styles.card}>
         <div style={styles.header}>
-          <div style={styles.logo}>🏥</div>
+          <div style={styles.logo}></div>
           <h1 style={styles.title}>Dr. Jimmy Orthopedic</h1>
           <p style={styles.subtitle}>{isLogin ? 'Login to your account' : 'Create new patient account'}</p>
         </div>
@@ -409,12 +409,12 @@ function LoginRegister() {
         </div>
 
         <div style={styles.infoBox}>
-          <strong style={styles.infoBoxTitle}>📋 Why register?</strong>
+          <strong style={styles.infoBoxTitle}> Why register?</strong>
           <ul style={styles.infoList}>
-            <li style={styles.infoItem}>✓ Upload MRI, X-Ray, CT scans</li>
-            <li style={styles.infoItem}>✓ Book video consultations</li>
-            <li style={styles.infoItem}>✓ View doctor's diagnosis</li>
-            <li style={styles.infoItem}>✓ Access medical history</li>
+            <li style={styles.infoItem}> Upload MRI, X-Ray, CT scans</li>
+            <li style={styles.infoItem}> Book video consultations</li>
+            <li style={styles.infoItem}> View doctor's diagnosis</li>
+            <li style={styles.infoItem}> Access medical history</li>
           </ul>
         </div>
       </div>

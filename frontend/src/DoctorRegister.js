@@ -211,7 +211,7 @@ function DoctorRegister() {
       <div style={styles.container}>
         <div style={styles.card}>
           <div style={styles.header}>
-            <div style={styles.logo}>✅</div>
+            <div style={styles.logo}></div>
             <h1 style={styles.title}>Registration Successful!</h1>
             <p style={styles.subtitle}>Your doctor account has been created.</p>
             <p style={{ marginTop: '10px' }}>Redirecting to login...</p>
@@ -225,7 +225,7 @@ function DoctorRegister() {
     <div style={styles.container}>
       <div style={styles.card}>
         <div style={styles.header}>
-          <div style={styles.logo}>👨‍⚕️</div>
+          <div style={styles.logo}>‍</div>
           <h1 style={styles.title}>Doctor Registration</h1>
           <p style={styles.subtitle}>Create your doctor account</p>
         </div>
@@ -340,7 +340,7 @@ function DoctorRegister() {
               onBlur={(e) => e.target.style.borderColor = '#ddd'}
             />
             <div style={styles.secretHint}>
-              💡 Ask admin for the secret key. For demo use: <strong>DRJIMMY2024</strong>
+               Ask admin for the secret key. For demo use: <strong>DRJIMMY2024</strong>
             </div>
           </div>
 
@@ -352,7 +352,7 @@ function DoctorRegister() {
               ...(loading ? styles.submitBtnDisabled : {})
             }}
           >
-            {loading ? 'Registering...' : '👨‍⚕️ Register as Doctor'}
+            {loading ? 'Registering...' : '‍ Register as Doctor'}
           </button>
         </form>
 
@@ -377,12 +377,12 @@ function DoctorRegister() {
         </div>
 
         <div style={styles.infoBox}>
-          <strong style={styles.infoBoxTitle}>📋 Doctor Access</strong>
+          <strong style={styles.infoBoxTitle}> Doctor Access</strong>
           <ul style={styles.infoList}>
-            <li style={styles.infoItem}>✓ View all patients</li>
-            <li style={styles.infoItem}>✓ Review medical scans</li>
-            <li style={styles.infoItem}>✓ Add diagnosis and recommendations</li>
-            <li style={styles.infoItem}>✓ Generate prescriptions</li>
+            <li style={styles.infoItem}> View all patients</li>
+            <li style={styles.infoItem}> Review medical scans</li>
+            <li style={styles.infoItem}> Add diagnosis and recommendations</li>
+            <li style={styles.infoItem}> Generate prescriptions</li>
           </ul>
         </div>
       </div>

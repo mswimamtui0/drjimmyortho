@@ -50,7 +50,7 @@ function AdminDashboard() {
     });
     
     if (response.ok) {
-      alert('✅ Scan reviewed successfully! Email notification sent to patient.');
+      alert(' Scan reviewed successfully! Email notification sent to patient.');
       fetchAllScans();
       setSelectedScan(null);
       setDiagnosis('');
@@ -58,7 +58,7 @@ function AdminDashboard() {
     }
   } catch (error) {
     console.error('Error updating scan:', error);
-    alert('❌ Error updating scan');
+    alert(' Error updating scan');
   }
 };
   if (!user?.is_staff) {
@@ -76,14 +76,14 @@ function AdminDashboard() {
       
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px', marginTop: '30px' }}>
         <div style={{ backgroundColor: '#e3f2fd', padding: '20px', borderRadius: '10px' }}>
-          <h3>📊 Statistics</h3>
+          <h3> Statistics</h3>
           <p>Total Patients: {patients.length}</p>
           <p>Total Scans: {scans.length}</p>
           <p>Pending Reviews: {scans.filter(s => s.status === 'Pending Review').length}</p>
         </div>
         
         <div style={{ backgroundColor: '#e8f5e9', padding: '20px', borderRadius: '10px' }}>
-          <h3>👥 Patient List</h3>
+          <h3> Patient List</h3>
           <div style={{ maxHeight: '200px', overflowY: 'auto' }}>
             {patients.map(patient => (
               <div key={patient.id} style={{ padding: '10px', borderBottom: '1px solid #ddd' }}>
@@ -94,7 +94,7 @@ function AdminDashboard() {
         </div>
       </div>
       
-      <h2 style={{ marginTop: '40px' }}>📋 Pending Scan Reviews</h2>
+      <h2 style={{ marginTop: '40px' }}> Pending Scan Reviews</h2>
       <div style={{ display: 'grid', gap: '20px', marginTop: '20px' }}>
         {scans.filter(s => s.status === 'Pending Review').map((scan) => (
           <div key={scan.id} style={{ border: '1px solid #ddd', borderRadius: '10px', padding: '20px' }}>
@@ -137,7 +137,7 @@ function AdminDashboard() {
         
         {scans.filter(s => s.status === 'Pending Review').length === 0 && (
           <p style={{ textAlign: 'center', padding: '40px', backgroundColor: '#f5f5f5', borderRadius: '10px' }}>
-            No pending scans to review ✓
+            No pending scans to review 
           </p>
         )}
       </div>
