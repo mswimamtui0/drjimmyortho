@@ -11,15 +11,6 @@ import json
 import random
 from datetime import datetime
 
-# Serve media files in development
-if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-
-from django.conf.urls.static import static
-from django.conf import settings
-
-# At the bottom of the file
-urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 
 # Import models from medical app
@@ -992,19 +983,6 @@ def payment_callback_consultation(request):
 
 
 
-from django.http import HttpResponse
-import os
-
-def check_image(request, scan_id, filename):
-    """Check if image exists"""
-    media_path = os.path.join(settings.MEDIA_ROOT, 'patient_scans', scan_id, filename)
-    if os.path.exists(media_path):
-        return HttpResponse(f"✅ Image exists at: {media_path}")
-    else:
-        return HttpResponse(f"❌ Image not found at: {media_path}")
-
-
-
 @csrf_exempt
 def doctor_register(request):
     """Register a new doctor account with secret key"""
@@ -1057,6 +1035,9 @@ def doctor_register(request):
 
 
 # ==================== URL PATTERNS - COMPLETE LIST ====================
+# ... all your imports and functions ...
+
+# ============ URL PATTERNS - DEFINED FIRST ============
 urlpatterns = [
     path('', home_page),
     path('admin/', admin.site.urls),
@@ -1082,12 +1063,15 @@ urlpatterns = [
     path('api/blog/comment/', blog_comment),
     path('api/reviews/', get_reviews),
     path('api/reviews/submit/', submit_review),
-    path('api/book-and-pay-consultation/', book_and_pay_consultation),
-path('api/verify-consultation-payment/', verify_consultation_payment),
-path('api/payment-callback-consultation/', payment_callback_consultation),
-path('api/doctor/register/', doctor_register),
+    path('api/doctor/register/', doctor_register),
 ]
 
-# Serve media files in development
+# ============ SERVE MEDIA FILES (AT THE VERY END) ============
+from django.conf import settings
+from django.conf.urls.static import static
+
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+# Also serve media files in production (Render)
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
