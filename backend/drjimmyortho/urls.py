@@ -167,12 +167,11 @@ def login_user(request):
 
 # ==================== UPLOAD SCAN ====================
 @csrf_exempt
+@csrf_exempt
 def upload_scan(request):
     if request.method == 'POST':
         print("=" * 60)
         print("📤 UPLOAD REQUEST RECEIVED")
-        print(f"POST data: {dict(request.POST)}")
-        print(f"FILES: {list(request.FILES.keys())}")
         print("=" * 60)
         
         try:
@@ -182,22 +181,23 @@ def upload_scan(request):
             if not username:
                 return JsonResponse({'error': 'Username required'}, status=400)
             
-            try:
-                user = User.objects.get(username=username)
-                print(f"✅ User found: {user.username}")
-            except User.DoesNotExist:
-                print(f"❌ User not found: {username}")
-                return JsonResponse({'error': f'User "{username}" not found'}, status=400)
+            user = User.objects.get(username=username)
+            print(f"✅ User found: {user.username}")
             
             scan_type = request.POST.get('scan_type')
             body_part = request.POST.get('body_part')
             description = request.POST.get('description', '')
             image_file = request.FILES.get('image_file')
             
+            print(f"📋 Scan Type: {scan_type}")
+            print(f"📍 Body Part: {body_part}")
+            print(f"📄 File: {image_file.name if image_file else 'None'}")
+            print(f"📄 File Size: {image_file.size if image_file else 'N/A'}")
+            
             if not image_file:
                 return JsonResponse({'error': 'No file uploaded'}, status=400)
             
-            # Create the scan - this will save the file
+            # Create the scan - this saves the file
             scan = PatientScan.objects.create(
                 patient=user,
                 scan_type=scan_type,
@@ -207,14 +207,24 @@ def upload_scan(request):
                 status='pending'
             )
             
-            print(f"✅ Scan created with ID: {scan.id}")
-            print(f"✅ Image saved at: {scan.image.url if scan.image else 'No image'}")
+            # Verify the file was saved
+            if scan.image:
+                print(f"✅ Image saved at: {scan.image.url}")
+                print(f"✅ File path: {scan.image.path}")
+                import os
+                if os.path.exists(scan.image.path):
+                    print(f"✅ File exists on disk: {scan.image.path}")
+                else:
+                    print(f"❌ File does NOT exist on disk: {scan.image.path}")
+            else:
+                print("❌ No image associated with scan!")
             
             return JsonResponse({
                 'success': True,
                 'message': 'Scan uploaded successfully',
                 'scan_id': scan.id,
-                'image_url': scan.image.url if scan.image else None
+                'image_url': scan.image.url if scan.image else None,
+                'image_path': scan.image.path if scan.image else None
             }, status=201)
             
         except Exception as e:

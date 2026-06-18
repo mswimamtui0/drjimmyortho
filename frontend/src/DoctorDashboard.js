@@ -280,32 +280,33 @@ function DoctorDashboard() {
   };
 
   // ============ GET IMAGE URL FROM BACKEND ============
-  const getImageUrl = (scan) => {
-    if (!scan) return null;
-    
-    console.log(" Getting image URL for scan:", scan);
-    
-    // If scan has image_url
-    if (scan.image_url) {
-      if (scan.image_url.startsWith('http')) {
-        return scan.image_url;
-      }
-      // If relative path, prepend backend URL
-      const backendBase = API_URL.replace('/api', '');
-      return `${backendBase}${scan.image_url}`;
+  // ============ GET IMAGE URL FROM BACKEND ============
+const getImageUrl = (scan) => {
+  if (!scan) return null;
+  
+  console.log("🖼️ Getting image URL for scan:", scan);
+  
+  const backendBase = 'https://drjimmy-backend.onrender.com';
+  
+  // If scan has image_url
+  if (scan.image_url) {
+    if (scan.image_url.startsWith('http')) {
+      return scan.image_url;
     }
-    
-    // If scan has image field
-    if (scan.image) {
-      const backendBase = API_URL.replace('/api', '');
-      if (scan.image.startsWith('/media/')) {
-        return `${backendBase}${scan.image}`;
-      }
-      return `${backendBase}/media/${scan.image}`;
+    return `${backendBase}${scan.image_url}`;
+  }
+  
+  // If scan has image field
+  if (scan.image) {
+    if (scan.image.startsWith('/media/')) {
+      return `${backendBase}${scan.image}`;
     }
-    
-    return null;
-  };
+    return `${backendBase}/media/${scan.image}`;
+  }
+  
+  // Try to construct from scan ID (fallback)
+  return `${backendBase}/media/patient_scans/${scan.id}/`;
+};
 
   const handleViewImage = (scan) => {
     const imageUrl = getImageUrl(scan);
