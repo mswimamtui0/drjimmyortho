@@ -14,6 +14,7 @@ def get_upload_path(instance, filename):
     # Create path: patient_scans/patient_id/filename
     return f"patient_scans/{instance.patient.id}/{new_filename}"
 
+
 class PatientScan(models.Model):
     SCAN_TYPES = [
         ('xray', 'X-Ray'),
@@ -25,7 +26,8 @@ class PatientScan(models.Model):
     scan_type = models.CharField(max_length=10, choices=SCAN_TYPES)
     body_part = models.CharField(max_length=50)
     description = models.TextField(blank=True)
-    image = models.FileField(upload_to=get_upload_path, null=True, blank=True)
+    # Remove the upload_to path - Cloudinary handles it
+image = models.FileField(null=True, blank=True)
     uploaded_at = models.DateTimeField(auto_now_add=True)
     status = models.CharField(max_length=20, default='pending')
     diagnosis = models.TextField(blank=True)

@@ -170,34 +170,21 @@ def login_user(request):
 @csrf_exempt
 def upload_scan(request):
     if request.method == 'POST':
-        print("=" * 60)
-        print("📤 UPLOAD REQUEST RECEIVED")
-        print("=" * 60)
-        
         try:
             username = request.POST.get('username')
-            print(f"👤 Username: {username}")
-            
             if not username:
                 return JsonResponse({'error': 'Username required'}, status=400)
             
             user = User.objects.get(username=username)
-            print(f"✅ User found: {user.username}")
-            
             scan_type = request.POST.get('scan_type')
             body_part = request.POST.get('body_part')
             description = request.POST.get('description', '')
             image_file = request.FILES.get('image_file')
             
-            print(f"📋 Scan Type: {scan_type}")
-            print(f"📍 Body Part: {body_part}")
-            print(f"📄 File: {image_file.name if image_file else 'None'}")
-            print(f"📄 File Size: {image_file.size if image_file else 'N/A'}")
-            
             if not image_file:
                 return JsonResponse({'error': 'No file uploaded'}, status=400)
             
-            # Create the scan - this saves the file
+            # Create the scan - Cloudinary will handle the upload
             scan = PatientScan.objects.create(
                 patient=user,
                 scan_type=scan_type,
@@ -207,30 +194,17 @@ def upload_scan(request):
                 status='pending'
             )
             
-            # Verify the file was saved
-            if scan.image:
-                print(f"✅ Image saved at: {scan.image.url}")
-                print(f"✅ File path: {scan.image.path}")
-                import os
-                if os.path.exists(scan.image.path):
-                    print(f"✅ File exists on disk: {scan.image.path}")
-                else:
-                    print(f"❌ File does NOT exist on disk: {scan.image.path}")
-            else:
-                print("❌ No image associated with scan!")
+            # Get the Cloudinary URL
+            image_url = scan.image.url if scan.image else None
             
             return JsonResponse({
                 'success': True,
                 'message': 'Scan uploaded successfully',
                 'scan_id': scan.id,
-                'image_url': scan.image.url if scan.image else None,
-                'image_path': scan.image.path if scan.image else None
+                'image_url': image_url
             }, status=201)
             
         except Exception as e:
-            print(f"❌ Upload error: {str(e)}")
-            import traceback
-            traceback.print_exc()
             return JsonResponse({'error': str(e)}, status=400)
     
     return JsonResponse({'error': 'Method not allowed'}, status=405)

@@ -2,6 +2,20 @@ import os
 from pathlib import Path
 import dj_database_url
 
+# ============ CLOUDINARY CONFIGURATION ============
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
+
+cloudinary.config(
+    cloud_name = "YOUR_CLOUD_NAME",  # Replace with your cloud name
+    api_key = "YOUR_API_KEY",        # Replace with your API key
+    api_secret = "YOUR_API_SECRET"   # Replace with your API secret
+)
+
+# Use Cloudinary for file storage
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+
 # ============ BASE DIRECTORY ============
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -102,6 +116,8 @@ LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'Africa/Dar_es_Salaam'
 USE_I18N = True
 USE_TZ = True
+
+
 
 # ============ STATIC FILES ============
 STATIC_URL = '/static/'
