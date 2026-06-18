@@ -117,9 +117,18 @@ import os
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-# Create media directory if it doesn't exist
+# Auto-create media directory
 if not os.path.exists(MEDIA_ROOT):
     os.makedirs(MEDIA_ROOT)
+    print(f"✅ Created media directory: {MEDIA_ROOT}")
+
+# Create subdirectories
+subdirs = ['patient_scans', 'profile_pics', 'blog_images']
+for subdir in subdirs:
+    subdir_path = os.path.join(MEDIA_ROOT, subdir)
+    if not os.path.exists(subdir_path):
+        os.makedirs(subdir_path)
+        print(f"✅ Created subdirectory: {subdir_path}")
 
 # ============ CUSTOM USER ============
 #AUTH_USER_MODEL = 'users.User'

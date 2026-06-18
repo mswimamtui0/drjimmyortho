@@ -169,15 +169,24 @@ def login_user(request):
 @csrf_exempt
 def upload_scan(request):
     if request.method == 'POST':
+        print("=" * 60)
+        print("📤 UPLOAD REQUEST RECEIVED")
+        print(f"POST data: {dict(request.POST)}")
+        print(f"FILES: {list(request.FILES.keys())}")
+        print("=" * 60)
+        
         try:
             username = request.POST.get('username')
+            print(f"👤 Username: {username}")
             
             if not username:
                 return JsonResponse({'error': 'Username required'}, status=400)
             
             try:
                 user = User.objects.get(username=username)
+                print(f"✅ User found: {user.username}")
             except User.DoesNotExist:
+                print(f"❌ User not found: {username}")
                 return JsonResponse({'error': f'User "{username}" not found'}, status=400)
             
             scan_type = request.POST.get('scan_type')
@@ -188,6 +197,7 @@ def upload_scan(request):
             if not image_file:
                 return JsonResponse({'error': 'No file uploaded'}, status=400)
             
+            # Create the scan - this will save the file
             scan = PatientScan.objects.create(
                 patient=user,
                 scan_type=scan_type,
@@ -197,17 +207,23 @@ def upload_scan(request):
                 status='pending'
             )
             
+            print(f"✅ Scan created with ID: {scan.id}")
+            print(f"✅ Image saved at: {scan.image.url if scan.image else 'No image'}")
+            
             return JsonResponse({
                 'success': True,
                 'message': 'Scan uploaded successfully',
-                'scan_id': scan.id
+                'scan_id': scan.id,
+                'image_url': scan.image.url if scan.image else None
             }, status=201)
             
         except Exception as e:
+            print(f"❌ Upload error: {str(e)}")
+            import traceback
+            traceback.print_exc()
             return JsonResponse({'error': str(e)}, status=400)
     
     return JsonResponse({'error': 'Method not allowed'}, status=405)
-
 @csrf_exempt
 def get_patient_scans(request):
     if request.method == 'GET':
@@ -1063,6 +1079,42 @@ def test_upload(request):
     return JsonResponse({'message': 'Send POST to test upload'})
 
 
+@csrf_exempt
+def check_image(request, scan_id):
+    """Check if image exists for a scan"""
+    try:
+        from medical.models import PatientScan
+        from django.conf import settings
+        import os
+        
+        scan = PatientScan.objects.get(id=scan_id)
+        
+        if scan.image:
+            image_path = os.path.join(settings.MEDIA_ROOT, scan.image.name)
+            if os.path.exists(image_path):
+                return JsonResponse({
+                    'exists': True,
+                    'path': image_path,
+                    'url': scan.image.url if scan.image else None,
+                    'size': os.path.getsize(image_path)
+                })
+            else:
+                return JsonResponse({
+                    'exists': False,
+                    'path': image_path,
+                    'message': 'File not found on server'
+                }, status=404)
+        else:
+            return JsonResponse({
+                'exists': False,
+                'message': 'No image associated with this scan'
+            }, status=404)
+    except PatientScan.DoesNotExist:
+        return JsonResponse({'error': 'Scan not found'}, status=404)
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=400)
+
+
 # ==================== URL PATTERNS - COMPLETE LIST ====================
 # ============ URL PATTERNS ============
 urlpatterns = [
@@ -1092,11 +1144,13 @@ urlpatterns = [
     path('api/reviews/submit/', submit_review),
     path('api/doctor/register/', doctor_register),
 path('api/test-upload/', test_upload),
+path('api/check-image/<int:scan_id>/', check_image),
 ]
 
 # ============ SERVE MEDIA FILES (ALWAYS, NOT JUST DEBUG) ============
+# ============ SERVE MEDIA FILES ============
 from django.conf import settings
 from django.conf.urls.static import static
 
-# Serve media files in production
+# Serve media files in both development and production
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
